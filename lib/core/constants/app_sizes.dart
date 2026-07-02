@@ -1,62 +1,64 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class AppSizes {
   AppSizes._();
 
   // ─── Padding & Margin ─────────────────────────────────────────────────────
-  static const double xs   = 4.0;
-  static const double sm   = 8.0;
-  static const double md   = 16.0;
-  static const double lg   = 24.0;
-  static const double xl   = 32.0;
-  static const double xxl  = 48.0;
+  static double get xs  => 4.r;
+  static double get sm  => 8.r;
+  static double get md  => 16.r;
+  static double get lg  => 24.r;
+  static double get xl  => 32.r;
+  static double get xxl => 48.r;
 
   // ─── Screen horizontal padding ────────────────────────────────────────────
-  static const double screenPadding = 16.0;
+  static double get screenPadding => 16.w;
 
   // ─── Border radius ────────────────────────────────────────────────────────
-  static const double radiusXs  = 4.0;
-  static const double radiusSm  = 8.0;
-  static const double radiusMd  = 12.0;
-  static const double radiusLg  = 16.0;
-  static const double radiusXl  = 24.0;
-  static const double radiusFull = 100.0; // pill shape
+  static double get radiusXs   => 4.r;
+  static double get radiusSm   => 8.r;
+  static double get radiusMd   => 12.r;
+  static double get radiusLg   => 16.r;
+  static double get radiusXl   => 24.r;
+  static double get radiusFull => 100.r;
 
   // ─── Icon sizes ───────────────────────────────────────────────────────────
-  static const double iconSm  = 16.0;
-  static const double iconMd  = 24.0;
-  static const double iconLg  = 32.0;
-  static const double iconXl  = 48.0;
+  static double get iconSm => 16.r;
+  static double get iconMd => 24.r;
+  static double get iconLg => 32.r;
+  static double get iconXl => 48.r;
 
-  // ─── Button height ────────────────────────────────────────────────────────
-  static const double buttonHeight     = 52.0;
-  static const double buttonHeightSm   = 40.0;
+  // ─── Button ───────────────────────────────────────────────────────────────
+  static double get buttonHeight   => 52.h;
+  static double get buttonHeightSm => 40.h;
 
   // ─── Input field ──────────────────────────────────────────────────────────
-  static const double inputHeight = 56.0;
+  static double get inputHeight => 56.h;
 
   // ─── Card ─────────────────────────────────────────────────────────────────
-  static const double cardElevation   = 2.0;
-  static const double cardRadius      = 16.0;
+  static double get cardElevation => 2.r;
+  static double get cardRadius    => 16.r;
 
   // ─── Product card ─────────────────────────────────────────────────────────
-  static const double productCardWidth  = 160.0;
-  static const double productCardHeight = 220.0;
-  static const double productImageHeight = 140.0;
+  static double get productCardWidth   => 160.w;
+  static double get productCardHeight  => 220.h;
+  static double get productImageHeight => 140.h;
 
   // ─── AppBar ───────────────────────────────────────────────────────────────
-  static const double appBarHeight = 60.0;
+  static double get appBarHeight => 60.h;
 
   // ─── Bottom nav ───────────────────────────────────────────────────────────
-  static const double bottomNavHeight = 64.0;
+  static double get bottomNavHeight => 64.h;
 
   // ─── Avatar ───────────────────────────────────────────────────────────────
-  static const double avatarSm  = 32.0;
-  static const double avatarMd  = 48.0;
-  static const double avatarLg  = 80.0;
-  static const double avatarXl  = 120.0;
+  static double get avatarSm => 32.r;
+  static double get avatarMd => 48.r;
+  static double get avatarLg => 80.r;
+  static double get avatarXl => 120.r;
 
   // ─── Offer banner ─────────────────────────────────────────────────────────
-  static const double offerBannerHeight = 180.0;
+  static double get offerBannerHeight => 180.h;
 
-  // ─── Spacing between sections ─────────────────────────────────────────────
-  static const double sectionSpacing = 24.0;
+  // ─── Section spacing ──────────────────────────────────────────────────────
+  static double get sectionSpacing => 24.h;
 }
