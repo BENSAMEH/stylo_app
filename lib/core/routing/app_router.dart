@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 // Auth
@@ -43,7 +43,7 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
+     /* GoRoute(
         path: '/',
         builder: (context, state) => const SplashScreen(),
       ),
@@ -77,12 +77,13 @@ class AppRouter {
         path: '/reset-password',
         builder: (context, state) => const ResetPasswordScreen(),
       ),
+      */
 
       GoRoute(
         path: '/home',
         builder: (context, state) => const HomeScreen(),
       ),
-
+/*
       GoRoute(
         path: '/search',
         builder: (context, state) => const SearchScreen(),
@@ -172,6 +173,7 @@ class AppRouter {
         path: '/no-search-results',
         builder: (context, state) => const NoSearchResultsScreen(),
       ),
-    ],
+ */   ],
   );
 }
+*/
