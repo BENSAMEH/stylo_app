@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {'icon': Icons.star_outline,      'name': 'Necklaces'},
     {'icon': Icons.earbuds_outlined,  'name': 'Earrings'},
     {'icon': Icons.watch_outlined,    'name': 'Watches'},
+    {'icon':Icons.access_time_filled_rounded,'name':"gg"},
   ];
 
   // Dummy offers
