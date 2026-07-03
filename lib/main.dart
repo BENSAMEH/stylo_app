@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart'; // Verify your path
+import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     // 1. Wrap your MaterialApp with ScreenUtilInit
     return ScreenUtilInit(
       // Set the design size according to your UI/Figma design framework (e.g., 360x690, 375x812, etc.)
-      designSize: const Size(360, 690), 
+      designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
       // 2. Pass your MaterialApp structure inside the builder method
@@ -23,9 +23,10 @@ class MyApp extends StatelessWidget {
           title: 'Stylo App',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white, // Adjust template rules as needed
+            scaffoldBackgroundColor:
+                Colors.white, // Adjust template rules as needed
           ),
-          home: const HomeScreen(), 
+          home: const HomeScreen(),
           // If you use go_router, use routerConfig instead:
           // routerConfig: AppRouter.router,
         );
