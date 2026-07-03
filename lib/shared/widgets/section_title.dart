@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_text_styles.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -11,7 +12,7 @@ class SectionTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        style:AppTextStyles.bodyLarge ,
       ),
     );
   }

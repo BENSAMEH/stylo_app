@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_colors.dart';
+import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 import 'package:stylo_app/shared/widgets/profile_item.dart';
 import 'package:stylo_app/shared/widgets/section_title.dart';
 
@@ -15,19 +19,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(bottomNavigationBar: AppBottomNavWidget(
+  currentIndex: 3,
+  onTap: (index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const HomeScreen(),
+          ),
+        );
+        break;
+
+      case 3:
+        break;
+    }
+  },
+),
       backgroundColor: Color(0xffFDF8FF),
       appBar: AppBar(
         backgroundColor: Color(0xffFDF8FF),
 
         title: Row(
           children: [
-            const CircleAvatar(radius: 20, child: Icon(Icons.person, size: 25)),
+             CircleAvatar(radius: 20, child: Icon(Icons.person, size: 25)),
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: const Text(
+              child:  Text(
                 "Stylo",
-                style: TextStyle(color: Color(0xff542AE6)),
+                style: AppTextStyles.headingMedium.copyWith(color: AppColors.primary),
               ),
             ),
           ],
