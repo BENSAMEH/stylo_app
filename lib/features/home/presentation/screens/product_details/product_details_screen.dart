@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/home/presentation/widgets/circle_icon_button.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final String name;
@@ -54,12 +55,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           
         ),
         actions: [
-          _CircleIconButton(
+          CircleIconButton(
             icon: Icons.share_outlined,
             onTap: () {},
           ),
           SizedBox(width: AppSizes.sm),
-          _CircleIconButton(
+          CircleIconButton(
             icon: _isFavourite ? Icons.favorite : Icons.favorite_border,
             iconColor: _isFavourite ? AppColors.secondary : AppColors.lightTextPrimary,
             onTap: () => setState(() => _isFavourite = !_isFavourite),
@@ -304,41 +305,3 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 // ── Reusable circle icon button ──────────────────────────────────────────────
-class _CircleIconButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-  final Color? iconColor;
-
-  const _CircleIconButton({
-    required this.icon,
-    required this.onTap,
-    this.iconColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 38,
-        height: 38,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: iconColor ?? AppColors.lightTextPrimary,
-        ),
-      ),
-    );
-  }
-}
