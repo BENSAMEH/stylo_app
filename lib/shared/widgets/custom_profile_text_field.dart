@@ -9,6 +9,7 @@ class CustomProfileTextField extends StatelessWidget {
     this.controller,
     this.readOnly = false,
     this.suffixIcon,
+    this.obscureText = false,
   });
 
   final String label;
@@ -17,6 +18,7 @@ class CustomProfileTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool readOnly;
   final Widget? suffixIcon;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class CustomProfileTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          obscureText: obscureText,
           controller: controller,
           readOnly: readOnly,
           decoration: InputDecoration(
