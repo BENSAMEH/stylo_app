@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       // 2. Pass your MaterialApp structure inside the builder method
       builder: (context, child) {
         return MaterialApp(
-          title: 'Stylo App',
+          title: 'nhf App',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             scaffoldBackgroundColor:
