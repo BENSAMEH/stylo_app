@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:stylo_app/features/more/presentation/screens/about_us/about_us_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/add_product/add_product_screen.dart';
+import 'package:stylo_app/features/profile/presentation/screens/change_password/change_password_screen.dart';
+import 'package:stylo_app/features/profile/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 import 'package:stylo_app/shared/widgets/profile_item.dart';
 import 'package:stylo_app/shared/widgets/section_title.dart';
@@ -74,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.person_outline,
               title: "Edit Profile",
               subtitle: "Update your personal details",
-              onTap: () {},
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen(),));},
             ),
 
             const SizedBox(height: 12),
@@ -83,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.lock_outline,
               title: "Change Password",
               subtitle: "Secure your account",
-              onTap: () {},
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen(),));},
             ),
 
             /// App Settings
@@ -143,8 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileItem(
               icon: Icons.info_outline,
               title: "About Us",
-              subtitle: "The Bariq story",
-              onTap: () {},
+              subtitle: "The Stylo story",
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUsScreen(),));},
             ),
 
             const SizedBox(height: 12),
