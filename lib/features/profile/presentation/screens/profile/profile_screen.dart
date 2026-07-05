@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:stylo_app/features/more/presentation/screens/about_us/about_us_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/add_product/add_product_screen.dart';
 import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 import 'package:stylo_app/shared/widgets/profile_item.dart';
@@ -143,8 +144,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ProfileItem(
               icon: Icons.info_outline,
               title: "About Us",
-              subtitle: "The Bariq story",
-              onTap: () {},
+              subtitle: "The Stylo story",
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUsScreen(),));},
             ),
 
             const SizedBox(height: 12),
