@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
+
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
 void main() {
