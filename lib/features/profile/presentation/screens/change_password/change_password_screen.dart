@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_colors.dart';
+import 'package:stylo_app/core/constants/app_sizes.dart';
+import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/shared/widgets/custom_profile_text_field.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
@@ -7,121 +10,132 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      backgroundColor: const Color(0xffF8F6FC),
+      backgroundColor: AppColors.lightBackground,
 
       appBar: AppBar(
-        backgroundColor: const Color(0xffF8F6FC),
+        backgroundColor: AppColors.lightBackground,
         elevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xff7C4DFF)),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.primary),
         ),
-        title: const Text(
-          "Change Password",
-          style: TextStyle(
-            color: Color(0xff7C4DFF),
-            fontWeight: FontWeight.w600,
-          ),
+        title: Text(
+          'Change Password',
+          style: AppTextStyles.headingSmall.copyWith(color: AppColors.primary),
         ),
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(AppSizes.screenPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
 
-            const Text(
-              "Security Update",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
+            SizedBox(height: AppSizes.md),
 
-            const SizedBox(height: 8),
-
+            // ── Title ──────────────────────────────────────────
             Text(
-              "Ensure your account stays secure by choosing a strong, unique password.",
-              style: TextStyle(color: Colors.grey.shade700, fontSize: 15),
+              'Security Update',
+              style: AppTextStyles.headingLarge,
             ),
 
-            const SizedBox(height: 35),
+            SizedBox(height: AppSizes.sm),
 
+            // ── Subtitle ───────────────────────────────────────
+            Text(
+              'Ensure your account stays secure by choosing a strong, unique password.',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.lightTextSecondary,
+              ),
+            ),
+
+            SizedBox(height: AppSizes.xl),
+
+            // ── Current password ───────────────────────────────
             const CustomProfileTextField(
-              label: "CURRENT PASSWORD",
-              hint: "••••••••",
-              icon: Icons.lock_outline,
+              label:       'CURRENT PASSWORD',
+              hint:        '••••••••',
+              icon:        Icons.lock_outline,
               obscureText: true,
-              suffixIcon: Icon(Icons.visibility_outlined),
+              suffixIcon:  Icon(Icons.visibility_outlined),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: AppSizes.md),
 
+            // ── New password ───────────────────────────────────
             const CustomProfileTextField(
-              label: "NEW PASSWORD",
-              hint: "••••••••",
-              icon: Icons.lock_outline,
+              label:       'NEW PASSWORD',
+              hint:        '••••••••',
+              icon:        Icons.lock_outline,
               obscureText: true,
-              suffixIcon: Icon(Icons.visibility_outlined),
+              suffixIcon:  Icon(Icons.visibility_outlined),
             ),
 
-            const SizedBox(height: 20),
+            SizedBox(height: AppSizes.md),
 
+            // ── Confirm new password ───────────────────────────
             const CustomProfileTextField(
-              label: "CONFIRM NEW PASSWORD",
-              hint: "••••••••",
-              icon: Icons.lock_outline,
+              label:       'CONFIRM NEW PASSWORD',
+              hint:        '••••••••',
+              icon:        Icons.lock_outline,
               obscureText: true,
-              suffixIcon: Icon(Icons.visibility_outlined),
+              suffixIcon:  Icon(Icons.visibility_outlined),
             ),
 
-            const SizedBox(height: 35),
+            SizedBox(height: AppSizes.xl),
 
+            // ── Update button ──────────────────────────────────
             SizedBox(
               width: double.infinity,
-              height: 55,
+              height: AppSizes.buttonHeight,
               child: ElevatedButton(
+                onPressed: () {
+                  // TODO: wire to AuthCubit.changePassword()
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff7C4DFF),
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(AppSizes.radiusLg),
                   ),
                 ),
-                onPressed: () {},
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Update Password",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    SizedBox(width: 8),
-                    Icon(Icons.check_circle_outline, color: Colors.white),
+                    Text('Update Password', style: AppTextStyles.buttonLarge),
+                    SizedBox(width: AppSizes.sm),
+                    const Icon(Icons.check_circle_outline, color: AppColors.white),
                   ],
                 ),
               ),
             ),
 
-            const SizedBox(height: 40),
+            SizedBox(height: AppSizes.xxl),
 
+            // ── Encrypted badge ────────────────────────────────
             Center(
               child: Column(
                 children: [
-                  const CircleAvatar(
-                    radius: 45,
-                    backgroundImage: NetworkImage(
-                      "https://lh3.googleusercontent.com/aida-public/AB6AXuBvgU0wqIfrP22MP2WgGBUGFVY3CBAbjagcEK8YMSmrF0Exq0A0WMyWrUHcCU1FuakQliFgPJ5CdLF4xcNK1qauno8FfGmbZMa1fIggyPSR93RG9RhgSaapU7Sk5pKQ0KJNS_z1j7LYJYBv4AmBu5Kevtbo5ehBbxGGSNhnbypW41S7flLFTH9RLyx87I5EKWPNZ0MQa07YqD8nVP4RAYxWbwnyzrU-Het6rqeEpUJEj4QBmYQtuCUM",
+                  CircleAvatar(
+                    radius: AppSizes.avatarLg / 2,
+                    backgroundImage: const NetworkImage(
+                      'https://lh3.googleusercontent.com/aida-public/AB6AXuBvgU0wqIfrP22MP2WgGBUGFVY3CBAbjagcEK8YMSmrF0Exq0A0WMyWrUHcCU1FuakQliFgPJ5CdLF4xcNK1qauno8FfGmbZMa1fIggyPSR93RG9RhgSaapU7Sk5pKQ0KJNS_z1j7LYJYBv4AmBu5Kevtbo5ehBbxGGSNhnbypW41S7flLFTH9RLyx87I5EKWPNZ0MQa07YqD8nVP4RAYxWbwnyzrU-Het6rqeEpUJEj4QBmYQtuCUM',
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: AppSizes.sm),
                   Text(
-                    "YOUR BARIQ PROFILE IS ENCRYPTED AND PROTECTED",
-                    style: TextStyle(color: Colors.grey.shade600, fontSize: 10),
+                    'YOUR BARIQ PROFILE IS ENCRYPTED AND PROTECTED',
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.lightTextSecondary,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ],
               ),
             ),
+
+            SizedBox(height: AppSizes.md),
           ],
         ),
       ),

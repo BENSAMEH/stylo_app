@@ -1,198 +1,254 @@
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_colors.dart';
+import 'package:stylo_app/core/constants/app_sizes.dart';
+import 'package:stylo_app/core/constants/app_text_styles.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  static const purple = Color(0xFF6C35F5);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF5FF),
+      backgroundColor: AppColors.lightBackground,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 26),
+          padding: EdgeInsets.symmetric(horizontal: AppSizes.screenPadding),
           child: Column(
             children: [
-              const SizedBox(height: 55),
-              const Align(
+              SizedBox(height: AppSizes.xxl),
+
+              // ── App name ─────────────────────────────────────
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Stylo',
-                  style: TextStyle(
-                    fontSize: 46,
-                    fontWeight: FontWeight.bold,
-                    color: purple,
+                  style: AppTextStyles.displayLarge.copyWith(
+                    color: AppColors.primary,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 65),
+              SizedBox(height: AppSizes.xxl),
 
-              const Text(
+              // ── Welcome text ─────────────────────────────────
+              Text(
                 'Welcome back',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: AppTextStyles.headingLarge,
               ),
 
-              const SizedBox(height: 8),
+              SizedBox(height: AppSizes.sm),
 
-              const Text(
+              Text(
                 'Experience the pinnacle of luxury accessories.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: Colors.grey),
-              ),
-
-              const SizedBox(height: 30),
-
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Email Address',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.lightTextSecondary,
                 ),
               ),
 
-              const SizedBox(height: 8),
+              SizedBox(height: AppSizes.lg),
 
+              // ── Email label ──────────────────────────────────
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Email Address',
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.lightTextPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: AppSizes.sm),
+
+              // ── Email field ──────────────────────────────────
               TextField(
+                style: AppTextStyles.bodyMedium,
                 decoration: InputDecoration(
                   hintText: 'name@example.com',
-                  prefixIcon: const Icon(Icons.mail_outline),
+                  hintStyle: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.lightTextSecondary,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.mail_outline,
+                    color: AppColors.lightTextSecondary,
+                  ),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: AppColors.lightSurface,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppSizes.radiusLg),
                     borderSide: BorderSide.none,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 18),
+              SizedBox(height: AppSizes.md),
 
+              // ── Password label + forgot ──────────────────────
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Password',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: AppTextStyles.labelMedium.copyWith(
+                      color: AppColors.lightTextPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       'Forgot Password?',
-                      style: TextStyle(color: purple),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.primary,
+                      ),
                     ),
                   ),
                 ],
               ),
 
+              // ── Password field ───────────────────────────────
               TextField(
                 obscureText: true,
+                style: AppTextStyles.bodyMedium,
                 decoration: InputDecoration(
                   hintText: '••••••••',
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: const Icon(Icons.visibility_outlined),
+                  hintStyle: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.lightTextSecondary,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.lock_outline,
+                    color: AppColors.lightTextSecondary,
+                  ),
+                  suffixIcon: const Icon(
+                    Icons.visibility_outlined,
+                    color: AppColors.lightTextSecondary,
+                  ),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: AppColors.lightSurface,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppSizes.radiusLg),
                     borderSide: BorderSide.none,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: AppSizes.xl),
 
+              // ── Login button ─────────────────────────────────
               SizedBox(
                 width: double.infinity,
-                height: 55,
+                height: AppSizes.buttonHeight,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: purple,
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(AppSizes.radiusLg),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Login  →',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyles.buttonLarge,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: AppSizes.xl),
 
-              const Text(
+              // ── OR divider ───────────────────────────────────
+              Text(
                 'OR CONTINUE WITH',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.lightTextSecondary,
                   letterSpacing: 1,
                 ),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: AppSizes.lg),
+
+              // ── Social buttons ───────────────────────────────
               Row(
                 children: [
-                  socialButton(
-                    const Icon(
+                  _SocialButton(
+                    child: const Icon(
                       Icons.g_mobiledata,
                       size: 40,
                       color: Colors.blue,
                     ),
                   ),
-                  const SizedBox(width: 14),
-                  socialButton(
-                    const Icon(Icons.apple, size: 30, color: Colors.black),
+                  SizedBox(width: AppSizes.sm),
+                  _SocialButton(
+                    child: const Icon(
+                      Icons.apple,
+                      size: 30,
+                      color: AppColors.black,
+                    ),
                   ),
-                  const SizedBox(width: 14),
-                  socialButton(
-                    const Icon(Icons.facebook, size: 30, color: Colors.blue),
+                  SizedBox(width: AppSizes.sm),
+                  _SocialButton(
+                    child: const Icon(
+                      Icons.facebook,
+                      size: 30,
+                      color: Colors.blue,
+                    ),
                   ),
                 ],
               ),
 
               const Spacer(),
 
+              // ── Sign up row ──────────────────────────────────
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account? "),
+                  Text(
+                    "Don't have an account? ",
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.lightTextSecondary,
+                    ),
+                  ),
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       'Sign Up',
-                      style: TextStyle(color: purple, fontSize: 15),
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: AppSizes.md),
             ],
           ),
         ),
       ),
     );
   }
+}
 
-  static Widget socialButton(Widget child) {
+// ── Reusable social button ───────────────────────────────────────────────────
+class _SocialButton extends StatelessWidget {
+  final Widget child;
+  const _SocialButton({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 52,
+        height: AppSizes.buttonHeight,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(14),
+          color: AppColors.lightSurface,
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
           boxShadow: [
             BoxShadow(
-              color: Colors.black12,
+              color: AppColors.black.withOpacity(0.07),
               blurRadius: 6,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),

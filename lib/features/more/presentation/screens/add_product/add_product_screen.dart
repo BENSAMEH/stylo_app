@@ -27,6 +27,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _stockController  = TextEditingController();
 
   String? _selectedCategory;
+  // ignore: unused_field
   File?   _selectedImage;
   bool    _isLoading = false;
 
@@ -64,7 +65,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     setState(() => _isLoading = true);
 
-    // TODO: wire to CartCubit.addProduct()
+    
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
       setState(() => _isLoading = false);
