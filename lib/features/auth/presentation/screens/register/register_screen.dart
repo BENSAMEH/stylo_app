@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_colors.dart';
+import 'package:stylo_app/core/constants/app_sizes.dart';
+import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/core/utils/app_validators.dart';
+import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -8,268 +13,376 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  static const purple = Color(0xFF6C35F5);
+  final _formKey             = GlobalKey<FormState>();
+  final _nameController      = TextEditingController();
+  final _emailController     = TextEditingController();
+  final _passwordController  = TextEditingController();
+  final _confirmController   = TextEditingController();
 
-  bool agree = false;
-  bool hidePass = true;
-  bool hideConfirm = true;
+  bool _agree        = false;
+  bool _hidePass     = true;
+  bool _hideConfirm  = true;
+  bool _isLoading    = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmController.dispose();
+    super.dispose();
+  }
+
+  void _onRegister() {
+    FocusScope.of(context).unfocus();
+
+    if (!_formKey.currentState!.validate()) return;
+
+    if (!_agree) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Please agree to the Terms & Conditions'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+          ),
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    // TODO: replace with AuthCubit.register()
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        (route) => false,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF5FF),
+      backgroundColor: AppColors.lightBackground,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 26),
-          child: Column(
-            children: [
-              const SizedBox(height: 35),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.screenPadding),
+            child: Column(
+              children: [
+                SizedBox(height: AppSizes.xl),
 
-              const Text(
-                'Staylo',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: purple,
-                ),
-              ),
-
-              const SizedBox(height: 35),
-
-              const Text(
-                'Create Account',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              const Text(
-                'Create your stylo account and start\nyour luxury shopping experience.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              textField(
-                hint: 'Full Name',
-                icon: Icons.person_outline,
-              ),
-
-              const SizedBox(height: 14),
-
-              textField(
-                hint: 'Email Address',
-                icon: Icons.mail_outline,
-              ),
-
-              const SizedBox(height: 14),
-
-              textField(
-                hint: 'Password',
-                icon: Icons.lock_outline,
-                obscure: hidePass,
-                suffix: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidePass = !hidePass;
-                    });
-                  },
-                  icon: const Icon(Icons.visibility_outlined),
-                ),
-              ),
-
-              const SizedBox(height: 14),
-
-              textField(
-                hint: 'Confirm Password',
-                icon: Icons.lock_outline,
-                obscure: hideConfirm,
-                suffix: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hideConfirm = !hideConfirm;
-                    });
-                  },
-                  icon: const Icon(Icons.visibility_outlined),
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              Row(
-                children: [
-                  SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: Checkbox(
-                      value: agree,
-                      activeColor: purple,
-                      shape: const CircleBorder(),
-                      onChanged: (value) {
-                        setState(() {
-                          agree = value ?? false;
-                        });
-                      },
-                    ),
+                // ── App name ─────────────────────────────────────
+                Text(
+                  'Stylo',
+                  style: AppTextStyles.displayMedium.copyWith(
+                    color: AppColors.primary,
                   ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    'I agree to the ',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  const Text(
-                    'Terms & Conditions',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: purple,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+                ),
 
-              const SizedBox(height: 18),
+                SizedBox(height: AppSizes.xl),
 
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: purple,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
+                // ── Title ─────────────────────────────────────────
+                Text(
+                  'Create Account',
+                  style: AppTextStyles.headingLarge,
+                ),
+
+                SizedBox(height: AppSizes.sm),
+
+                // ── Subtitle ──────────────────────────────────────
+                Text(
+                  'Create your stylo account and start\nyour luxury shopping experience.',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.lightTextSecondary,
                   ),
-                  child: const Text(
-                    'Create Account',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                ),
+
+                SizedBox(height: AppSizes.lg),
+
+                // ── Full name ─────────────────────────────────────
+                _AuthTextField(
+                  controller:  _nameController,
+                  hint:        'Full Name',
+                  icon:        Icons.person_outline,
+                  validator:   AppValidators.name,
+                ),
+
+                SizedBox(height: AppSizes.sm),
+
+                // ── Email ─────────────────────────────────────────
+                _AuthTextField(
+                  controller:   _emailController,
+                  hint:         'Email Address',
+                  icon:         Icons.mail_outline,
+                  keyboardType: TextInputType.emailAddress,
+                  validator:    AppValidators.email,
+                ),
+
+                SizedBox(height: AppSizes.sm),
+
+                // ── Password ──────────────────────────────────────
+                _AuthTextField(
+                  controller:  _passwordController,
+                  hint:        'Password',
+                  icon:        Icons.lock_outline,
+                  obscure:     _hidePass,
+                  validator:   AppValidators.password,
+                  suffix: IconButton(
+                    onPressed: () => setState(() => _hidePass = !_hidePass),
+                    icon: Icon(
+                      _hidePass
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      color: AppColors.lightTextSecondary,
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 28),
+                SizedBox(height: AppSizes.sm),
 
-              Row(
-                children: [
-                  const Expanded(child: Divider()),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Text(
-                      'OR CONTINUE WITH',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey.shade600,
-                        letterSpacing: 1,
+                // ── Confirm password ──────────────────────────────
+                _AuthTextField(
+                  controller: _confirmController,
+                  hint:       'Confirm Password',
+                  icon:       Icons.lock_outline,
+                  obscure:    _hideConfirm,
+                  validator:  AppValidators.confirmPassword(
+                      _passwordController.text),
+                  suffix: IconButton(
+                    onPressed: () =>
+                        setState(() => _hideConfirm = !_hideConfirm),
+                    icon: Icon(
+                      _hideConfirm
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      color: AppColors.lightTextSecondary,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: AppSizes.sm),
+
+                // ── Terms checkbox ────────────────────────────────
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 28,
+                      height: 28,
+                      child: Checkbox(
+                        value:       _agree,
+                        activeColor: AppColors.primary,
+                        shape:       const CircleBorder(),
+                        onChanged:   (v) => setState(() => _agree = v ?? false),
                       ),
                     ),
-                  ),
-                  const Expanded(child: Divider()),
-                ],
-              ),
-
-              const SizedBox(height: 22),
-
-              Row(
-                children: [
-                  socialButton(
-                    const Icon(
-                      Icons.g_mobiledata,
-                      size: 40,
-                      color: Colors.blue,
+                    SizedBox(width: AppSizes.sm),
+                    Text(
+                      'I agree to the ',
+                      style: AppTextStyles.bodySmall,
                     ),
-                  ),
-                  const SizedBox(width: 14),
-                  socialButton(
-                    const Icon(
-                      Icons.apple,
-                      size: 30,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  socialButton(
-                    const Icon(
-                      Icons.facebook,
-                      size: 30,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 35),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Already have an account? ',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: purple,
-                        fontWeight: FontWeight.bold,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Terms & Conditions',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color:      AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              const SizedBox(height: 25),
-            ],
+                SizedBox(height: AppSizes.md),
+
+                // ── Create account button ─────────────────────────
+                SizedBox(
+                  width:  double.infinity,
+                  height: AppSizes.buttonHeight,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _onRegister,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:         AppColors.primary,
+                      disabledBackgroundColor: AppColors.primary.withOpacity(0.6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+                      ),
+                    ),
+                    child: _isLoading
+                        ? const SizedBox(
+                            width:  22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              color:       AppColors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text('Create Account', style: AppTextStyles.buttonLarge),
+                  ),
+                ),
+
+                SizedBox(height: AppSizes.lg),
+
+                // ── OR divider ────────────────────────────────────
+                Row(
+                  children: [
+                    const Expanded(child: Divider()),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
+                      child: Text(
+                        'OR CONTINUE WITH',
+                        style: AppTextStyles.caption.copyWith(
+                          color:       AppColors.lightTextSecondary,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
+                    const Expanded(child: Divider()),
+                  ],
+                ),
+
+                SizedBox(height: AppSizes.md),
+
+                // ── Social buttons ────────────────────────────────
+                Row(
+                  children: [
+                    _SocialButton(child: const Icon(Icons.g_mobiledata, size: 40, color: Colors.blue)),
+                    SizedBox(width: AppSizes.sm),
+                    _SocialButton(child: const Icon(Icons.apple,    size: 30, color: AppColors.black)),
+                    SizedBox(width: AppSizes.sm),
+                    _SocialButton(child: const Icon(Icons.facebook, size: 30, color: Colors.blue)),
+                  ],
+                ),
+
+                SizedBox(height: AppSizes.xl),
+
+                // ── Already have account ──────────────────────────
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Already have an account? ',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.lightTextSecondary,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Text(
+                        'Login',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color:      AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: AppSizes.lg),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  static Widget textField({
-    required String hint,
-    required IconData icon,
-    bool obscure = false,
-    Widget? suffix,
-  }) {
-    return TextField(
-      obscureText: obscure,
+// ── Reusable auth text field ─────────────────────────────────────────────────
+class _AuthTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  final bool obscure;
+  final Widget? suffix;
+  final TextInputType keyboardType;
+  final String? Function(String?)? validator;
+
+  const _AuthTextField({
+    required this.controller,
+    required this.hint,
+    required this.icon,
+    this.obscure     = false,
+    this.suffix,
+    this.keyboardType = TextInputType.text,
+    this.validator,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller:       controller,
+      obscureText:      obscure,
+      keyboardType:     keyboardType,
+      validator:        validator,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      style:            AppTextStyles.bodyMedium,
       decoration: InputDecoration(
         hintText: hint,
-        prefixIcon: Icon(icon, color: Colors.grey),
-        suffixIcon: suffix,
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(vertical: 17),
+        hintStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.lightTextSecondary,
+        ),
+        prefixIcon:  Icon(icon, color: AppColors.lightTextSecondary),
+        suffixIcon:  suffix,
+        filled:      true,
+        fillColor:   AppColors.lightSurface,
+        contentPadding: EdgeInsets.symmetric(vertical: AppSizes.md),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(18),
-          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          borderSide:   BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          borderSide:   BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          borderSide:   const BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          borderSide:   const BorderSide(color: AppColors.error),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          borderSide:   const BorderSide(color: AppColors.error, width: 1.5),
         ),
       ),
     );
   }
+}
 
-  static Widget socialButton(Widget child) {
+// ── Reusable social button ───────────────────────────────────────────────────
+class _SocialButton extends StatelessWidget {
+  final Widget child;
+  const _SocialButton({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 52,
+        height: AppSizes.buttonHeight,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color:         AppColors.lightSurface,
+          borderRadius:  BorderRadius.circular(AppSizes.radiusLg),
+          boxShadow: [
+            BoxShadow(
+              color:      AppColors.black.withOpacity(0.07),
+              blurRadius: 6,
+              offset:     const Offset(0, 2),
+            ),
+          ],
         ),
         child: Center(child: child),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stylo_app/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:stylo_app/features/auth/presentation/screens/otp/otp_screen.dart';
+import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
 
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor:
                 Colors.white, // Adjust template rules as needed
           ),
-          home: LoginScreen(),
+          home: SplashScreen(),
 
         );
       },

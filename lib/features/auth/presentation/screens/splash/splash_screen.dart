@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:stylo_app/features/auth/presentation/screens/otp/otp_screen.dart';
 
 
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  OtpVerification(),
+          builder: (context) =>  OnBoardingScreenNext(),
         ),
       );
     });

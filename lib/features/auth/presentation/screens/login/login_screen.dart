@@ -3,6 +3,8 @@ import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/core/utils/app_validators.dart';
+import 'package:stylo_app/features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
+import 'package:stylo_app/features/auth/presentation/screens/register/register_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -161,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // TODO: navigate to ForgotPasswordScreen
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen(),));
                         },
                         child: Text(
                           'Forgot Password?',
@@ -289,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // TODO: navigate to RegisterScreen
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),));
                         },
                         child: Text(
                           'Sign Up',
