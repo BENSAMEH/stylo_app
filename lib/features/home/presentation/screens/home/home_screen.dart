@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/product_details/product_details_screen.dart';
 import 'package:stylo_app/features/home/presentation/widgets/category_item_widget.dart';
 import 'package:stylo_app/features/home/presentation/widgets/offer_banner_widget.dart';
@@ -84,6 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
             case 0:
               break;
 
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const CartScreen()),
+              );
+              break;
+
             case 3:
               Navigator.pushReplacement(
                 context,
@@ -117,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Hello, Sarah', style: AppTextStyles.caption),
+                          Text('Hello, Ahmed', style: AppTextStyles.caption),
                           Text(
                             'Stylo',
                             style: AppTextStyles.headingMedium.copyWith(

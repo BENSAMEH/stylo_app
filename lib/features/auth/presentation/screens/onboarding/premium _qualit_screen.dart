@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:stylo_app/features/auth/presentation/screens/onboarding/discover_time_less_screen.dart';
 import 'package:stylo_app/features/auth/presentation/widgets/button_gesture_detector.dart';
 import 'package:stylo_app/features/auth/presentation/widgets/custom_image_widget.dart';
@@ -52,7 +53,7 @@ class _PremiumQualityScreenState extends State<PremiumQualityScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));},
               child: const Center(child: Text('Skip')),
             ),
           ),

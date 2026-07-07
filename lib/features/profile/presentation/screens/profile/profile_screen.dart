@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/about_us/about_us_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/add_product/add_product_screen.dart';
+import 'package:stylo_app/features/more/presentation/screens/contact_us/contact_us_screen.dart';
+import 'package:stylo_app/features/more/presentation/screens/privacy_policy/privacy_policy_screen.dart';
 import 'package:stylo_app/features/profile/presentation/screens/change_password/change_password_screen.dart';
 import 'package:stylo_app/features/profile/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
@@ -32,6 +35,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => const HomeScreen()),
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const CartScreen()),
               );
               break;
 
@@ -138,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.privacy_tip_outlined,
               title: "Privacy Policy",
               subtitle: "Data and usage terms",
-              onTap: () {},
+              onTap: () {Navigator.push(context,MaterialPageRoute(builder:(context)=> PrivacyPolicyScreen()));},
             ),
 
             const SizedBox(height: 12),
@@ -156,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.headset_mic_outlined,
               title: "Contact Us",
               subtitle: "Get premium support",
-              onTap: () {},
+              onTap: () {Navigator.push(context,MaterialPageRoute(builder:(context)=> ContactUsScreen()));},
             ),
 
             /// Admin Panel

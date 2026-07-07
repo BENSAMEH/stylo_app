@@ -46,7 +46,7 @@ class _DiscoverTimeLessScreenState extends State<DiscoverTimeLessScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));},
               child: const Center(
                 child: Text('Skip', style: TextStyle(color: Colors.grey)),
               ),

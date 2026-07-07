@@ -1,11 +1,8 @@
-
-
-
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_colors.dart';
+import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:stylo_app/features/auth/presentation/screens/otp/otp_screen.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,15 +15,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(const Duration(seconds: 6), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (!mounted) return;
-
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (context) =>  OnBoardingScreenNext(),
-        ),
+        MaterialPageRoute(builder: (_) => OnBoardingScreenNext()),
       );
     });
   }
@@ -34,48 +27,54 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
-backgroundColor: const Color(0xFFF5ECFF),
+      backgroundColor: AppColors.lightBackground,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           Spacer(),
-          Text(
-            
-            'STYLO',style: AppTextStyles.price.copyWith(
-              fontSize: 69,
-              fontWeight: FontWeight.w700,
-              color: Color(0xff542AE6),
-            )),
-     Spacer(),
-          Column(
-            children: [
-               Center(
-             child: Text(
-             
-              'WHERE  ELEGANCE  MEETS',
-              
-              style: AppTextStyles.price.copyWith(
-                fontSize: 13,
-                color: Color(0xff542AE6),
+
+          const Spacer(),
+
+          // ── App name ─────────────────────────────────────────
+          Center(
+            child: Text(
+              'STYLO',
+              style: AppTextStyles.displayLarge.copyWith(
+                fontSize:   69,
                 fontWeight: FontWeight.w700,
-              )),
-           ),
-           Text(
-             
-              ' ELEGANCE ',
-              
-              style: AppTextStyles.price.copyWith(
-                fontSize: 13,
-                color: Color(0xff542AE6),
-                fontWeight: FontWeight.w700,
-              )),
-            ],
+                color:      AppColors.primary,
+              ),
+            ),
           ),
-         Spacer()
+
+          const Spacer(),
+
+          // ── Tagline ───────────────────────────────────────────
+          Padding(
+            padding: EdgeInsets.only(bottom: AppSizes.xl),
+            child: Column(
+              children: [
+                Text(
+                  'WHERE  ELEGANCE  MEETS',
+                  style: AppTextStyles.caption.copyWith(
+                    color:      AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 2,
+                  ),
+                ),
+                SizedBox(height: AppSizes.xs),
+                Text(
+                  'EXCELLENCE',
+                  style: AppTextStyles.caption.copyWith(
+                    color:      AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
-

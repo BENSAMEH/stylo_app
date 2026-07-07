@@ -60,7 +60,7 @@ class _OnBoardingScreenNextState extends State<OnBoardingScreenNext> {
                       descTextEnjoy:
                           'Enjoy secure payments, fast delivery, and',
                       descTextSeam: 'a seamless shopping experience with',
-                      descTextBariq: 'Bariq',
+                      descTextBariq: 'Stylo',
                     ),
                   ],
                 ),
