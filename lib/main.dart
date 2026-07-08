@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
 
-//import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
-import 'package:stylo_app/features/categories/presentation/screens/products_by_category/products_by_category_screen.dart';
+
+
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor:
                 Colors.white, // Adjust template rules as needed
           ),
-          home: CategoriesScreen(),
+          home: SplashScreen(),
         );
       },
     );

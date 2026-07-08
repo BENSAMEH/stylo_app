@@ -20,7 +20,7 @@ class AboutAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         child: const Icon(Icons.arrow_back, color: AppColors.lightTextPrimary),
       ),
       title: Text(
-        'Bariq',
+        'Stylo',
         style: AppTextStyles.headingMedium.copyWith(color: AppColors.primary),
       ),
       actions: [

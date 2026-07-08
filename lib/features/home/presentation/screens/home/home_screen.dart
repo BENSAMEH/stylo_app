@@ -3,6 +3,7 @@ import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
+import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/product_details/product_details_screen.dart';
 import 'package:stylo_app/features/home/presentation/widgets/category_item_widget.dart';
 import 'package:stylo_app/features/home/presentation/widgets/offer_banner_widget.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     {'icon': Icons.star_outline, 'name': 'Necklaces'},
     {'icon': Icons.earbuds_outlined, 'name': 'Earrings'},
     {'icon': Icons.watch_outlined, 'name': 'Watches'},
-    {'icon': Icons.access_time_filled_rounded, 'name': "gg"},
+    
   ];
 
   // Dummy offers
@@ -83,6 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
           switch (index) {
             case 0:
+              break;
+            case 1:
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const CategoriesScreen()),
+                (route) => false,
+              );
               break;
 
             case 2:
@@ -258,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               rating: 4.5,
                             ),
                           ),
-                        ), 
+                        ),
                         onAddToCart: () {}, // TODO: add to cart
                       ),
                     );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
+import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/about_us/about_us_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/add_product/add_product_screen.dart';
@@ -35,6 +37,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (_) => const HomeScreen()),
+              );
+              break;
+
+            case 1:
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const CategoriesScreen()),
+                (route) => false,
               );
               break;
             case 2:
@@ -86,7 +96,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.person_outline,
               title: "Edit Profile",
               subtitle: "Update your personal details",
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfileScreen(),));},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                );
+              },
             ),
 
             const SizedBox(height: 12),
@@ -95,7 +110,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.lock_outline,
               title: "Change Password",
               subtitle: "Secure your account",
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen(),));},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangePasswordScreen(),
+                  ),
+                );
+              },
             ),
 
             /// App Settings
@@ -147,7 +169,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.privacy_tip_outlined,
               title: "Privacy Policy",
               subtitle: "Data and usage terms",
-              onTap: () {Navigator.push(context,MaterialPageRoute(builder:(context)=> PrivacyPolicyScreen()));},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PrivacyPolicyScreen(),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 12),
@@ -156,7 +185,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.info_outline,
               title: "About Us",
               subtitle: "The Stylo story",
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUsScreen(),));},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutUsScreen()),
+                );
+              },
             ),
 
             const SizedBox(height: 12),
@@ -165,7 +199,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.headset_mic_outlined,
               title: "Contact Us",
               subtitle: "Get premium support",
-              onTap: () {Navigator.push(context,MaterialPageRoute(builder:(context)=> ContactUsScreen()));},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactUsScreen()),
+                );
+              },
             ),
 
             /// Admin Panel
@@ -188,12 +227,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    (route) => false,
+                  );
+                },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                    color: Colors.deepPurple,
-                    width: 2, // سمك البوردر
-                  ),
+                  side: const BorderSide(color: Colors.deepPurple, width: 2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
