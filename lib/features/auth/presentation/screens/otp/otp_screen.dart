@@ -1,157 +1,225 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 
-class OtpVerification extends StatefulWidget {
-  const OtpVerification({super.key});
+import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:stylo_app/features/auth/presentation/cubit/auth_state.dart';
+import 'package:stylo_app/features/auth/presentation/screens/login/login_screen.dart';
+
+import 'package:stylo_app/features/auth/presentation/screens/reset_password/reset_password_screen.dart';
+
+class OtpScreen extends StatefulWidget {
+  final String email;
+  final bool isForPasswordReset;
+
+  const OtpScreen({
+    super.key,
+     this.isForPasswordReset=false,
+    required this.email,
+  });
 
   @override
-  State<OtpVerification> createState() => _OtpVerificationState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _OtpVerificationState extends State<OtpVerification> {
-  late TextEditingController _pinCodeController;
+class _OtpScreenState extends State<OtpScreen> {
+  late TextEditingController _otpController;
 
   @override
   void initState() {
     super.initState();
-    _pinCodeController = TextEditingController();
+    _otpController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _pinCodeController.dispose();
+    _otpController.dispose();
     super.dispose();
+  }
+
+void _validateOtp() {
+    if (_otpController.text.trim().length != 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Enter the 6-digit OTP")),
+      );
+      return;
+    }
+
+    final email = widget.email;
+    final otp = _otpController.text.trim();
+
+    if (widget.isForPasswordReset) {
+      // Flow A: Password Reset
+      context.read<AuthCubit>().validateOtp(email: email, otp: otp);
+    } else {
+      // Flow B: Account Registration
+      context.read<AuthCubit>().verifyEmail(email: email, otp: otp);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.lightBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.lightSurface,
-        elevation: 0,
-        leading: const BackButton(color: AppColors.lightTextPrimary),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.screenPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            SizedBox(height: AppSizes.md),
-
-            // ── App name ───────────────────────────────────────
-            Text(
-              'Stylo',
-              style: AppTextStyles.headingLarge.copyWith(
-                color: AppColors.primary,
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is VerifyEmailSuccess) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => LoginScreen()
+            ),
+          );
+        }
+        if (state is ValidateOtpSuccess) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ResetPasswordScreen(
+                email: widget.email,
+                otp: _otpController.text.trim(),
               ),
             ),
+          );
+        }
 
-            SizedBox(height: AppSizes.xl),
+        if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
 
-            // ── Title ──────────────────────────────────────────
-            Text(
-              'Verification Code',
-              style: AppTextStyles.displayMedium.copyWith(
-                color: AppColors.lightTextPrimary,
-              ),
+        return Scaffold(
+          backgroundColor: AppColors.lightBackground,
+          appBar: AppBar(
+            backgroundColor: AppColors.lightSurface,
+            elevation: 0,
+            leading: const BackButton(
+              color: AppColors.lightTextPrimary,
             ),
-
-            SizedBox(height: AppSizes.sm),
-
-            // ── Subtitle ───────────────────────────────────────
-            Text(
-              'Enter the code sent to your email.',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary,
-              ),
+          ),
+          body: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.screenPadding,
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: AppSizes.md),
 
-            SizedBox(height: AppSizes.xl),
+                Text(
+                  "Stylo",
+                  style: AppTextStyles.headingLarge.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
 
-            // ── OTP pin fields ─────────────────────────────────
-            PinCodeTextField(
-              appContext: context,
-              length: 4,
-              controller: _pinCodeController,
-              obscureText: false,
-              enableActiveFill: true,
-              keyboardType: TextInputType.number,
-              textStyle: AppTextStyles.headingMedium.copyWith(
-                color: AppColors.primary,
-              ),
-              pinTheme: PinTheme(
-                borderRadius: BorderRadius.circular(AppSizes.radiusFull),
-                fieldWidth: 70,
-                fieldHeight: 60,
-                shape: PinCodeFieldShape.box,
-                selectedColor:      AppColors.primary,
-                selectedFillColor:  AppColors.lightSurface,
-                activeColor:        AppColors.primary,
-                activeFillColor:    AppColors.lightSurface,
-                inactiveColor:      AppColors.lightDivider,
-                inactiveFillColor:  AppColors.lightSurface,
-                borderWidth: 1.5,
-              ),
-            ),
+                SizedBox(height: AppSizes.xl),
 
-            SizedBox(height: AppSizes.lg),
+                Text(
+                  "Verification Code",
+                  style: AppTextStyles.displayMedium,
+                ),
 
-            // ── Resend code ────────────────────────────────────
-            Center(
-              child: RichText(
-                text: TextSpan(
-                  text: "Didn't receive a code? ",
+                SizedBox(height: AppSizes.sm),
+
+                Text(
+                  "Enter the 6-digit code sent to\n${widget.email}",
                   style: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.lightTextSecondary,
                   ),
-                  children: [
-                    WidgetSpan(
-                      child: GestureDetector(
-                        onTap: () {
-                          // TODO: wire to AuthCubit.sendOtp()
-                        },
-                        child: Text(
-                          'Resend Code',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                ),
+
+                SizedBox(height: AppSizes.xl),
+
+                PinCodeTextField(
+                  appContext: context,
+                  controller: _otpController,
+                  length: 6,
+                  keyboardType: TextInputType.number,
+                  enableActiveFill: true,
+                  animationType: AnimationType.fade,
+                  textStyle: AppTextStyles.headingMedium.copyWith(
+                    color: AppColors.primary,
+                  ),
+                  pinTheme: PinTheme(
+                    shape: PinCodeFieldShape.box,
+                    borderRadius: BorderRadius.circular(
+                      AppSizes.radiusLg,
+                    ),
+                    fieldHeight: 55,
+                    fieldWidth: 45,
+                    activeFillColor: AppColors.lightSurface,
+                    selectedFillColor: AppColors.lightSurface,
+                    inactiveFillColor: AppColors.lightSurface,
+                    activeColor: AppColors.primary,
+                    selectedColor: AppColors.primary,
+                    inactiveColor: AppColors.lightDivider,
+                  ),
+                  onChanged: (_) {},
+                ),
+
+                SizedBox(height: AppSizes.lg),
+
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      context.read<AuthCubit>().forgotPassword(
+                            email: widget.email,
+                          );
+                    },
+                    child: Text(
+                      "Resend Code",
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: AppSizes.xxl),
+            // ── Verify button ──────────────────────────────────
+                           SizedBox(
+                  width: double.infinity,
+                  height: AppSizes.buttonHeight,
+                  child: ElevatedButton(
+                    onPressed:
+                        isLoading ? null : _validateOtp,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.radiusFull,
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: AppSizes.xxl),
-
-            // ── Verify button ──────────────────────────────────
-            SizedBox(
-              width: double.infinity,
-              height: AppSizes.buttonHeight,
-              child: ElevatedButton(
-                onPressed: () {
-                  // TODO: wire to AuthCubit.verifyOtp()
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSizes.radiusFull),
+                    child: isLoading
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text(
+                            "Continue",
+                            style: AppTextStyles.buttonLarge,
+                          ),
                   ),
                 ),
-                child: Text('Verify', style: AppTextStyles.buttonLarge),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -21,6 +21,15 @@ class AppValidators {
     if (value.length < 8) {
       return 'Password must be at least 8 characters';
     }
+    
+    // Check for uppercase, lowercase, numbers, and special characters
+    final passwordRegex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
+    );
+    
+    if (!passwordRegex.hasMatch(value)) {
+      return 'Must contain uppercase, lowercase, numbers & special characters';
+    }
     return null;
   }
 
@@ -46,8 +55,16 @@ class AppValidators {
     if (value == null || value.trim().isEmpty) {
       return 'Full name is required';
     }
-    if (value.trim().length < 3) {
+    
+    final cleanValue = value.trim();
+    if (cleanValue.length < 3) {
       return 'Name must be at least 3 characters';
+    }
+
+    // Matches strings containing at least two alphabetical words separated by spaces
+    final nameRegex = RegExp(r'^[a-zA-Z\s]+ [a-zA-Z\s]+$');
+    if (!nameRegex.hasMatch(cleanValue)) {
+      return 'Please enter your full name (First and Last name)';
     }
     return null;
   }
@@ -73,7 +90,7 @@ class AppValidators {
   // ── OTP ────────────────────────────────────────────────────────────────────
   static String? otp(String? value) {
     if (value == null || value.isEmpty) return 'OTP code is required';
-    if (value.length < 4) return 'Enter the complete OTP code';
+    if (value.length < 6) return 'Enter the complete OTP code';
     return null;
   }
 
