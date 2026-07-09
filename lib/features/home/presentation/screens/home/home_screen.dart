@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: SectionHeaderWidget(
                   title: 'Categories',
                   actionText: 'See All',
-                  onActionTap: () {},
+                  onActionTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesScreen(),));},
                 ),
               ),
             ),
