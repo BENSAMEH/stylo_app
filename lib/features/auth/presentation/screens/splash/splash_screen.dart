@@ -4,7 +4,7 @@ import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:stylo_app/features/auth/presentation/cubit/auth_state.dart';
+
 import 'package:stylo_app/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
  
