@@ -28,10 +28,7 @@ class ApiClient {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.get(
-      path,
-      queryParameters: queryParameters,
-    );
+    return await _dio.get(path, queryParameters: queryParameters);
   }
 
   Future<Response> post(
@@ -39,26 +36,14 @@ class ApiClient {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.post(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
+    return await _dio.post(path, data: data, queryParameters: queryParameters);
   }
 
-  Future<Response> put(
-    String path, {
-    dynamic data,
-  }) async {
-    return await _dio.put(
-      path,
-      data: data,
-    );
+  Future<Response> put(String path, {dynamic data}) async {
+    return await _dio.put(path, data: data);
   }
 
-  Future<Response> delete(
-    String path,
-  ) async {
+  Future<Response> delete(String path) async {
     return await _dio.delete(path);
   }
 }
