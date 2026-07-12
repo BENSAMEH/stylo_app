@@ -12,6 +12,9 @@ import 'package:stylo_app/features/profile/presentation/screens/profile/profile_
 import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 import 'package:stylo_app/shared/widgets/custom_search_bar_widget.dart';
 import 'package:stylo_app/shared/widgets/section_header_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylo_app/core/di/injection_container.dart';
+import 'package:stylo_app/features/profile/presentation/cubit/profile_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +26,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedCategory = 0;
   int _bottomNavIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<ProfileCubit>().getCurrentUser();
+  }
 
   // Dummy category data
   final List<Map<String, dynamic>> _categoryIcons = [
@@ -30,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
     {'icon': Icons.star_outline, 'name': 'Necklaces'},
     {'icon': Icons.earbuds_outlined, 'name': 'Earrings'},
     {'icon': Icons.watch_outlined, 'name': 'Watches'},
-    
   ];
 
   // Dummy offers
@@ -75,267 +83,296 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      bottomNavigationBar: AppBottomNavWidget(
-        currentIndex: _bottomNavIndex,
-        onTap: (index) {
-          setState(() => _bottomNavIndex = index);
+    return BlocProvider(
+      create: (_) => sl<ProfileCubit>()..getCurrentUser(),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        bottomNavigationBar: AppBottomNavWidget(
+          currentIndex: _bottomNavIndex,
+          onTap: (index) {
+            setState(() => _bottomNavIndex = index);
 
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const CategoriesScreen()),
-                (route) => false,
-              );
-              break;
+            switch (index) {
+              case 0:
+                break;
+              case 1:
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CategoriesScreen()),
+                  (route) => false,
+                );
+                break;
 
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const CartScreen()),
-              );
-              break;
+              case 2:
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const CartScreen()),
+                );
+                break;
 
-            case 3:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfileScreen()),
-              );
-              break;
-          }
-        },
-      ),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // ── Top bar ───────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.screenPadding,
-                  vertical: AppSizes.md,
-                ),
-                child: Row(
-                  children: [
-                    // Avatar
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: AppColors.primary.withOpacity(0.15),
-                      child: const Icon(Icons.person, color: AppColors.primary),
-                    ),
-                    SizedBox(width: AppSizes.sm),
-                    // Greeting
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Hello, Ahmed', style: AppTextStyles.caption),
-                          Text(
-                            'Stylo',
-                            style: AppTextStyles.headingMedium.copyWith(
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Bell
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.notifications_none_outlined),
-                      color: AppColors.lightTextPrimary,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // ── Search bar ────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.screenPadding,
-                ),
-                child: const CustomSearchBarWidget(readOnly: true),
-              ),
-            ),
-
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
-
-            // ── Offer banner ──────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.screenPadding,
-                ),
-                child: OfferBannerWidget(offers: _dummyOffers),
-              ),
-            ),
-
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
-
-            // ── Categories ────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.screenPadding,
-                ),
-                child: SectionHeaderWidget(
-                  title: 'Categories',
-                  actionText: 'See All',
-                  onActionTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesScreen(),));},
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 90,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+              case 3:
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                );
+                break;
+            }
+          },
+        ),
+        body: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              // ── Top bar ───────────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: AppSizes.screenPadding,
+                    vertical: AppSizes.md,
                   ),
-                  itemCount: _categoryIcons.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: AppSizes.md),
-                      child: CategoryItemWidget(
-                        name: _categoryIcons[index]['name'],
-                        icon: _categoryIcons[index]['icon'],
-                        isSelected: _selectedCategory == index,
-                        onTap: () => setState(() => _selectedCategory = index),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
-
-            // ── Featured ──────────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.screenPadding,
-                ),
-                child: SectionHeaderWidget(
-                  title: 'Featured',
-                  actionText: 'View More',
-                  onActionTap: () {},
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: AppSizes.productCardHeight,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSizes.screenPadding,
-                  ),
-                  itemCount: _dummyProducts.length,
-                  itemBuilder: (context, index) {
-                    final product = _dummyProducts[index];
-                    return Padding(
-                      padding: EdgeInsets.only(right: AppSizes.md),
-                      child: ProductCardWidget(
-                        name: product['name'],
-                        image: product['image'],
-                        price: product['price'],
-                        rating: 4.5,
-                        onTap: () => Navigator.push(
-                          // ← replace the empty onTap: () {}
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ProductDetailScreen(
-                              name: product['name'],
-                              image: product['image'],
-                              price: product['price'],
-                              oldPrice:
-                                  (product['price'] * 1.2), // dummy old price
-                              category: 'Fine Jewelry',
-                              description:
-                                  'A beautiful handcrafted piece made with premium materials, designed for the modern connoisseur.',
-                              rating: 4.5,
-                            ),
-                          ),
+                  child: Row(
+                    children: [
+                      // Avatar
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: AppColors.primary.withOpacity(0.15),
+                        child: const Icon(
+                          Icons.person,
+                          color: AppColors.primary,
                         ),
-                        onAddToCart: () {}, // TODO: add to cart
                       ),
-                    );
-                  },
+                      SizedBox(width: AppSizes.sm),
+                      // Greeting
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            BlocBuilder<ProfileCubit, ProfileState>(
+                              builder: (context, state) {
+                                if (state is ProfileSuccess) {
+                                  return Text(
+                                    'Hello, ${state.user.fullName}',
+                                    style: AppTextStyles.caption,
+                                  );
+                                }
+
+                                return Text(
+                                  'Hello',
+                                  style: AppTextStyles.caption,
+                                );
+                              },
+                            ),
+
+                            Text(
+                              'Stylo',
+                              style: AppTextStyles.headingMedium.copyWith(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Bell
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications_none_outlined),
+                        color: AppColors.lightTextPrimary,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
-
-            // ── Popular Now ───────────────────────────────────
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppSizes.screenPadding,
-                ),
-                child: SectionHeaderWidget(
-                  title: 'Popular Now',
-                  actionText: 'Explore',
-                  onActionTap: () {},
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: AppSizes.productCardHeight,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+              // ── Search bar ────────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: AppSizes.screenPadding,
                   ),
-                  itemCount: _dummyProducts.length,
-                  itemBuilder: (context, index) {
-                    final product = _dummyProducts[index];
-                    return Padding(
-                      padding: EdgeInsets.only(right: AppSizes.md),
-                      child: ProductCardWidget(
-                        name: product['name'],
-                        image: product['image'],
-                        price: product['price'],
-                        rating: 4.2,
-                        onTap: () => Navigator.push(
-                          // ← replace the empty onTap: () {}
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ProductDetailScreen(
-                              name: product['name'],
-                              image: product['image'],
-                              price: product['price'],
-                              oldPrice:
-                                  (product['price'] * 1.2), // dummy old price
-                              category: 'Fine Jewelry',
-                              description:
-                                  'A beautiful handcrafted piece made with premium materials, designed for the modern connoisseur.',
-                              rating: 4.5,
-                            ),
-                          ),
-                        ),
-                        onAddToCart: () {},
-                      ),
-                    );
-                  },
+                  child: const CustomSearchBarWidget(readOnly: true),
                 ),
               ),
-            ),
 
-            SliverToBoxAdapter(child: SizedBox(height: AppSizes.xl)),
-          ],
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
+
+              // ── Offer banner ──────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.screenPadding,
+                  ),
+                  child: OfferBannerWidget(offers: _dummyOffers),
+                ),
+              ),
+
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
+
+              // ── Categories ────────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.screenPadding,
+                  ),
+                  child: SectionHeaderWidget(
+                    title: 'Categories',
+                    actionText: 'See All',
+                    onActionTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoriesScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 90,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.screenPadding,
+                    ),
+                    itemCount: _categoryIcons.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: AppSizes.md),
+                        child: CategoryItemWidget(
+                          name: _categoryIcons[index]['name'],
+                          icon: _categoryIcons[index]['icon'],
+                          isSelected: _selectedCategory == index,
+                          onTap: () =>
+                              setState(() => _selectedCategory = index),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
+
+              // ── Featured ──────────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.screenPadding,
+                  ),
+                  child: SectionHeaderWidget(
+                    title: 'Featured',
+                    actionText: 'View More',
+                    onActionTap: () {},
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: AppSizes.productCardHeight,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.screenPadding,
+                    ),
+                    itemCount: _dummyProducts.length,
+                    itemBuilder: (context, index) {
+                      final product = _dummyProducts[index];
+                      return Padding(
+                        padding: EdgeInsets.only(right: AppSizes.md),
+                        child: ProductCardWidget(
+                          name: product['name'],
+                          image: product['image'],
+                          price: product['price'],
+                          rating: 4.5,
+                          onTap: () => Navigator.push(
+                            // ← replace the empty onTap: () {}
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailScreen(
+                                name: product['name'],
+                                image: product['image'],
+                                price: product['price'],
+                                oldPrice:
+                                    (product['price'] * 1.2), // dummy old price
+                                category: 'Fine Jewelry',
+                                description:
+                                    'A beautiful handcrafted piece made with premium materials, designed for the modern connoisseur.',
+                                rating: 4.5,
+                              ),
+                            ),
+                          ),
+                          onAddToCart: () {}, // TODO: add to cart
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
+
+              // ── Popular Now ───────────────────────────────────
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.screenPadding,
+                  ),
+                  child: SectionHeaderWidget(
+                    title: 'Popular Now',
+                    actionText: 'Explore',
+                    onActionTap: () {},
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: AppSizes.productCardHeight,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.screenPadding,
+                    ),
+                    itemCount: _dummyProducts.length,
+                    itemBuilder: (context, index) {
+                      final product = _dummyProducts[index];
+                      return Padding(
+                        padding: EdgeInsets.only(right: AppSizes.md),
+                        child: ProductCardWidget(
+                          name: product['name'],
+                          image: product['image'],
+                          price: product['price'],
+                          rating: 4.2,
+                          onTap: () => Navigator.push(
+                            // ← replace the empty onTap: () {}
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailScreen(
+                                name: product['name'],
+                                image: product['image'],
+                                price: product['price'],
+                                oldPrice:
+                                    (product['price'] * 1.2), // dummy old price
+                                category: 'Fine Jewelry',
+                                description:
+                                    'A beautiful handcrafted piece made with premium materials, designed for the modern connoisseur.',
+                                rating: 4.5,
+                              ),
+                            ),
+                          ),
+                          onAddToCart: () {},
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              SliverToBoxAdapter(child: SizedBox(height: AppSizes.xl)),
+            ],
+          ),
         ),
       ),
     );

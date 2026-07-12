@@ -14,4 +14,5 @@ class ApiConstants {
   static const String me = "/auth/me";
   static const String validateOtp = "/auth/validate-otp";
   static const String resetPassword = "/auth/reset-password";
+
 }
