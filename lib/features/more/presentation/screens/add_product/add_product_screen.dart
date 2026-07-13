@@ -20,16 +20,16 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-  final _formKey          = GlobalKey<FormState>();
-  final _nameController   = TextEditingController();
-  final _descController   = TextEditingController();
-  final _priceController  = TextEditingController();
-  final _stockController  = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _descController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _stockController = TextEditingController();
 
   String? _selectedCategory;
   // ignore: unused_field
-  File?   _selectedImage;
-  bool    _isLoading = false;
+  File? _selectedImage;
+  bool _isLoading = false;
 
   final List<String> _categories = [
     'Rings',
@@ -57,7 +57,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
           backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSizes.radiusMd)),
+            borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+          ),
         ),
       );
       return;
@@ -65,7 +66,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
     setState(() => _isLoading = true);
 
-    
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
       setState(() => _isLoading = false);
@@ -75,7 +75,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
           backgroundColor: AppColors.success,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSizes.radiusMd)),
+            borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+          ),
         ),
       );
       Navigator.pop(context);
@@ -87,12 +88,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
       context: context,
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radiusLg)),
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+        ),
         title: Text('Discard Draft?', style: AppTextStyles.headingSmall),
         content: Text(
           'All entered data will be lost.',
-          style: AppTextStyles.bodyMedium
-              .copyWith(color: AppColors.lightTextSecondary),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.lightTextSecondary,
+          ),
         ),
         actions: [
           TextButton(
@@ -104,8 +107,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               Navigator.pop(context); // close dialog
               Navigator.pop(context); // go back
             },
-            child: Text('Discard',
-                style: TextStyle(color: AppColors.error)),
+            child: Text('Discard', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -132,7 +134,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               // ── Header ───────────────────────────────────────
               const AddProductHeaderWidget(),
               SizedBox(height: AppSizes.lg),
@@ -145,43 +146,44 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
               // ── Product name ─────────────────────────────────
               LabeledTextFieldWidget(
-                label:      'Product Name',
-                hint:       'e.g. Royal Chronograph Silver',
+                label: 'Product Name',
+                hint: 'e.g. Royal Chronograph Silver',
                 controller: _nameController,
-                validator:  (v) => (v == null || v.isEmpty) ? 'Required' : null,
+                validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
               ),
               SizedBox(height: AppSizes.md),
 
               // ── Description ───────────────────────────────────
               LabeledTextFieldWidget(
-                label:      'Description',
-                hint:       'Describe the craftsmanship, materials, and unique features...',
+                label: 'Description',
+                hint:
+                    'Describe the craftsmanship, materials, and unique features...',
                 controller: _descController,
-                maxLines:   4,
-                validator:  (v) => (v == null || v.isEmpty) ? 'Required' : null,
+                maxLines: 4,
+                validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
               ),
               SizedBox(height: AppSizes.md),
 
               // ── Category dropdown ─────────────────────────────
               LabeledDropdownWidget(
-                label:     'Category',
-                hint:      'Select category',
-                value:     _selectedCategory,
-                items:     _categories,
+                label: 'Category',
+                hint: 'Select category',
+                value: _selectedCategory,
+                items: _categories,
                 onChanged: (val) => setState(() => _selectedCategory = val),
               ),
               SizedBox(height: AppSizes.md),
 
               // ── Price + Quantity ──────────────────────────────
               PriceQuantityRowWidget(
-                priceController:    _priceController,
+                priceController: _priceController,
                 quantityController: _stockController,
               ),
               SizedBox(height: AppSizes.xl),
 
               // ── Save / Discard ────────────────────────────────
               SaveProductButtonWidget(
-                onSave:    _onSave,
+                onSave: _onSave,
                 onDiscard: _onDiscard,
                 isLoading: _isLoading,
               ),
