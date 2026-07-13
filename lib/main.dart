@@ -11,9 +11,9 @@ import 'package:stylo_app/core/di/injection_container.dart';
 
 import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
-import 'package:stylo_app/core/di/injection_container.dart';
 import 'package:stylo_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:stylo_app/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:stylo_app/features/home/presentation/cubit/home_cubit.dart'; // تأكد من المسار الصحيح
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,10 @@ class MyApp extends StatelessWidget {
             BlocProvider(
               create: (_) => ProfileCubit(sl<ProfileRepositoryImpl>()),
             ),
-
+            // هنا السر: الـ HomeCubit بيتحقن ويحمل الداتا مرة واحدة فقط على مستوى الأبلكيشن بالكامل
+            BlocProvider(
+              create: (_) => sl<HomeCubit>()..loadHome(),
+            ),
             BlocProvider(
               create: (_) => AddProductCubit(AddProductRepository()),
             ),
