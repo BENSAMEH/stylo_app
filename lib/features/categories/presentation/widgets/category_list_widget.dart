@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/features/categories/presentation/widgets/category_card_widget.dart';
 
@@ -48,4 +48,4 @@ class CategoryListWidget extends StatelessWidget {
       ],
     );
   }
-}
+}*/

@@ -34,4 +34,17 @@ class SharedPrefService {
   static Future<void> clear() async {
     await _preferences.clear();
   }
+
+  static Future<void> setOnboardingSeen() async {
+    await _preferences.setBool("onboardingSeen", true);
+  }
+
+  static bool isOnboardingSeen() {
+    return _preferences.getBool("onboardingSeen") ?? false;
+  }
+
+  static bool isLoggedIn() {
+    final token = getAccessToken();
+    return token != null && token.isNotEmpty;
+  }
 }
