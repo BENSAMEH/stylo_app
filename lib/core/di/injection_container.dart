@@ -1,5 +1,11 @@
 import 'package:get_it/get_it.dart';
 
+import '../../features/home/data/datasource/home_remote_datasource.dart';
+import '../../features/home/data/datasource/product_remote_datasource.dart';
+import '../../features/home/data/repositories/home_repository.dart';
+import '../../features/home/data/repositories/product_repository.dart';
+import '../../features/home/presentation/cubit/home_cubit.dart';
+import '../../features/home/presentation/cubit/product_detail_cubit.dart';
 import '../api/api_client.dart';
 
 import '../../features/profile/data/datasource/profile_remote_datasource.dart';
@@ -37,4 +43,24 @@ void setupDependencies() {
 
   // Address Cubit
   sl.registerFactory(() => AddressCubit(sl<AddressRepositoryImpl>()));
+
+  sl.registerLazySingleton<HomeRemoteDatasource>(
+        () => HomeRemoteDatasource(sl<ApiClient>()),
+  );
+  sl.registerLazySingleton<HomeRepository>(
+        () => HomeRepository(sl<HomeRemoteDatasource>()),
+  );
+  sl.registerFactory<HomeCubit>(
+        () => HomeCubit(sl<HomeRepository>()),
+  );
+  sl.registerLazySingleton<ProductRemoteDatasource>(
+        () => ProductRemoteDatasource(sl<ApiClient>()),
+  );
+  sl.registerLazySingleton<ProductRepository>(
+        () => ProductRepository(sl<ProductRemoteDatasource>()),
+  );
+  sl.registerFactory<ProductDetailCubit>(
+        () => ProductDetailCubit(sl<ProductRepository>()),
+  );
+
 }
