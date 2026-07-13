@@ -11,7 +11,7 @@ import 'package:stylo_app/features/home/presentation/widgets/circle_icon_button.
 
 // ── Entry point ───────────────────────────────────────────────────────────────
 class ProductDetailScreen extends StatelessWidget {
-  final int productId;
+  final String productId;
 
   const ProductDetailScreen({super.key, required this.productId});
 
@@ -19,14 +19,15 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ProductDetailCubit>()..loadProduct(productId),
-      child: const _ProductDetailView(),
+      child:  _ProductDetailView(productId: productId,),
     );
   }
 }
 
 // ── Actual view ───────────────────────────────────────────────────────────────
 class _ProductDetailView extends StatefulWidget {
-  const _ProductDetailView();
+  final String productId;
+  const _ProductDetailView({required this.productId});
 
   @override
   State<_ProductDetailView> createState() => _ProductDetailViewState();
@@ -79,8 +80,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                   ElevatedButton(
                     onPressed: () => context
                         .read<ProductDetailCubit>()
-                        .loadProduct(
-                        (context.widget as _ProductDetailView).hashCode),
+                        .loadProduct(widget.productId), // 👈 استخدم widget.productId مباشرة
                     child: const Text('Retry'),
                   ),
                 ],

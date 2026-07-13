@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:stylo_app/core/api/api_client.dart';
 import 'package:stylo_app/core/api/api_constants.dart';
 import '../models/product_model.dart';
@@ -7,16 +8,32 @@ class ProductRemoteDatasource {
   final ApiClient apiClient;
   ProductRemoteDatasource(this.apiClient);
 
-  Future<ProductModel> getProductById(int id) async {
-    final response = await apiClient.get(ApiConstants.productById(id));
+  Future<ProductModel> getProductById(String id) async {
+    print("==== GET PRODUCT ====");
+
+    final response = await apiClient.get(
+      ApiConstants.productById(id),
+    );
+
+    print(response.data);
+
     return ProductModel.fromJson(response.data);
   }
 
-  Future<List<ReviewModel>> getReviews(int productId) async {
+  Future<List<ReviewModel>> getReviews(String productId) async {
     final response = await apiClient.get(
-      ApiConstants.reviewsByProduct(productId),
+      "/reviews/$productId",
+      queryParameters: {
+        "page": 1,
+        "pageSize": 3,
+      },
     );
-    final List data = response.data as List;
-    return data.map((e) => ReviewModel.fromJson(e)).toList();
+
+    print(response.data);
+
+    final items = response.data["reviews"]["items"] as List;
+
+    return items.map((e) => ReviewModel.fromJson(e)).toList();
   }
+
 }

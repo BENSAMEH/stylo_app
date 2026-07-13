@@ -1,22 +1,27 @@
 class ReviewModel {
-  final int    id;
   final String userName;
   final String comment;
   final double rating;
+  final DateTime? createdAt;
+  final String? userPicture;
 
   const ReviewModel({
-    required this.id,
     required this.userName,
     required this.comment,
     required this.rating,
+    this.createdAt,
+    this.userPicture,
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(
-      id:       json['id']       ?? 0,
-      userName: json['userName'] ?? json['user'] ?? 'Anonymous',
-      comment:  json['comment']  ?? json['review'] ?? '',
-      rating:   (json['rating']  as num? ?? 0).toDouble(),
+      userName: json['userName'] ?? 'Anonymous',
+      comment: json['comment'] ?? '',
+      rating: (json['rating'] as num?)?.toDouble() ?? 0,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : null,
+      userPicture: json['userPicture'],
     );
   }
 }

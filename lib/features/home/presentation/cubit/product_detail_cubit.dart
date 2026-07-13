@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/models/review_model.dart';
 import '../../data/repositories/product_repository.dart';
 import 'product_detail_state.dart';
 
@@ -7,15 +8,21 @@ class ProductDetailCubit extends Cubit<ProductDetailState> {
   ProductDetailCubit(this.repository) : super(ProductDetailInitial());
 
   // 1. تغيير الـ Parameter هنا من String إلى int ليطابق الـ UI والـ Models عندك
-  Future<void> loadProduct(int productId) async {
+  Future<void> loadProduct(String productId) async {
     emit(ProductDetailLoading());
     try {
-      // 2. تمرير الـ int للـ repository
       final product = await repository.getProductById(productId);
 
-      // إذا كانت دالة الـ reviews مستنية String، ممكن تحولها مؤقتاً لـ toString()
-      // أو تعدلها في الـ repository لـ int برضه
-      final reviews = await repository.getReviews(productId);
+      print("PRODUCT LOADED");
+
+      List<ReviewModel> reviews = [];
+
+      try {
+        reviews = await repository.getReviews(productId);
+      } catch (e) {
+        print("REVIEWS ERROR");
+        print(e);
+      }
 
       emit(ProductDetailSuccess(product: product, reviews: reviews));
     } catch (e) {

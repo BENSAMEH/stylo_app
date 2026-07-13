@@ -54,7 +54,7 @@ class _HomeViewState extends State<_HomeView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ProductDetailScreen(productId: product.id),
+        builder: (_) => ProductDetailScreen(productId: product.originalId!),
       ),
     );
   }

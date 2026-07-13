@@ -6,6 +6,7 @@ class ProductModel {
   final String imageUrl;
   final int    categoryId;
   final bool   isAvailable;
+  final String ?originalId;
 
   const ProductModel({
     required this.id,
@@ -14,7 +15,7 @@ class ProductModel {
     required this.price,
     required this.imageUrl,
     required this.categoryId,
-    required this.isAvailable,
+    required this.isAvailable, this.originalId,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -31,7 +32,9 @@ class ProductModel {
     final int parsedCategoryId = rawCategoryId.hashCode;
 
     return ProductModel(
-      id:          parsedId, // 👈 الرقم السحري الفريد
+      originalId: rawId, // 👈 حفظ الـ UUID النصي هنا
+      id: rawId.hashCode,
+
       name:        json['name']        ?? '',
       description: json['description'] ?? '',
       price:       (json['price']      as num? ?? 0).toDouble(),

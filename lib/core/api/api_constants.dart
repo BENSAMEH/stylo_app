@@ -17,7 +17,7 @@ class ApiConstants {
 
   // Products
   static const String products                       = "/products";
-  static String productById(int id)                  => "/products/$id";
+  static String productById(String id)                  => "/products/$id";
   static String deleteProduct(int id)                => "/products/$id";
 
   // Categories
@@ -29,5 +29,6 @@ class ApiConstants {
   static String removeFromCart(int id)               => "/cart/$id";
 
   // Reviews
-  static String reviewsByProduct(int productId)      => "/reviews?productId=$productId";
+  static String reviewsByProduct(String productId) =>
+      "/reviews/$productId?page=1&pageSize=10";
 }

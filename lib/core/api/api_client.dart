@@ -13,13 +13,20 @@ class ApiClient {
   // دالة مساعدة لإنشاء الـ Headers بشكل مستقل وآمن لكل طلب
   Options _getOptions() {
     final token = SharedPrefService.getAccessToken();
-    final Map<String, dynamic> headers = {
-      'Accept': 'application/json', // يضمن أن السيرفر يفهم الـ Response بصيغة JSON
+
+    print("================================");
+    print("TOKEN = $token");
+
+    final headers = {
+      "Accept": "application/json",
     };
 
-    if (token != null && token.isNotEmpty && token != "null") {
+    if (token != null && token.isNotEmpty) {
       headers["Authorization"] = "Bearer $token";
     }
+
+    print(headers);
+    print("================================");
 
     return Options(headers: headers);
   }
@@ -28,6 +35,7 @@ class ApiClient {
       String path, {
         Map<String, dynamic>? queryParameters,
       }) async {
+
 
     return await _dio.request(
       path,

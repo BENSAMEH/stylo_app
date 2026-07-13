@@ -6,6 +6,6 @@ class ProductRepository {
   final ProductRemoteDatasource datasource;
   ProductRepository(this.datasource);
 
-  Future<ProductModel>      getProductById(int id)        => datasource.getProductById(id);
-  Future<List<ReviewModel>> getReviews(int productId)     => datasource.getReviews(productId);
+  Future<ProductModel>      getProductById(String id)        => datasource.getProductById(id);
+  Future<List<ReviewModel>> getReviews(String productId)     => datasource.getReviews(productId);
 }
