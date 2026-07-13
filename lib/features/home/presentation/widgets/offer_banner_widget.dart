@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
-
+import 'package:stylo_app/features/home/data/models/offer_model.dart'; // تأكد من مسار الموديل الجديد
 
 class OfferBannerWidget extends StatefulWidget {
-  final List<Map<String, String>> offers; // [{title, subtitle, image, buttonText}]
+  // تم تغيير الـ Type هنا ليستقبل لستة الموديل الديناميكية من الـ API
+  final List<OfferModel> offers;
+
   const OfferBannerWidget({super.key, required this.offers});
 
   @override
@@ -35,10 +37,10 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget> {
             itemBuilder: (context, index) {
               final offer = widget.offers[index];
               return _BannerCard(
-                title: offer['title'] ?? '',
-                subtitle: offer['subtitle'] ?? '',
-                image: offer['image'] ?? '',
-                buttonText: offer['buttonText'] ?? 'Shop Now',
+                title: offer.name,
+                subtitle: offer.description,
+                image: offer.imageUrl,
+                buttonText: 'Shop Now',
               );
             },
           ),
@@ -49,9 +51,9 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
             widget.offers.length,
-            (index) => AnimatedContainer(
+                (index) => AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              margin: EdgeInsets.symmetric(horizontal: 3),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
               width: _currentPage == index ? 20 : 6,
               height: 6,
               decoration: BoxDecoration(
@@ -82,19 +84,19 @@ class _BannerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2),
+      margin: const EdgeInsets.symmetric(horizontal: 2),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizes.radiusLg),
         color: const Color(0xFF1C1C2E),
         image: image.isNotEmpty
             ? DecorationImage(
-                image: NetworkImage(image),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.45),
-                  BlendMode.darken,
-                ),
-              )
+          image: NetworkImage(image),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.45),
+            BlendMode.darken,
+          ),
+        )
             : null,
       ),
       padding: EdgeInsets.all(AppSizes.lg),
@@ -104,14 +106,18 @@ class _BannerCard extends StatelessWidget {
         children: [
           Text(
             title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.headingLarge.copyWith(color: AppColors.white),
           ),
-          SizedBox(height: AppSizes.xs),
+           SizedBox(height: AppSizes.xs),
           Text(
             subtitle,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.bodySmall.copyWith(color: AppColors.white.withOpacity(0.85)),
           ),
-          SizedBox(height: AppSizes.md),
+           SizedBox(height: AppSizes.md),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(

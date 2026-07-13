@@ -1,15 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/category_model.dart';
-import '../../data/models/product_model.dart'; // 👈 تأكد من استيراد موديل المنتجات
+import '../../data/models/product_model.dart';
+import '../../data/models/offer_model.dart'; // 👈 استيراد موديل الـ Offers
 import '../../data/repositories/home_repository.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepository repository;
 
-  // 💾 هنحتفظ بنسخة كاش من كل المنتجات والكاتيجوريز عشان نفلتر منهم بسرعة Local
+  // 💾 كاش محلي لكل البيانات بما فيهم الـ Offers
   List<ProductModel> _allProducts = [];
   List<CategoryModel> _allCategories = [];
+  List<OfferModel> _allOffers = []; // 👈 كاش الـ Offers
 
   HomeCubit(this.repository) : super(HomeInitial());
 
@@ -25,14 +27,23 @@ class HomeCubit extends Cubit<HomeState> {
       print("🛰️ [HomeCubit] Requesting Products...");
       final products   = await repository.getProducts();
 
+      print("🛰️ [HomeCubit] Requesting Offers API...");
+      // 👈 نداء الـ API الجديد من الـ repository (باصي الـ page والـ pageSize هنا)
+      final offers     = await repository.getOffers();
+
       // حفظ الداتا في الكاش المحلي للـ Cubit
       _allProducts = products;
       _allCategories = categories;
+      _allOffers = offers; // 👈 حفظ العروض
 
       if (isClosed) return;
 
-      // عرض كل المنتجات في البداية
-      emit(HomeSuccess(products: _allProducts, categories: _allCategories));
+      // عرض كل المنتجات والعروض في البداية
+      emit(HomeSuccess(
+        products: _allProducts,
+        categories: _allCategories,
+        offers: _allOffers, // 👈 تمرير العروض للـ UI
+      ));
       print("✅ [HomeCubit] loadHome() SUCCESS!");
     } catch (e) {
       print("💥 [HomeCubit] loadHome() CATCH ERROR: $e");
@@ -45,21 +56,26 @@ class HomeCubit extends Cubit<HomeState> {
   void filterByCategory(int categoryId) {
     if (isClosed) return;
 
-    // 1. لو الـ state الحالية هي فلتر ونفس الـ categoryId اضغط عليه تاني، رجع كل المنتجات (Reset)
+    // 1. لو الـ state الحالية هي فلتر ونفس الـ categoryId، ارجع للـ Success الحالة العامة
     final currentState = state;
     if (currentState is HomeCategoryFiltered && currentState.selectedCategoryId == categoryId) {
-      emit(HomeSuccess(products: _allProducts, categories: _allCategories));
+      emit(HomeSuccess(
+        products: _allProducts,
+        categories: _allCategories,
+        offers: _allOffers,
+      ));
       return;
     }
 
-    // 2. فلترة المنتجات محلياً (Local) من الكاش اللي حفظناه في الـ loadHome
+    // 2. فلترة المنتجات محلياً (Local) من الكاش
     final filteredProducts = _allProducts
         .where((product) => product.categoryId == categoryId)
         .toList();
 
     emit(HomeCategoryFiltered(
-      products:           filteredProducts, // المنتجات المصفاة فقط
-      categories:         _allCategories,   // الكاتيجوريز كاملة عشان تفضل معروضة فوق
+      products:           filteredProducts,
+      categories:         _allCategories,
+      offers:             _allOffers, // 👈 بنباصي نفس الـOffers المحفوظة عشان تفضل معروضة في البانر
       selectedCategoryId: categoryId,
     ));
   }

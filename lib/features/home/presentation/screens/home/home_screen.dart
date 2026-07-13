@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
-import 'package:stylo_app/core/di/injection_container.dart';
 import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
 import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
 import 'package:stylo_app/features/home/data/models/category_model.dart';
 import 'package:stylo_app/features/home/data/models/product_model.dart';
+import 'package:stylo_app/features/home/data/models/offer_model.dart'; // استيراد موديل الـ Offers
 import 'package:stylo_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:stylo_app/features/home/presentation/cubit/home_state.dart';
 import 'package:stylo_app/features/home/presentation/screens/product_details/product_details_screen.dart';
@@ -20,7 +20,6 @@ import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 import 'package:stylo_app/shared/widgets/custom_search_bar_widget.dart';
 import 'package:stylo_app/shared/widgets/section_header_widget.dart';
 
-// تم تحويلها لـ StatelessWidget لأن الـ Providers بقوا فوق في الـ main.dart
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -40,21 +39,6 @@ class _HomeView extends StatefulWidget {
 class _HomeViewState extends State<_HomeView> {
   int _selectedCategoryIndex = 0;
   int _bottomNavIndex        = 0;
-
-  final List<Map<String, String>> _dummyOffers = [
-    {
-      'title':      'New Season Collection',
-      'subtitle':   'Up to 30% Off Premium Deals',
-      'image':      'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800',
-      'buttonText': 'Shop Now',
-    },
-    {
-      'title':      'Summer Sale',
-      'subtitle':   'Up to 50% Off Selected Items',
-      'image':      'https://images.unsplash.com/photo-1601121141461-9d6647bef0a4?w=800',
-      'buttonText': 'Explore',
-    },
-  ];
 
   final List<IconData> _categoryIcons = [
     Icons.grid_view_outlined,
@@ -123,6 +107,13 @@ class _HomeViewState extends State<_HomeView> {
             : state is HomeCategoryFiltered
             ? state.categories
             : <CategoryModel>[];
+
+        // استخراج العروض الحقيقية القادمة من السيرفر
+        final offers = state is HomeSuccess
+            ? state.offers
+            : state is HomeCategoryFiltered
+            ? state.offers
+            : <OfferModel>[];
 
         final isLoading = state is HomeLoading;
 
@@ -222,11 +213,16 @@ class _HomeViewState extends State<_HomeView> {
 
                 SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
 
-                // ── Offer banner ──────────────────────────────
+                // ── Offer banner (الربط الديناميكي الجديد) ────────────────
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppSizes.screenPadding),
-                    child: OfferBannerWidget(offers: _dummyOffers),
+                    // لو الـ API لسه بيحمل أو فاضي بنخفيه بشكل آمن، غير كده بنعرض الداتا الحقيقية
+                    child: isLoading
+                        ? const SizedBox(height: 150, child: Center(child: CircularProgressIndicator()))
+                        : offers.isEmpty
+                        ? const SizedBox()
+                        : OfferBannerWidget(offers: offers),
                   ),
                 ),
 
@@ -262,7 +258,7 @@ class _HomeViewState extends State<_HomeView> {
                       itemBuilder: (context, index) {
                         if (index == 0) {
                           return Padding(
-                            padding: EdgeInsets.only(right: AppSizes.md),
+                            padding: EdgeInsets.only(right: AppSizes.lg),
                             child: CategoryItemWidget(
                               name:       'All',
                               icon:       _categoryIcons[0],
@@ -363,51 +359,10 @@ class _HomeViewState extends State<_HomeView> {
 
                 SliverToBoxAdapter(child: SizedBox(height: AppSizes.lg)),
 
-                // ── Popular Now ───────────────────────────────
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppSizes.screenPadding),
-                    child: SectionHeaderWidget(
-                      title:       'Popular Now',
-                      actionText:  'Explore',
-                      onActionTap: () {},
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(child: SizedBox(height: AppSizes.md)),
 
-                isLoading
-                    ? const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()))
-                    : products.isEmpty
-                    ? const SliverToBoxAdapter(child: SizedBox())
-                    : SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSizes.screenPadding),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:  2,
-                      mainAxisSpacing:  AppSizes.md,
-                      crossAxisSpacing: AppSizes.md,
-                      mainAxisExtent:   AppSizes.productCardHeight,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                        final int totalItems = products.length;
-                        final product = products[totalItems - 1 - index];
-                        return ProductCardWidget(
-                          name:   product.name,
-                          image:  product.imageUrl,
-                          price:  product.price,
-                          rating: 4.2,
-                          onTap: () => _goToProductDetail(context, product),
-                          onAddToCart: () {},
-                        );
-                      },
-                      childCount: products.length,
-                    ),
-                  ),
-                ),
 
-                SliverToBoxAdapter(child: SizedBox(height: AppSizes.xl)),
+
+
               ],
             ),
           ),
