@@ -4,7 +4,10 @@ import '../models/cart_response_model.dart';
 import '../models/update_cart_request_model.dart';
 
 class CartRepository {
-  final CartRemoteDataSource remoteDataSource = CartRemoteDataSource();
+  final CartRemoteDataSource remoteDataSource;
+
+  CartRepository({CartRemoteDataSource? remoteDataSource})
+    : remoteDataSource = remoteDataSource ?? CartRemoteDataSource();
 
   Future<CartResponseModel> getCart() {
     return remoteDataSource.getCart();

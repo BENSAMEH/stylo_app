@@ -17,13 +17,18 @@ class CartResponseModel {
 
   factory CartResponseModel.fromJson(Map<String, dynamic> json) {
     return CartResponseModel(
-      cartId: json['cartId'],
-      items: (json['items'] as List)
-          .map((e) => CartItemModel.fromJson(e))
-          .toList(),
-      subtotal: (json['subtotal'] as num).toDouble(),
-      totalDiscount: (json['totalDiscount'] as num).toDouble(),
-      totalPrice: (json['totalPrice'] as num).toDouble(),
+      cartId: json['cartId'] ?? '',
+      // 🔧 لو السيرفر رجع items: null (كارت فاضي)، بنعتبرها List فاضية
+      // بدل ما نعمل crash بـ type cast error
+      items:
+          (json['items'] as List<dynamic>?)
+              ?.map((e) => CartItemModel.fromJson(e))
+              .toList() ??
+          [],
+      // 🔧 نفس الحماية لأي رقم ممكن يرجع null
+      subtotal: (json['subtotal'] as num?)?.toDouble() ?? 0,
+      totalDiscount: (json['totalDiscount'] as num?)?.toDouble() ?? 0,
+      totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0,
     );
   }
 }
