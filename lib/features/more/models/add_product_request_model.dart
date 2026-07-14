@@ -21,10 +21,14 @@ class AddProductRequestModel {
     required this.price,
     required this.stock,
     required this.categoryIds,
-    this.nameArabic = '',
-    this.descriptionArabic = '',
+
+    // 🔧 كانوا افتراضيين فاضيين (''), السيرفر رفضهم كـ required
+    // فبقوا required صراحة عشان محدش ينسى يبعتهم تاني
+    required this.nameArabic,
+    required this.descriptionArabic,
+    required this.color,
+
     this.weight = 0,
-    this.color = '',
     this.discountPercentage = 0,
     this.productPictureUrls = const [],
   });

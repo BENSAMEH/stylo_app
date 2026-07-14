@@ -7,4 +7,8 @@ class AddProductRepository {
   Future<void> addProduct(AddProductRequestModel request) {
     return remoteDataSource.addProduct(request);
   }
+
+  Future<List<Map<String, dynamic>>> getCategories() {
+    return remoteDataSource.getCategories();
+  }
 }
