@@ -1,16 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/cart/data/models/cart_item_model.dart';
+import 'package:stylo_app/features/cart/data/models/update_cart_request_model.dart';
+import 'package:stylo_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:stylo_app/features/cart/presentation/cubit/cart_state.dart';
 import 'package:stylo_app/features/cart/presentation/screens/checkout/checkout_screen.dart';
+import 'package:stylo_app/features/cart/presentation/screens/empty_cart/empty_cart_screen.dart';
 import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 import 'package:stylo_app/features/profile/presentation/screens/profile/profile_screen.dart';
 
 import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // لازم نجيب الكارت من السيرفر لما الشاشة تفتح
+    context.read<CartCubit>().getCart();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,131 +88,171 @@ class CartScreen extends StatelessWidget {
           }
         },
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(AppSizes.screenPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── Title ──────────────────────────────────────────
-            Text('Your Cart', style: AppTextStyles.displayMedium),
-            SizedBox(height: AppSizes.xs),
-            Text(
-              'Review your curated selection',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary,
-              ),
-            ),
-            SizedBox(height: AppSizes.lg),
-
-            // ── Cart item 1 ────────────────────────────────────
-            _CartItemCard(
-              imagePath: 'build/assets/watchbrand.jpg',
-              name: 'Ethereal Silver Watch',
-              ref: 'Ref: BQ-2024-SV',
-              price: '\$450.00',
-              quantity: 1,
-            ),
-            SizedBox(height: AppSizes.md),
-
-            // ── Cart item 2 ────────────────────────────────────
-            _CartItemCard(
-              imagePath: 'build/assets/glass.jpg',
-              name: 'Gold Frame Optics',
-              ref: 'Ref: BQ-2024-GD',
-              price: '\$180.00',
-              quantity: 2,
-            ),
-            SizedBox(height: AppSizes.xl),
-
-            // ── Coupon ─────────────────────────────────────────
-            Text(
-              'HAVE A COUPON?',
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.lightTextSecondary,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1,
-              ),
-            ),
-            SizedBox(height: AppSizes.sm),
-            _CouponField(),
-
-            SizedBox(height: AppSizes.lg),
-
-            // ── Order summary ──────────────────────────────────
-            _OrderSummaryCard(
-              subtotal: '\$810.00',
-              shipping: 'Free',
-              total: '\$810.00',
-            ),
-
-            SizedBox(height: AppSizes.xl),
-
-            // ── Checkout button ────────────────────────────────
-            Container(
-              width: double.infinity,
-              height: AppSizes.buttonHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSizes.radiusFull),
-                gradient: const LinearGradient(
-                  colors: [AppColors.primaryDark, AppColors.primary],
+      body: BlocConsumer<CartCubit, CartState>(
+        listener: (context, state) {
+          if (state is CartError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: AppColors.error,
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.radiusMd),
                 ),
               ),
-              child: ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const CheckoutScreen()),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.transparent,
-                  shadowColor: AppColors.transparent,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSizes.radiusFull),
+            );
+          }
+        },
+        builder: (context, state) {
+          // ── Loading ──────────────────────────────────────────
+          if (state is CartInitial || state is CartLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // ── Error (مع Retry) ─────────────────────────────────
+          if (state is CartError) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Failed to load cart',
+                    style: AppTextStyles.headingSmall,
+                  ),
+                  SizedBox(height: AppSizes.sm),
+                  TextButton(
+                    onPressed: () => context.read<CartCubit>().getCart(),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          // ── Loaded ───────────────────────────────────────────
+          final cart = (state as CartLoaded).cart;
+
+          if (cart.items.isEmpty) {
+            return const EmptyCartContent();
+
+          }
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(AppSizes.screenPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Title ──────────────────────────────────────
+                Text('Your Cart', style: AppTextStyles.displayMedium),
+                SizedBox(height: AppSizes.xs),
+                Text(
+                  'Review your curated selection',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.lightTextSecondary,
                   ),
                 ),
-                child: Text(
-                  'Proceed to Checkout',
-                  style: AppTextStyles.buttonLarge,
-                ),
-              ),
-            ),
+                SizedBox(height: AppSizes.lg),
 
-            SizedBox(height: AppSizes.lg),
-          ],
-        ),
+                // ── Cart items من الـ API ────────────────────────
+                for (final item in cart.items) ...[
+                  _CartItemCard(
+                    item: item,
+                    onIncrement: () => context.read<CartCubit>().updateItem(
+                      item.itemId,
+                      UpdateCartRequestModel(quantity: item.quantity + 1),
+                    ),
+                    onDecrement: item.quantity > 1
+                        ? () => context.read<CartCubit>().updateItem(
+                            item.itemId,
+                            UpdateCartRequestModel(quantity: item.quantity - 1),
+                          )
+                        : null,
+                    onDelete: () =>
+                        context.read<CartCubit>().deleteItem(item.itemId),
+                  ),
+                  SizedBox(height: AppSizes.md),
+                ],
+
+                SizedBox(height: AppSizes.lg),
+
+                // ── Coupon ───────────────────────────────────────
+                Text(
+                  'HAVE A COUPON?',
+                  style: AppTextStyles.caption.copyWith(
+                    color: AppColors.lightTextSecondary,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1,
+                  ),
+                ),
+                SizedBox(height: AppSizes.sm),
+                _CouponField(),
+
+                SizedBox(height: AppSizes.lg),
+
+                // ── Order summary من الـ API ─────────────────────
+                _OrderSummaryCard(
+                  subtotal: '\$${cart.subtotal.toStringAsFixed(2)}',
+                  shipping: 'Free',
+                  total: '\$${cart.totalPrice.toStringAsFixed(2)}',
+                ),
+
+                SizedBox(height: AppSizes.xl),
+
+                // ── Checkout button ──────────────────────────────
+                Container(
+                  width: double.infinity,
+                  height: AppSizes.buttonHeight,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppSizes.radiusFull),
+                    gradient: const LinearGradient(
+                      colors: [AppColors.primaryDark, AppColors.primary],
+                    ),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CheckoutScreen()),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.transparent,
+                      shadowColor: AppColors.transparent,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppSizes.radiusFull,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Proceed to Checkout',
+                      style: AppTextStyles.buttonLarge,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: AppSizes.lg),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-// ── Cart item card ────────────────────────────────────────────────────────────
-class _CartItemCard extends StatefulWidget {
-  final String imagePath;
-  final String name;
-  final String ref;
-  final String price;
-  final int quantity;
+// ── Cart item card ──────────────────────────────────────────────────────
+class _CartItemCard extends StatelessWidget {
+  final CartItemModel item;
+  final VoidCallback onIncrement;
+  final VoidCallback? onDecrement;
+  final VoidCallback onDelete;
 
   const _CartItemCard({
-    required this.imagePath,
-    required this.name,
-    required this.ref,
-    required this.price,
-    required this.quantity,
+    required this.item,
+    required this.onIncrement,
+    required this.onDecrement,
+    required this.onDelete,
   });
-
-  @override
-  State<_CartItemCard> createState() => _CartItemCardState();
-}
-
-class _CartItemCardState extends State<_CartItemCard> {
-  late int _qty;
-
-  @override
-  void initState() {
-    super.initState();
-    _qty = widget.quantity;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,11 +264,10 @@ class _CartItemCardState extends State<_CartItemCard> {
       ),
       child: Row(
         children: [
-          // Image
           ClipRRect(
             borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-            child: Image.asset(
-              widget.imagePath,
+            child: Image.network(
+              item.productCoverUrl,
               height: 75,
               width: 75,
               fit: BoxFit.cover,
@@ -227,13 +284,12 @@ class _CartItemCardState extends State<_CartItemCard> {
           ),
           SizedBox(width: AppSizes.md),
 
-          // Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.name,
+                  item.productName,
                   style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.lightTextPrimary,
                     fontWeight: FontWeight.w700,
@@ -241,22 +297,24 @@ class _CartItemCardState extends State<_CartItemCard> {
                 ),
                 SizedBox(height: AppSizes.xs),
                 Text(
-                  widget.ref,
+                  'Qty: ${item.quantity}',
                   style: AppTextStyles.caption.copyWith(
                     color: AppColors.lightTextSecondary,
                   ),
                 ),
                 SizedBox(height: AppSizes.xs),
-                Text(widget.price, style: AppTextStyles.price),
+                Text(
+                  '\$${item.totalPrice.toStringAsFixed(2)}',
+                  style: AppTextStyles.price,
+                ),
               ],
             ),
           ),
 
-          // Delete + Quantity
           Column(
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: onDelete,
                 child: const Icon(Icons.delete_outline, color: AppColors.error),
               ),
               SizedBox(height: AppSizes.md),
@@ -271,25 +329,17 @@ class _CartItemCardState extends State<_CartItemCard> {
                 ),
                 child: Row(
                   children: [
-                    _QtyButton(
-                      icon: Icons.remove,
-                      onTap: () => setState(() {
-                        if (_qty > 1) _qty--;
-                      }),
-                    ),
+                    _QtyButton(icon: Icons.remove, onTap: onDecrement),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
                       child: Text(
-                        '$_qty',
+                        '${item.quantity}',
                         style: AppTextStyles.labelMedium.copyWith(
                           color: AppColors.lightTextPrimary,
                         ),
                       ),
                     ),
-                    _QtyButton(
-                      icon: Icons.add,
-                      onTap: () => setState(() => _qty++),
-                    ),
+                    _QtyButton(icon: Icons.add, onTap: onIncrement),
                   ],
                 ),
               ),
@@ -303,7 +353,7 @@ class _CartItemCardState extends State<_CartItemCard> {
 
 class _QtyButton extends StatelessWidget {
   final IconData icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   const _QtyButton({required this.icon, required this.onTap});
 
   @override
@@ -313,13 +363,19 @@ class _QtyButton extends StatelessWidget {
       child: CircleAvatar(
         radius: 10,
         backgroundColor: AppColors.lightSurface,
-        child: Icon(icon, size: 14, color: AppColors.primary),
+        child: Icon(
+          icon,
+          size: 14,
+          color: onTap == null
+              ? AppColors.lightTextSecondary
+              : AppColors.primary,
+        ),
       ),
     );
   }
 }
 
-// ── Coupon field ──────────────────────────────────────────────────────────────
+// ── Coupon field ────────────────────────────────────────────────────────
 class _CouponField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -368,7 +424,7 @@ class _CouponField extends StatelessWidget {
   }
 }
 
-// ── Order summary card ────────────────────────────────────────────────────────
+// ── Order summary card ──────────────────────────────────────────────────
 class _OrderSummaryCard extends StatelessWidget {
   final String subtotal;
   final String shipping;

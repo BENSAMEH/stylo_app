@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stylo_app/features/cart/data/repositories/cart_repository.dart';
+import 'package:stylo_app/features/cart/data/repositories/checkout_repository.dart';
 import 'package:stylo_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:stylo_app/features/cart/presentation/cubit/checkout_cubit.dart';
 import 'package:stylo_app/features/more/datasource/product_remote_datasource.dart';
 import 'package:stylo_app/features/more/presentation/cubit/add_product_cubit.dart';
 import 'package:stylo_app/features/more/repositories/add_product_repository.dart';
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
               create: (_) => AddProductCubit(AddProductRepository()),
             ),
             BlocProvider(create: (_) => CartCubit(CartRepository())),
+            BlocProvider(create: (_) => CheckoutCubit(CheckoutRepository())),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

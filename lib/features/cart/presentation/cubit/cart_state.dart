@@ -1,6 +1,13 @@
+import 'package:equatable/equatable.dart';
+
 import '../../data/models/cart_response_model.dart';
 
-abstract class CartState {}
+abstract class CartState extends Equatable {
+  const CartState();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class CartInitial extends CartState {}
 
@@ -9,13 +16,17 @@ class CartLoading extends CartState {}
 class CartLoaded extends CartState {
   final CartResponseModel cart;
 
-  CartLoaded(this.cart);
-}
+  const CartLoaded(this.cart);
 
-class CartSuccess extends CartState {}
+  @override
+  List<Object?> get props => [cart];
+}
 
 class CartError extends CartState {
   final String message;
 
-  CartError(this.message);
+  const CartError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

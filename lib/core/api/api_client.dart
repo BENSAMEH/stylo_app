@@ -57,7 +57,7 @@ class ApiClient {
     return await _dio.put(path, data: data, options: _getOptions());
   }
 
-  Future<Response> delete(String path) async {
-    return await _dio.delete(path, options: _getOptions());
+  Future<Response> delete(String path, {dynamic data}) async {
+    return await _dio.delete(path, data: data, options: _getOptions());
   }
 }
