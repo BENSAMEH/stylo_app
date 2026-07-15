@@ -7,7 +7,6 @@ import 'package:stylo_app/core/di/injection_container.dart';
 
 import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
-import 'package:stylo_app/core/di/injection_container.dart';
 import 'package:stylo_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:stylo_app/features/profile/data/repositories/profile_repository_impl.dart';
 
