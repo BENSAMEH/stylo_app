@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/features/cart/data/models/checkout_response_model.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
-  const OrderSuccessScreen({super.key});
+  // 🆕 بياخد الـ response الحقيقي الراجع من CheckoutCubit بدل ما يكون
+  // الملف كله بيانات وهمية ثابتة
+  final CheckoutResponseModel response;
+
+  const OrderSuccessScreen({super.key, required this.response});
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +29,12 @@ class OrderSuccessScreen extends StatelessWidget {
         padding: EdgeInsets.all(AppSizes.screenPadding),
         child: Column(
           children: [
-
             SizedBox(height: AppSizes.lg),
 
             // ── Success icon ───────────────────────────────────
             Container(
               height: 80,
-              width:  80,
+              width: 80,
               decoration: const BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
@@ -44,75 +48,58 @@ class OrderSuccessScreen extends StatelessWidget {
             Text('Order Confirmed', style: AppTextStyles.displayMedium),
             SizedBox(height: AppSizes.md),
 
+            // 🔧 بقت بتعرض رسالة السيرفر الحقيقية بدل نص ثابت
             Text(
-              'Thank you for choosing Stylo. Your luxury\naccessories are being prepared.',
+              response.message.isNotEmpty
+                  ? response.message
+                  : 'Thank you for choosing Stylo. Your luxury\naccessories are being prepared.',
               textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.lightTextSecondary),
+                color: AppColors.lightTextSecondary,
+              ),
             ),
 
             SizedBox(height: AppSizes.xl),
 
-            // ── Order details card ─────────────────────────────
-            Container(
-              width:   double.infinity,
-              padding: EdgeInsets.all(AppSizes.lg),
-              decoration: BoxDecoration(
-                color:        AppColors.lightSurface,
-                borderRadius: BorderRadius.circular(AppSizes.radiusXl),
+            // 🔧 لو السيرفر رجع رابط دفع (لسه مطلوب يكمل الدفع أونلاين)،
+            // نوريه للمستخدم بدل ما نخفي المعلومة دي
+            if (response.unifiedCheckoutUrl != null &&
+                response.unifiedCheckoutUrl!.isNotEmpty) ...[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(AppSizes.md),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Complete your payment',
+                      style: AppTextStyles.labelMedium.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: AppSizes.xs),
+                    Text(
+                      response.unifiedCheckoutUrl!,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.lightTextSecondary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('ORDER ID',
-                      style: AppTextStyles.caption.copyWith(
-                          color: AppColors.lightTextSecondary)),
-                  SizedBox(height: AppSizes.xs),
-                  Text('#STY-882941-X', style: AppTextStyles.headingLarge),
-                  SizedBox(height: AppSizes.md),
-                  Divider(color: AppColors.lightDivider),
-                  SizedBox(height: AppSizes.md),
-                  Text('ESTIMATED DELIVERY',
-                      style: AppTextStyles.caption.copyWith(
-                          color: AppColors.lightTextSecondary)),
-                  SizedBox(height: AppSizes.xs),
-                  Text('Oct 24, 2025', style: AppTextStyles.headingLarge),
-                ],
-              ),
-            ),
-
-            SizedBox(height: AppSizes.lg),
-
-            // ── Email note ─────────────────────────────────────
-            Text(
-              'A confirmation email has been sent to your\nregistered email address.',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.lightTextSecondary),
-            ),
-
-            SizedBox(height: AppSizes.lg),
-
-            // ── Summary rows ───────────────────────────────────
-            _ConfirmRow(label: 'Items',    value: '3 luxury pieces'),
-            SizedBox(height: AppSizes.md),
-            _ConfirmRow(label: 'Shipping', value: 'Complimentary Express'),
-            const Divider(height: 28),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Total Amount', style: AppTextStyles.headingMedium),
-                Text('\$1,240.00',
-                    style: AppTextStyles.headingMedium.copyWith(
-                        color: AppColors.primary)),
-              ],
-            ),
+              SizedBox(height: AppSizes.xl),
+            ],
 
             SizedBox(height: AppSizes.xxl),
 
             // ── Continue shopping button ───────────────────────
             Container(
-              width:  double.infinity,
+              width: double.infinity,
               height: AppSizes.buttonHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppSizes.radiusFull),
@@ -128,7 +115,7 @@ class OrderSuccessScreen extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.transparent,
-                  shadowColor:     AppColors.transparent,
+                  shadowColor: AppColors.transparent,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppSizes.radiusFull),
@@ -145,56 +132,10 @@ class OrderSuccessScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: AppSizes.md),
-
-            // ── View receipt button ────────────────────────────
-            OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                minimumSize: Size(double.infinity, AppSizes.buttonHeight),
-                side: const BorderSide(color: AppColors.lightDivider),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.radiusFull),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.receipt_long_outlined,
-                      color: AppColors.lightTextSecondary),
-                  SizedBox(width: AppSizes.sm),
-                  Text('View Receipt',
-                      style: AppTextStyles.buttonLarge.copyWith(
-                          color: AppColors.lightTextSecondary)),
-                ],
-              ),
-            ),
-
             SizedBox(height: AppSizes.lg),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ConfirmRow extends StatelessWidget {
-  final String label;
-  final String value;
-  const _ConfirmRow({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label,
-            style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary)),
-        Text(value,
-            style: AppTextStyles.bodyMedium.copyWith(
-                fontWeight: FontWeight.w600)),
-      ],
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:stylo_app/features/cart/presentation/cubit/checkout_state.dart';
 
 import '../../data/models/checkout_request_model.dart';
 
-
 class CheckoutCubit extends Cubit<CheckoutState> {
   final CheckoutRepository repository;
 
