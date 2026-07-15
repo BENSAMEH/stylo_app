@@ -29,6 +29,10 @@ class ApiConstants {
   static String removeFromCart(int id)               => "/cart/$id";
 
   // Reviews
-  static String reviewsByProduct(String productId) =>
-      "/reviews/$productId?page=1&pageSize=10";
+ // Reviews
+static String reviewsByProduct(String productId) =>
+    "/reviews/$productId?page=1&pageSize=10";
+
+static String addReview(String productId) =>
+    "/reviews/$productId";
 }

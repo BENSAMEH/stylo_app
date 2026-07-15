@@ -19,7 +19,7 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ProductDetailCubit>()..loadProduct(productId),
-      child:  _ProductDetailView(productId: productId,),
+      child: _ProductDetailView(productId: productId),
     );
   }
 }
@@ -34,8 +34,74 @@ class _ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<_ProductDetailView> {
-  bool _isFavourite  = false;
-  int  _currentImage = 0;
+  bool _isFavourite = false;
+  int _currentImage = 0;
+  final TextEditingController _commentController = TextEditingController();
+  double _rating = 5.0;
+  void _showAddReviewDialog(BuildContext context, String productId) {
+    _commentController.clear();
+    _rating = 5;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text("Add Review"),
+          content: StatefulBuilder(
+            builder: (context, setStateDialog) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: _commentController,
+                    decoration: const InputDecoration(
+                      labelText: "Comment",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  DropdownButton<double>(
+                    isExpanded: true,
+                    value: _rating,
+                    items: const [
+                      DropdownMenuItem(value: 1, child: Text("⭐ 1")),
+                      DropdownMenuItem(value: 2, child: Text("⭐⭐ 2")),
+                      DropdownMenuItem(value: 3, child: Text("⭐⭐⭐ 3")),
+                      DropdownMenuItem(value: 4, child: Text("⭐⭐⭐⭐ 4")),
+                      DropdownMenuItem(value: 5, child: Text("⭐⭐⭐⭐⭐ 5")),
+                    ],
+                    onChanged: (value) {
+                      setStateDialog(() {
+                        _rating = value!;
+                      });
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await context.read<ProductDetailCubit>().addReview(
+                  productId: productId,
+                  comment: _commentController.text,
+                  rating: _rating,
+                );
+
+                Navigator.pop(dialogContext);
+              },
+              child: const Text("Submit"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   int _discountPercent(double price, double oldPrice) {
     if (oldPrice <= price) return 0;
@@ -46,7 +112,6 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductDetailCubit, ProductDetailState>(
       builder: (context, state) {
-
         // ── Loading ──────────────────────────────────────────
         if (state is ProductDetailLoading) {
           return const Scaffold(
@@ -67,20 +132,25 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline,
-                      size: 64, color: AppColors.lightTextSecondary),
+                  const Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: AppColors.lightTextSecondary,
+                  ),
                   SizedBox(height: AppSizes.md),
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.lightTextSecondary),
+                      color: AppColors.lightTextSecondary,
+                    ),
                   ),
                   SizedBox(height: AppSizes.lg),
                   ElevatedButton(
-                    onPressed: () => context
-                        .read<ProductDetailCubit>()
-                        .loadProduct(widget.productId), // 👈 استخدم widget.productId مباشرة
+                    onPressed: () =>
+                        context.read<ProductDetailCubit>().loadProduct(
+                          widget.productId,
+                        ), // 👈 استخدم widget.productId مباشرة
                     child: const Text('Retry'),
                   ),
                 ],
@@ -91,10 +161,13 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
 
         // ── Success ──────────────────────────────────────────
         if (state is ProductDetailSuccess) {
-          final product  = state.product;
-          final reviews  = state.reviews;
-          final images   = [product.imageUrl];
-          final discount = _discountPercent(product.price, product.price * 1.25);
+          final product = state.product;
+          final reviews = state.reviews;
+          final images = [product.imageUrl];
+          final discount = _discountPercent(
+            product.price,
+            product.price * 1.25,
+          );
 
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -108,10 +181,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                 onPressed: () => Navigator.pop(context),
               ),
               actions: [
-                CircleIconButton(
-                  icon: Icons.share_outlined,
-                  onTap: () {},
-                ),
+                CircleIconButton(icon: Icons.share_outlined, onTap: () {}),
                 SizedBox(width: AppSizes.sm),
                 CircleIconButton(
                   icon: _isFavourite ? Icons.favorite : Icons.favorite_border,
@@ -126,12 +196,10 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
 
             body: Column(
               children: [
-
                 // ── Scrollable content ───────────────────────
                 Expanded(
                   child: CustomScrollView(
                     slivers: [
-
                       // ── Image carousel ─────────────────────
                       SliverToBoxAdapter(
                         child: Stack(
@@ -146,11 +214,12 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                 itemBuilder: (_, i) => Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: AppSizes.sm,
-                                    vertical:   AppSizes.sm,
+                                    vertical: AppSizes.sm,
                                   ),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(
-                                        AppSizes.radiusLg),
+                                      AppSizes.radiusLg,
+                                    ),
                                     child: Image.network(
                                       images[i],
                                       fit: BoxFit.cover,
@@ -171,23 +240,28 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                             // Dots indicator
                             Positioned(
                               bottom: AppSizes.sm,
-                              right:  AppSizes.md,
+                              right: AppSizes.md,
                               child: Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: AppSizes.sm, vertical: 4),
+                                  horizontal: AppSizes.sm,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(
-                                      AppSizes.radiusFull),
+                                    AppSizes.radiusFull,
+                                  ),
                                 ),
                                 child: Row(
                                   children: List.generate(
                                     images.length < 2 ? 2 : images.length,
-                                        (i) => AnimatedContainer(
-                                      duration:
-                                      const Duration(milliseconds: 250),
+                                    (i) => AnimatedContainer(
+                                      duration: const Duration(
+                                        milliseconds: 250,
+                                      ),
                                       margin: const EdgeInsets.symmetric(
-                                          horizontal: 2),
+                                        horizontal: 2,
+                                      ),
                                       width: _currentImage == i ? 16 : 6,
                                       height: 6,
                                       decoration: BoxDecoration(
@@ -195,7 +269,8 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                             ? AppColors.white
                                             : AppColors.white.withOpacity(0.4),
                                         borderRadius: BorderRadius.circular(
-                                            AppSizes.radiusFull),
+                                          AppSizes.radiusFull,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -213,21 +288,22 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
                               // Category
                               Text(
                                 'Fine Jewelry',
                                 style: AppTextStyles.caption.copyWith(
-                                  color:         AppColors.primary,
-                                  fontWeight:    FontWeight.w600,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w600,
                                   letterSpacing: 1.2,
                                 ),
                               ),
                               SizedBox(height: AppSizes.xs),
 
                               // Name
-                              Text(product.name,
-                                  style: AppTextStyles.headingLarge),
+                              Text(
+                                product.name,
+                                style: AppTextStyles.headingLarge,
+                              ),
                               SizedBox(height: AppSizes.md),
 
                               // Price row
@@ -236,8 +312,9 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                 children: [
                                   Text(
                                     '\$${product.price.toStringAsFixed(0)}',
-                                    style: AppTextStyles.price
-                                        .copyWith(fontSize: 22),
+                                    style: AppTextStyles.price.copyWith(
+                                      fontSize: 22,
+                                    ),
                                   ),
                                   SizedBox(width: AppSizes.sm),
                                   Text(
@@ -248,16 +325,21 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                   if (discount > 0)
                                     Container(
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: AppSizes.sm, vertical: 3),
+                                        horizontal: AppSizes.sm,
+                                        vertical: 3,
+                                      ),
                                       decoration: BoxDecoration(
-                                        color: AppColors.primary.withOpacity(0.12),
+                                        color: AppColors.primary.withOpacity(
+                                          0.12,
+                                        ),
                                         borderRadius: BorderRadius.circular(
-                                            AppSizes.radiusFull),
+                                          AppSizes.radiusFull,
+                                        ),
                                       ),
                                       child: Text(
                                         'Save $discount%',
                                         style: AppTextStyles.caption.copyWith(
-                                          color:      AppColors.primary,
+                                          color: AppColors.primary,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -267,15 +349,17 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                               SizedBox(height: AppSizes.lg),
 
                               // Description
-                              Text('Description',
-                                  style: AppTextStyles.headingSmall),
+                              Text(
+                                'Description',
+                                style: AppTextStyles.headingSmall,
+                              ),
                               SizedBox(height: AppSizes.sm),
                               Text(
                                 product.description.isNotEmpty
                                     ? product.description
                                     : 'A beautiful handcrafted piece made with premium materials.',
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color:  AppColors.lightTextSecondary,
+                                  color: AppColors.lightTextSecondary,
                                   height: 1.6,
                                 ),
                               ),
@@ -285,40 +369,58 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                               // ── Reviews section ─────────────
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('Reviews',
-                                      style: AppTextStyles.headingSmall),
                                   Text(
-                                    '${reviews.length} reviews',
-                                    style: AppTextStyles.bodySmall.copyWith(
-                                        color: AppColors.lightTextSecondary),
+                                    'Reviews',
+                                    style: AppTextStyles.headingSmall,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '${reviews.length} reviews',
+                                        style: AppTextStyles.bodySmall.copyWith(
+                                          color: AppColors.lightTextSecondary,
+                                        ),
+                                      ),
+                                      SizedBox(width: AppSizes.sm),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          _showAddReviewDialog(
+                                            context,
+                                            widget.productId,
+                                          );
+                                        },
+                                        child: const Text('Add Review'),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
+
                               SizedBox(height: AppSizes.md),
 
-                              reviews.isEmpty
-                                  ? Center(
-                                child: Text(
-                                  'No reviews yet',
-                                  style: AppTextStyles.bodyMedium.copyWith(
-                                      color: AppColors.lightTextSecondary),
+                              if (reviews.isEmpty)
+                                Center(
+                                  child: Text(
+                                    'No reviews yet',
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.lightTextSecondary,
+                                    ),
+                                  ),
+                                )
+                              else
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: reviews.length,
+                                  separatorBuilder: (_, __) => Divider(
+                                    color: AppColors.lightDivider,
+                                    height: AppSizes.lg,
+                                  ),
+                                  itemBuilder: (_, i) =>
+                                      _ReviewItem(review: reviews[i]),
                                 ),
-                              )
-                                  : ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                const NeverScrollableScrollPhysics(),
-                                itemCount: reviews.length,
-                                separatorBuilder: (_, __) => Divider(
-                                  color:  AppColors.lightDivider,
-                                  height: AppSizes.lg,
-                                ),
-                                itemBuilder: (_, i) =>
-                                    _ReviewItem(review: reviews[i]),
-                              ),
-
                               SizedBox(height: AppSizes.xl),
                             ],
                           ),
@@ -328,7 +430,6 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                   ),
                 ),
 
-                // ── Add to Cart button ───────────────────────
                 Container(
                   padding: EdgeInsets.fromLTRB(
                     AppSizes.screenPadding,
@@ -340,38 +441,27 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                     boxShadow: [
                       BoxShadow(
-                        color:      Colors.black.withOpacity(0.06),
+                        color: Colors.black.withOpacity(0.06),
                         blurRadius: 12,
-                        offset:     const Offset(0, -4),
+                        offset: const Offset(0, -4),
                       ),
                     ],
                   ),
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      // TODO: wire to CartCubit.addToCart(productId, 1)
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('${product.name} added to cart!'),
                           backgroundColor: AppColors.primary,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(AppSizes.radiusMd),
-                          ),
                         ),
                       );
                     },
-                    icon:  const Icon(Icons.shopping_bag_outlined),
+                    icon: const Icon(Icons.shopping_bag_outlined),
                     label: const Text('Add to Cart'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.white,
                       minimumSize: const Size(double.infinity, 52),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(AppSizes.radiusFull),
-                      ),
-                      textStyle: AppTextStyles.buttonLarge,
                     ),
                   ),
                 ),
@@ -398,12 +488,10 @@ class _ReviewItem extends StatelessWidget {
       children: [
         // Avatar
         CircleAvatar(
-          radius:          20,
+          radius: 20,
           backgroundColor: AppColors.primary.withOpacity(0.1),
           child: Text(
-            review.userName.isNotEmpty
-                ? review.userName[0].toUpperCase()
-                : '?',
+            review.userName.isNotEmpty ? review.userName[0].toUpperCase() : '?',
             style: AppTextStyles.labelMedium.copyWith(color: AppColors.primary),
           ),
         ),
@@ -420,8 +508,9 @@ class _ReviewItem extends StatelessWidget {
                   Text(
                     review.userName,
                     style: AppTextStyles.labelMedium.copyWith(
-                        color: AppColors.lightTextPrimary,
-                        fontWeight: FontWeight.w700),
+                      color: AppColors.lightTextPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   Row(
                     children: List.generate(5, (i) {
@@ -429,7 +518,7 @@ class _ReviewItem extends StatelessWidget {
                         i < review.rating.round()
                             ? Icons.star
                             : Icons.star_border,
-                        size:  14,
+                        size: 14,
                         color: AppColors.starColor,
                       );
                     }),
@@ -442,7 +531,7 @@ class _ReviewItem extends StatelessWidget {
               Text(
                 review.comment,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color:  AppColors.lightTextSecondary,
+                  color: AppColors.lightTextSecondary,
                   height: 1.5,
                 ),
               ),
