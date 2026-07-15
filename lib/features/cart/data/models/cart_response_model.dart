@@ -16,19 +16,31 @@ class CartResponseModel {
   });
 
   factory CartResponseModel.fromJson(Map<String, dynamic> json) {
+    final items =
+        (json['cartItems'] as List<dynamic>?)
+            ?.map((e) => CartItemModel.fromJson(e))
+            .toList() ??
+        [];
+
+    // 🔧 السيرفر مش بيرجع subtotal/totalDiscount/totalPrice على مستوى
+    // الكارت، فبنحسبهم إحنا من مجموع كل item بدل ما نسيبهم صفر دايمًا
+    final subtotal = items.fold<double>(
+      0,
+      (sum, item) => sum + (item.basePricePerUnit * item.quantity),
+    );
+    final totalPrice = items.fold<double>(
+      0,
+      (sum, item) => sum + item.totalPrice,
+    );
+    final totalDiscount = subtotal - totalPrice;
+
     return CartResponseModel(
       cartId: json['cartId'] ?? '',
-      // 🔧 لو السيرفر رجع items: null (كارت فاضي)، بنعتبرها List فاضية
-      // بدل ما نعمل crash بـ type cast error
-      items:
-          (json['items'] as List<dynamic>?)
-              ?.map((e) => CartItemModel.fromJson(e))
-              .toList() ??
-          [],
-      // 🔧 نفس الحماية لأي رقم ممكن يرجع null
-      subtotal: (json['subtotal'] as num?)?.toDouble() ?? 0,
-      totalDiscount: (json['totalDiscount'] as num?)?.toDouble() ?? 0,
-      totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0,
+      items: items,
+      subtotal: (json['subtotal'] as num?)?.toDouble() ?? subtotal,
+      totalDiscount:
+          (json['totalDiscount'] as num?)?.toDouble() ?? totalDiscount,
+      totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? totalPrice,
     );
   }
 }

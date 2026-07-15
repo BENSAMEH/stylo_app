@@ -17,9 +17,7 @@ class ApiClient {
     print("================================");
     print("TOKEN = $token");
 
-    final headers = {
-      "Accept": "application/json",
-    };
+    final headers = {"Accept": "application/json"};
 
     if (token != null && token.isNotEmpty) {
       headers["Authorization"] = "Bearer $token";
@@ -32,26 +30,21 @@ class ApiClient {
   }
 
   Future<Response> get(
-      String path, {
-        Map<String, dynamic>? queryParameters,
-      }) async {
-
-
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     return await _dio.request(
       path,
       queryParameters: queryParameters,
-      options: Options(
-        method: 'GET',
-        headers: _getOptions().headers,
-      ),
+      options: Options(method: 'GET', headers: _getOptions().headers),
     );
   }
 
   Future<Response> post(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParameters,
-      }) async {
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     return await _dio.post(
       path,
       data: data,
@@ -61,17 +54,12 @@ class ApiClient {
   }
 
   Future<Response> put(String path, {dynamic data}) async {
-    return await _dio.put(
-      path,
-      data: data,
-      options: _getOptions(),
-    );
+    return await _dio.put(path, data: data, options: _getOptions());
   }
 
-  Future<Response> delete(String path) async {
-    return await _dio.delete(
-      path,
-      options: _getOptions(),
-    );
+  // 🔧 أضفنا باراميتر data اختياري عشان الـ DELETE يقدر يبعت Body
+  // (بعض الـ endpoints زي /api/cart/items/{Id} بتطلب Body حتى مع DELETE)
+  Future<Response> delete(String path, {dynamic data}) async {
+    return await _dio.delete(path, data: data, options: _getOptions());
   }
 }
