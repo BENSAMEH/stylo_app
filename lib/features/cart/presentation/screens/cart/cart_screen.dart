@@ -8,6 +8,7 @@ import 'package:stylo_app/features/cart/data/models/update_cart_request_model.da
 import 'package:stylo_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:stylo_app/features/cart/presentation/cubit/cart_state.dart';
 import 'package:stylo_app/features/cart/presentation/screens/checkout/checkout_screen.dart';
+import 'package:stylo_app/features/cart/presentation/screens/empty_cart/empty_cart_screen.dart';
 import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 import 'package:stylo_app/features/profile/presentation/screens/profile/profile_screen.dart';
@@ -132,14 +133,8 @@ class _CartScreenState extends State<CartScreen> {
           final cart = (state as CartLoaded).cart;
 
           if (cart.items.isEmpty) {
-            return Center(
-              child: Text(
-                'Your cart is empty',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.lightTextSecondary,
-                ),
-              ),
-            );
+            return const EmptyCartContent();
+
           }
 
           return SingleChildScrollView(

@@ -21,8 +21,9 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int _selectedDelivery = 0; // 0 = express, 1 = standard
 
-  // ⚠️ لازم تتأكد من القيم الحقيقية المسموحة من POST /api/orders/checkout
-  String _selectedPaymentMethod = 'cash';
+  // ✅ تم التأكد فعليًا: "CashOnDelivery" هي القيمة الصحيحة اللي
+  // قبلها السيرفر (اتأكدت بالتجربة المباشرة عبر الـ debug console)
+  String _selectedPaymentMethod = 'CashOnDelivery';
 
   final AddressRepository _addressRepository = AddressRepository();
 
@@ -86,7 +87,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  // 🆕 يفتح Bottom Sheet لإضافة عنوان جديد
   void _openAddAddressSheet() {
     showModalBottomSheet(
       context: context,
@@ -94,8 +94,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       backgroundColor: Colors.transparent,
       builder: (_) => _AddAddressSheet(
         onAdded: () {
-          Navigator.pop(context); // اقفل الـ Sheet
-          _fetchAddresses(); // اعمل refresh للعناوين بعد الإضافة
+          Navigator.pop(context);
+          _fetchAddresses();
         },
       ),
     );
@@ -111,7 +111,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         if (state is CheckoutSuccess) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => const OrderSuccessScreen()),
+            MaterialPageRoute(
+              builder: (_) => OrderSuccessScreen(response: state.response),
+            ),
             (route) => false,
           );
         } else if (state is CheckoutFailure) {
@@ -196,18 +198,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     Expanded(
                       child: _PaymentOption(
                         label: 'Cash on Delivery',
-                        isSelected: _selectedPaymentMethod == 'cash',
-                        onTap: () =>
-                            setState(() => _selectedPaymentMethod = 'cash'),
+                        // ✅ القيمة دي مؤكدة 100% وشغالة فعليًا
+                        isSelected: _selectedPaymentMethod == 'CashOnDelivery',
+                        onTap: () => setState(
+                          () => _selectedPaymentMethod = 'CashOnDelivery',
+                        ),
                       ),
                     ),
                     SizedBox(width: AppSizes.md),
                     Expanded(
                       child: _PaymentOption(
                         label: 'Card',
-                        isSelected: _selectedPaymentMethod == 'card',
+                        // ⚠️ لسه غير مؤكدة 100% — لم تُختبر فعليًا.
+                        // "Card" مجرد أقرب افتراض بنفس نمط PascalCase
+                        // زي "CashOnDelivery". لو ظهر خطأ "Invalid
+                        // payment method" عند اختيارها، كرر نفس أسلوب
+                        // التجربة (جرب "CreditCard", "Paymob"... إلخ)
+                        isSelected: _selectedPaymentMethod == 'Card',
                         onTap: () =>
-                            setState(() => _selectedPaymentMethod = 'card'),
+                            setState(() => _selectedPaymentMethod = 'Card'),
                       ),
                     ),
                   ],
@@ -411,7 +420,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       );
     }
 
-    // 🆕 لما تكون فاضية، بنعرض زرار "Add Address" بدل رسالة ثابتة
     if (_addresses.isEmpty) {
       return Container(
         padding: EdgeInsets.all(AppSizes.md),
@@ -522,7 +530,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             onTap: () {
-              Navigator.pop(context); // اقفل الـ picker
+              Navigator.pop(context);
               _openAddAddressSheet();
             },
           ),
@@ -532,7 +540,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 }
 
-// ── 🆕 Bottom Sheet لإضافة عنوان جديد ─────────────────────────────────
+// ── Bottom Sheet لإضافة عنوان جديد ─────────────────────────────────
 class _AddAddressSheet extends StatefulWidget {
   final VoidCallback onAdded;
   const _AddAddressSheet({required this.onAdded});
@@ -572,7 +580,7 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
     try {
       await _repository.addAddress(
         AddressModel(
-          id: '', // السيرفر هو اللي بيولد الـ id
+          id: '',
           state: _stateController.text,
           city: _cityController.text,
           street: _streetController.text,
@@ -583,7 +591,7 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
       );
 
       if (!mounted) return;
-      widget.onAdded(); // بيقفل الـ Sheet ويعمل refresh
+      widget.onAdded();
     } catch (e) {
       if (!mounted) return;
       setState(() => _isSaving = false);
@@ -600,7 +608,7 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom, // يطلع فوق الكيبورد
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
         padding: EdgeInsets.all(AppSizes.lg),

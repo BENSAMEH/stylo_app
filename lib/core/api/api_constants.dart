@@ -29,8 +29,8 @@ class ApiConstants {
   static const String cart = "/cart";
   static const String cartItems = "/cart/items";
   static String cartItemById(String itemId) => "/cart/items/$itemId";
-
-  // Reviews
+// Checkout
+  static const String checkout = "/orders/checkout";  // Reviews
   static String reviewsByProduct(String productId) =>
       "/reviews/$productId?page=1&pageSize=10";
 }
