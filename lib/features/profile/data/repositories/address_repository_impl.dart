@@ -10,7 +10,7 @@ class AddressRepositoryImpl {
     return remoteDatasource.getAddresses();
   }
 
-  Future<AddressModel> addAddress(Map<String, dynamic> data) {
-    return remoteDatasource.addAddress(data);
+  Future<AddressModel> addAddress(AddressModel address) {
+    return remoteDatasource.addAddress(address);
   }
 }

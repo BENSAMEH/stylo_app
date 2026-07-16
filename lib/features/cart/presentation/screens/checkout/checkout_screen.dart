@@ -3,13 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
-import 'package:stylo_app/features/address/data/models/address_model.dart';
-import 'package:stylo_app/features/address/data/repositories/address_repository.dart';
+import 'package:stylo_app/core/di/injection_container.dart';
+
 import 'package:stylo_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:stylo_app/features/cart/presentation/cubit/cart_state.dart';
 import 'package:stylo_app/features/cart/presentation/cubit/checkout_cubit.dart';
 import 'package:stylo_app/features/cart/presentation/cubit/checkout_state.dart';
 import 'package:stylo_app/features/cart/presentation/screens/order_success/order_success_screen.dart';
+import 'package:stylo_app/features/profile/data/models/address_model.dart';
+import 'package:stylo_app/features/profile/data/repositories/address_repository_impl.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -25,7 +27,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   // قبلها السيرفر (اتأكدت بالتجربة المباشرة عبر الـ debug console)
   String _selectedPaymentMethod = 'CashOnDelivery';
 
-  final AddressRepository _addressRepository = AddressRepository();
+  final AddressRepositoryImpl _addressRepository =
+    sl<AddressRepositoryImpl>();
 
   List<AddressModel> _addresses = [];
   AddressModel? _selectedAddress;
@@ -558,7 +561,8 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
   final _phoneController = TextEditingController();
   final _notesController = TextEditingController();
 
-  final AddressRepository _repository = AddressRepository();
+  final AddressRepositoryImpl _repository =
+    sl<AddressRepositoryImpl>();
   bool _isSaving = false;
 
   @override

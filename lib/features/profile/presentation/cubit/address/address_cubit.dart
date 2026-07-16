@@ -12,28 +12,29 @@ class AddressCubit extends Cubit<AddressState> {
   List<AddressModel> addresses = [];
 
   Future<void> getAddresses() async {
-    try {
-      emit(AddressLoading());
+  try {
+    emit(AddressLoading());
 
-      addresses = await repository.getAddresses();
+    addresses = await repository.getAddresses();
 
-      emit(AddressSuccess(addresses));
-    } catch (e) {
-      emit(AddressFailure(e.toString()));
-    }
+    emit(AddressSuccess(addresses));
+  } catch (e, stackTrace) {
+    print("ADDRESS ERROR: $e");
+    print(stackTrace);
+
+    emit(AddressFailure(e.toString()));
   }
+}
 
-  Future<void> addAddress(Map<String, dynamic> data) async {
+  Future<void> addAddress(AddressModel address) async {
     try {
       emit(AddressLoading());
 
-      await repository.addAddress(data);
+      await repository.addAddress(address);
 
       await getAddresses();
     } catch (e) {
       emit(AddressFailure(e.toString()));
     }
   }
-
-  
 }

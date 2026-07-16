@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:stylo_app/core/di/injection_container.dart';
+import 'package:stylo_app/features/profile/data/models/address_model.dart';
 import 'package:stylo_app/features/profile/presentation/cubit/address/address_cubit.dart';
 
 class AddAddressScreen extends StatelessWidget {
@@ -77,14 +78,17 @@ class AddAddressScreen extends StatelessWidget {
 
                   child: ElevatedButton(
                     onPressed: () async {
-                      await context.read<AddressCubit>().addAddress({
-                        "state": stateController.text,
-                        "city": cityController.text,
-                        "street": streetController.text,
-                        "apartment": apartmentController.text,
-                        "phoneNumber": phoneController.text,
-                        "notes": notesController.text,
-                      });
+                      await context.read<AddressCubit>().addAddress(
+                        AddressModel(
+                          id: '',
+                          state: stateController.text,
+                          city: cityController.text,
+                          street: streetController.text,
+                          apartment: apartmentController.text,
+                          phoneNumber: phoneController.text,
+                          notes: notesController.text,
+                        ),
+                      );
 
                       Navigator.pop(context, true);
                     },

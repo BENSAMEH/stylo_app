@@ -125,7 +125,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
 
     await cartCubit.addToCart(
       AddToCartRequestModel(
-        productId: productId, // دلوقتي String حقيقي (UUID) مش رقم
+        productId: productId, 
         quantity: 1,
       ),
     );
@@ -206,7 +206,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                     onPressed: () =>
                         context.read<ProductDetailCubit>().loadProduct(
                           widget.productId,
-                        ), // 👈 استخدم widget.productId مباشرة
+                        ),
                     child: const Text('Retry'),
                   ),
                 ],

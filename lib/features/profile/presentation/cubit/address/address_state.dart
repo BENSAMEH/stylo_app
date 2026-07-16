@@ -1,4 +1,4 @@
-import '../../../data/models/address_model.dart';
+import 'package:stylo_app/features/profile/data/models/address_model.dart';
 
 abstract class AddressState {}
 

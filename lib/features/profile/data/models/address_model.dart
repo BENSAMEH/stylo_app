@@ -1,43 +1,46 @@
 class AddressModel {
   final String id;
-  final String apartment;
-  final String city;
   final String state;
+  final String city;
   final String street;
+  final String apartment;
   final String phoneNumber;
   final String notes;
 
   AddressModel({
     required this.id,
-    required this.apartment,
-    required this.city,
     required this.state,
-    required this.notes,
+    required this.city,
     required this.street,
+    required this.apartment,
     required this.phoneNumber,
+    required this.notes,
   });
 
   factory AddressModel.fromJson(Map<String, dynamic> json) {
     return AddressModel(
-      id: json['id'] ?? '',
-      apartment: json['apartment'] ?? '',
-      city: json['city'] ?? '',
+      id: json['id']?.toString() ?? '',
       state: json['state'] ?? '',
-      notes: json['notes'] ?? '',
+      city: json['city'] ?? '',
       street: json['street'] ?? '',
+      apartment: json['apartment'] ?? '',
       phoneNumber: json['phoneNumber'] ?? '',
+      notes: json['notes'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'apartment': apartment,
-      'city': city,
-      'state': state,
-      'notes': notes,
-      'street': street,
-      'phoneNumber': phoneNumber,
+      "state": state,
+      "city": city,
+      "street": street,
+      "apartment": apartment,
+      "phoneNumber": phoneNumber,
+      "notes": notes,
     };
   }
+
+  String get displayLine1 => "$street, $apartment";
+
+  String get displayLine2 => "$city, $state";
 }
