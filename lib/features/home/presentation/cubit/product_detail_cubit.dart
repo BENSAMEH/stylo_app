@@ -9,19 +9,32 @@ class ProductDetailCubit extends Cubit<ProductDetailState> {
   ProductDetailCubit(this.repository) : super(ProductDetailInitial());
 
   Future<void> loadProduct(String productId) async {
+    print("LOAD PRODUCT START");
+
     emit(ProductDetailLoading());
+
     try {
+      print("GET PRODUCT...");
       final product = await repository.getProductById(productId);
 
+      print("PRODUCT LOADED");
+
       List<ReviewModel> reviews = [];
+
       try {
+        print("GET REVIEWS...");
         reviews = await repository.getReviews(productId);
-      } catch (_) {
-        // reviews failing should not break the whole screen
+        print("REVIEWS COUNT = ${reviews.length}");
+      } catch (e) {
+        print("REVIEWS ERROR = $e");
       }
 
-      emit(ProductDetailSuccess(product: product, reviews: reviews));
+      emit(ProductDetailSuccess(
+        product: product,
+        reviews: reviews,
+      ));
     } catch (e) {
+      print("PRODUCT ERROR = $e");
       emit(ProductDetailError(e.toString()));
     }
   }

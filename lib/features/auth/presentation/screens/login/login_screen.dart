@@ -12,7 +12,7 @@ import 'package:stylo_app/features/auth/presentation/cubit/auth_state.dart';
 import 'package:stylo_app/features/auth/presentation/screens/forgot_password/forgot_password_screen.dart';
 import 'package:stylo_app/features/auth/presentation/screens/register/register_screen.dart';
 
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:stylo_app/features/home/presentation/screens/main_layout_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (_) => const HomeScreen(),
+              builder: (_) => const MainLayoutScreen(),
             ),
             (route) => false,
           );

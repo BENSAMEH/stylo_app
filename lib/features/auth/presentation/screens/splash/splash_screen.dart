@@ -6,7 +6,7 @@ import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
 
 import 'package:stylo_app/features/auth/presentation/screens/onboarding/onboarding_screen.dart';
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:stylo_app/features/home/presentation/screens/main_layout_screen.dart';
  
 
 class SplashScreen extends StatefulWidget {
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // Token exists -> Jump right over onboarding and login straight into the App Home
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()), // Replace with your real core app layout widget
+        MaterialPageRoute(builder: (_) => const MainLayoutScreen()), // Replace with your real core app layout widget
       );
     } else {
       // No token found -> New user or logged out -> Show onboarding

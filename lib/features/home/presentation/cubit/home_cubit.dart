@@ -15,9 +15,19 @@ class HomeCubit extends Cubit<HomeState> {
 
   HomeCubit(this.repository) : super(HomeInitial());
 
-  Future<void> loadHome() async {
-    print("🎬 [HomeCubit] loadHome() STARTED!");
+  Future<void> loadHome({bool force = false}) async {
+    print("🎬 [HomeCubit] loadHome() STARTED! force=$force");
     if (isClosed) return;
+
+    if (!force && _allProducts.isNotEmpty) {
+      print("📦 [HomeCubit] Returning cached data!");
+      emit(HomeSuccess(
+        products: _allProducts,
+        categories: _allCategories,
+        offers: _allOffers,
+      ));
+      return;
+    }
 
     emit(HomeLoading());
     try {
@@ -28,17 +38,14 @@ class HomeCubit extends Cubit<HomeState> {
       final products   = await repository.getProducts();
 
       print("🛰️ [HomeCubit] Requesting Offers API...");
-      
       final offers     = await repository.getOffers();
 
-      
       _allProducts = products;
       _allCategories = categories;
       _allOffers = offers; 
 
       if (isClosed) return;
 
-    
       emit(HomeSuccess(
         products: _allProducts,
         categories: _allCategories,
@@ -52,22 +59,24 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  
+  void clearFilter() {
+    if (isClosed) return;
+    emit(HomeSuccess(
+      products: _allProducts,
+      categories: _allCategories,
+      offers: _allOffers,
+    ));
+  }
+
   void filterByCategory(int categoryId) {
     if (isClosed) return;
 
-    
     final currentState = state;
     if (currentState is HomeCategoryFiltered && currentState.selectedCategoryId == categoryId) {
-      emit(HomeSuccess(
-        products: _allProducts,
-        categories: _allCategories,
-        offers: _allOffers,
-      ));
+      clearFilter();
       return;
     }
 
-   
     final filteredProducts = _allProducts
         .where((product) => product.categoryId == categoryId)
         .toList();

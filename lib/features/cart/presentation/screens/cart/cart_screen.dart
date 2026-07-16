@@ -9,11 +9,7 @@ import 'package:stylo_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:stylo_app/features/cart/presentation/cubit/cart_state.dart';
 import 'package:stylo_app/features/cart/presentation/screens/checkout/checkout_screen.dart';
 import 'package:stylo_app/features/cart/presentation/screens/empty_cart/empty_cart_screen.dart';
-import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
-import 'package:stylo_app/features/profile/presentation/screens/profile/profile_screen.dart';
 
-import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -58,36 +54,7 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: AppBottomNavWidget(
-        currentIndex: 2,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-                (route) => false,
-              );
-              break;
-            case 1:
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const CategoriesScreen()),
-                (route) => false,
-              );
-              break;
-            case 2:
-              break; // already here
-            case 3:
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                (route) => false,
-              );
-              break;
-          }
-        },
-      ),
+
       body: BlocConsumer<CartCubit, CartState>(
         listener: (context, state) {
           if (state is CartError) {

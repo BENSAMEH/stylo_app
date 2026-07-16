@@ -3,7 +3,9 @@ import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/cart/data/models/checkout_response_model.dart';
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylo_app/core/routing/navigation_cubit.dart';
+import 'package:stylo_app/features/home/presentation/screens/main_layout_screen.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
   // 🆕 بياخد الـ response الحقيقي الراجع من CheckoutCubit بدل ما يكون
@@ -108,11 +110,14 @@ class OrderSuccessScreen extends StatelessWidget {
                 ),
               ),
               child: ElevatedButton(
-                onPressed: () => Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const HomeScreen()),
-                  (route) => false,
-                ),
+                onPressed: () {
+                  context.read<NavigationCubit>().setTab(0);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MainLayoutScreen()),
+                    (route) => false,
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.transparent,
                   shadowColor: AppColors.transparent,

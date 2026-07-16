@@ -4,16 +4,14 @@ import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/core/theme/theme_cubit.dart';
 import 'package:stylo_app/features/auth/presentation/screens/login/login_screen.dart';
-import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
-import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+
 import 'package:stylo_app/features/more/presentation/screens/about_us/about_us_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/add_product/add_product_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/contact_us/contact_us_screen.dart';
 import 'package:stylo_app/features/more/presentation/screens/privacy_policy/privacy_policy_screen.dart';
 import 'package:stylo_app/features/profile/presentation/screens/change_password/change_password_screen.dart';
 import 'package:stylo_app/features/profile/presentation/screens/edit_profile/edit_profile_screen.dart';
-import 'package:stylo_app/shared/widgets/app_bottom_nav_widget.dart';
+
 import 'package:stylo_app/shared/widgets/profile_item.dart';
 import 'package:stylo_app/shared/widgets/section_title.dart';
 
@@ -31,36 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: AppBottomNavWidget(
-        currentIndex: 3,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-              );
-              break;
 
-            case 1:
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const CategoriesScreen()),
-                (route) => false,
-              );
-              break;
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const CartScreen()),
-              );
-              break;
-
-            case 3:
-              break;
-          }
-        },
-      ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,

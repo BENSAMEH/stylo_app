@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
-import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stylo_app/core/routing/navigation_cubit.dart';
 
 class EmptyCartContent extends StatelessWidget {
   const EmptyCartContent({super.key});
@@ -67,11 +68,7 @@ class EmptyCartContent extends StatelessWidget {
             width: double.infinity,
             height: AppSizes.buttonHeight,
             child: ElevatedButton(
-              onPressed: () => Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-                (route) => false,
-              ),
+              onPressed: () => context.read<NavigationCubit>().setTab(0),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.white,

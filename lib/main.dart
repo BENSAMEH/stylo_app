@@ -6,6 +6,7 @@ import 'package:stylo_app/core/di/injection_container.dart';
 import 'package:stylo_app/core/services/shared_pref_service.dart';
 import 'package:stylo_app/core/theme/app_theme.dart';
 import 'package:stylo_app/core/theme/theme_cubit.dart';
+import 'package:stylo_app/core/routing/navigation_cubit.dart';
 
 import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:stylo_app/features/auth/presentation/screens/splash/splash_screen.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => ThemeCubit()),
+            BlocProvider(create: (_) => NavigationCubit()),
 
             BlocProvider(create: (_) => AuthCubit()),
 

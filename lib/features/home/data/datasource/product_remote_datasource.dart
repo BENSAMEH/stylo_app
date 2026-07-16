@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:stylo_app/core/api/api_client.dart';
 import 'package:stylo_app/core/api/api_constants.dart';
 import '../models/product_model.dart';
@@ -15,45 +16,38 @@ class ProductRemoteDatasource {
   Future<List<ReviewModel>> getReviews(String productId) async {
     final response = await apiClient.get(
       '/reviews/$productId',
-      queryParameters: {        // ← was data: (bug — GET ignores body)
-        'page':     1,
-        'pageSize': 10,
+      data: {
+        "productId": productId,
+        "page": 1,
+        "pageSize": 10,
       },
     );
 
     final data = response.data;
 
-    // handle all possible response shapes from the API
-    List rawList = [];
+    print(data.runtimeType);
+    print(data["reviews"].runtimeType);
+    print(data["reviews"]["items"].runtimeType);
+    print(data["reviews"]["items"]);
 
-    if (data is List) {
-      rawList = data;
-    } else if (data is Map) {
-      if (data['reviews'] is List) {
-        rawList = data['reviews'];
-      } else if (data['reviews'] is Map && data['reviews']['items'] is List) {
-        rawList = data['reviews']['items'];
-      } else if (data['items'] is List) {
-        rawList = data['items'];
-      } else if (data['data'] is List) {
-        rawList = data['data'];
-      }
-    }
+    final List<dynamic> items =
+    List<dynamic>.from(data["reviews"]["items"]);
 
-    return rawList.map((e) => ReviewModel.fromJson(e)).toList();
+    return items
+        .map((e) => ReviewModel.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
   }
   Future<void> addReview({
   required String productId,
   required String comment,
   required double rating,
 }) async {
-  await apiClient.post(
-    '/reviews',
-    data: {
-      'productId': productId,
-      'comment':   comment,
-      'rating':    rating,
-    },
-  );
+    await apiClient.post(
+      '/reviews/$productId',
+      data: {
+        'comment': comment,
+        'rating': rating.toInt(),
+      },
+    );
 }
 }

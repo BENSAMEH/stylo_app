@@ -11,10 +11,9 @@ class ReviewRepo {
       ApiConstants.reviewsByProduct(productId),
     );
 
-    final data = response.data;
-    final List items = data["reviews"]["items"];
+    print(response.data);
 
-    return items.map((e) => ReviewModel.fromJson(e)).toList();
+    return [];
   }
 
   Future<void> addReview({

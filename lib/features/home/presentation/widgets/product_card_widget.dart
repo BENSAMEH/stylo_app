@@ -78,10 +78,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     child: Container(
                       width: 30,
                       height: 30,
-                      decoration: const BoxDecoration(
-                        color: AppColors.white,
-                        shape: BoxShape.circle,
-                      ),
+                      decoration: BoxDecoration(
+  color: Theme.of(context).colorScheme.surface,
+  shape: BoxShape.circle,
+),
                       child: Icon(
                         _isFavourite ? Icons.favorite : Icons.favorite_border,
                         color: _isFavourite ? AppColors.secondary : AppColors.textSecondary(context),
