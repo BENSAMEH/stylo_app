@@ -45,17 +45,17 @@ class CartRemoteDataSource {
     );
   }
 Future<void> deleteItem(String itemId) async {
-    try {
-      await _apiClient.delete(
-        ApiConstants.cartItemById(itemId),
-        // 🔧 السيرفر مستني Body فيه الـ id حتى مع إنها DELETE request
-        // (شفنا كده في Scalar: Body required -> { "id": "uuid" })
-        data: {"id": itemId},
-      );
-    } on DioException catch (e) {
-      print("DELETE ITEM STATUS: ${e.response?.statusCode}");
-      print("DELETE ITEM RESPONSE: ${e.response?.data}");
-      rethrow;
-    }
+  try {
+    await _apiClient.delete(
+      ApiConstants.cartItemById(itemId),
+      data: {
+        "id": itemId,
+      },
+    );
+  } on DioException catch (e) {
+    print("DELETE ITEM STATUS: ${e.response?.statusCode}");
+    print("DELETE ITEM RESPONSE: ${e.response?.data}");
+    rethrow;
   }
+}
 }

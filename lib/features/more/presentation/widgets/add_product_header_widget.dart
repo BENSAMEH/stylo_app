@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 
@@ -13,13 +12,15 @@ class AddProductHeaderWidget extends StatelessWidget {
       children: [
         Text(
           'Add New Product',
-          style: AppTextStyles.headingLarge,
+          style: AppTextStyles.headingLarge.copyWith(
+            color: Theme.of(context).textTheme.headlineSmall?.color,
+          ),
         ),
         SizedBox(height: AppSizes.xs),
         Text(
           'Register high-end accessories to your active inventory.',
           style: AppTextStyles.bodySmall.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
             height: 1.5,
           ),
         ),

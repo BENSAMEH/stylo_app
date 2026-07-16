@@ -13,13 +13,15 @@ class AboutHeritageWidget extends StatelessWidget {
       children: [
         Text(
           'Our Heritage',
-          style: AppTextStyles.headingLarge.copyWith(color: AppColors.primary),
+          style: AppTextStyles.headingLarge.copyWith(
+            color: AppColors.primary,
+          ),
         ),
         SizedBox(height: AppSizes.md),
         Text(
           'Founded in the heart of the historic jewelry district, Bariq began as a private atelier dedicated to the pursuit of perfection. For four decades, our artisans have pushed the boundaries of metallurgical science and aesthetic design, creating pieces that are not merely accessories, but timeless heirlooms.',
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: Theme.of(context).textTheme.bodyMedium!.color,
             height: 1.7,
           ),
         ),

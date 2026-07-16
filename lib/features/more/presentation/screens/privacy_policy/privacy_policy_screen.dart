@@ -9,9 +9,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.lightSurface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
@@ -28,32 +28,39 @@ class PrivacyPolicyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // ── Category label ─────────────────────────────────
             Text(
               'LEGAL DOCUMENTATION',
               style: AppTextStyles.caption.copyWith(
-                color:         AppColors.primary,
-                fontWeight:    FontWeight.w600,
+                color: AppColors.primary,
+                fontWeight: FontWeight.w600,
                 letterSpacing: 1.2,
               ),
             ),
             SizedBox(height: AppSizes.sm),
 
             // ── Title ──────────────────────────────────────────
-            Text('Privacy Policy', style: AppTextStyles.headingLarge),
+            Text(
+              'Privacy Policy',
+              style: AppTextStyles.headingLarge.copyWith(
+                color: Theme.of(context).textTheme.titleLarge?.color,
+              ),
+            ),
             SizedBox(height: AppSizes.sm),
 
             // ── Last updated ───────────────────────────────────
             Row(
               children: [
-                const Icon(Icons.access_time,
-                    size: 16, color: AppColors.lightTextSecondary),
+                Icon(
+                  Icons.access_time,
+                  size: 16,
+                  color: AppColors.textSecondary(context),
+                ),
                 SizedBox(width: AppSizes.xs),
                 Text(
                   'Last updated: June 18, 2024',
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                 ),
               ],
@@ -66,14 +73,16 @@ class PrivacyPolicyScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppSizes.radiusXl),
               child: Image.network(
                 'https://lh3.googleusercontent.com/aida-public/AB6AXuAAQkXsdOYXqXX3UNLjGNnJkmNCoovVCBvfWW8j7Mitch_L1HXOY8bevCeQYv8B0UCY6Kd9pWVyKv9_ORVNsAwtdLlUcUn5ZhYm-x9ZVEB8T7o2nQf6EdMJ2a_4pjElhEz0__uyf-q-_9e0-_H3ij-vRY_PXMpJX9c9M2_8CjaSDR-C--_s4kz9JYmN7MvCzUTCcBB1wFzhBWwE4TOrw-pHTy8C1_vZQ-TT4eZ29fE7RIsO9sS9PJdk',
-                height:    190,
-                width:     double.infinity,
-                fit:       BoxFit.cover,
+                height: 190,
+                width: double.infinity,
+                fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   height: 190,
-                  color:  AppColors.lightDivider,
-                  child:  const Icon(Icons.image_not_supported_outlined,
-                      color: AppColors.lightTextSecondary),
+                  color: Theme.of(context).dividerColor,
+                  child:  Icon(
+                    Icons.image_not_supported_outlined,
+                    color: AppColors.textSecondary(context),
+                  ),
                 ),
               ),
             ),
@@ -82,10 +91,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
             // ── Data Collection ────────────────────────────────
             _PolicySectionCard(
-              icon:        Icons.lock_outline,
-              iconColor:   AppColors.primary,
-              title:       'Data Collection',
-              description: "At Stylo, your privacy is the cornerstone of our luxury shopping experience...",
+              icon: Icons.lock_outline,
+              iconColor: AppColors.primary,
+              title: 'Data Collection',
+              description:
+                  "At Stylo, your privacy is the cornerstone of our luxury shopping experience...",
               bullets: const [
                 'Personal identifiers including name, email address and shipping details.',
                 'Transactional data for secure payment processing.',
@@ -97,14 +107,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
             // ── How We Use Your Data ───────────────────────────
             _PolicySectionCard(
-              icon:        Icons.auto_fix_high,
-              iconColor:   AppColors.accent,
-              title:       'How We Use Your Data',
-              description: 'We utilize your information to provide a seamless and secure shopping experience.',
+              icon: Icons.auto_fix_high,
+              iconColor: AppColors.accent,
+              title: 'How We Use Your Data',
+              description:
+                  'We utilize your information to provide a seamless and secure shopping experience.',
               extra: Container(
                 padding: EdgeInsets.all(AppSizes.md),
                 decoration: BoxDecoration(
-                  color:        AppColors.primary.withOpacity(0.06),
+                  color: AppColors.primary.withOpacity(0.06),
                   borderRadius: BorderRadius.circular(AppSizes.radiusMd),
                 ),
                 child: Column(
@@ -113,8 +124,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     Text(
                       'SERVICE FULFILLMENT',
                       style: AppTextStyles.caption.copyWith(
-                        color:         AppColors.primary,
-                        fontWeight:    FontWeight.w700,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 1,
                       ),
                     ),
@@ -122,15 +133,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     Text(
                       'Processing purchases, handling logistics and customer support.',
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.lightTextSecondary,
+                        color: AppColors.textSecondary(context),
                       ),
                     ),
                     SizedBox(height: AppSizes.sm),
                     Text(
                       'PERSONALIZATION',
                       style: AppTextStyles.caption.copyWith(
-                        color:         AppColors.primary,
-                        fontWeight:    FontWeight.w700,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 1,
                       ),
                     ),
@@ -138,7 +149,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     Text(
                       'Tailoring our website and exclusive previews.',
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.lightTextSecondary,
+                        color: AppColors.textSecondary(context),
                       ),
                     ),
                   ],
@@ -150,10 +161,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
             // ── Third-Party Sharing ────────────────────────────
             _PolicySectionCard(
-              icon:        Icons.share,
-              iconColor:   AppColors.warning,
-              title:       'Third-Party Sharing',
-              description: 'Stylo does not sell your personal data. We only share information with trusted partners required to complete your orders securely.',
+              icon: Icons.share,
+              iconColor: AppColors.warning,
+              title: 'Third-Party Sharing',
+              description:
+                  'Stylo does not sell your personal data. We only share information with trusted partners required to complete your orders securely.',
             ),
 
             SizedBox(height: AppSizes.xxl),
@@ -163,7 +175,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               child: Text(
                 'Have questions regarding your privacy?',
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.lightTextSecondary,
+                  color: AppColors.textSecondary(context),
                 ),
               ),
             ),
@@ -171,7 +183,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             SizedBox(height: AppSizes.md),
 
             SizedBox(
-              width:  double.infinity,
+              width: double.infinity,
               height: AppSizes.buttonHeight,
               child: ElevatedButton(
                 onPressed: () {},
@@ -220,20 +232,21 @@ class _PolicySectionCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSizes.md),
       decoration: BoxDecoration(
-        color:        AppColors.lightSurface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(AppSizes.radiusXl),
         boxShadow: [
           BoxShadow(
-            color:      AppColors.lightTextSecondary.withOpacity(0.08),
+            color: Colors.black.withOpacity(
+              Theme.of(context).brightness == Brightness.dark ? 0.30 : 0.08,
+            ),
             blurRadius: 12,
-            offset:     const Offset(0, 5),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           // Icon + title row
           Row(
             children: [
@@ -242,7 +255,12 @@ class _PolicySectionCard extends StatelessWidget {
                 child: Icon(icon, color: iconColor),
               ),
               SizedBox(width: AppSizes.sm),
-              Text(title, style: AppTextStyles.headingSmall),
+              Text(
+                title,
+                style: AppTextStyles.headingSmall.copyWith(
+                  color: Theme.of(context).textTheme.titleLarge?.color,
+                ),
+              ),
             ],
           ),
 
@@ -252,7 +270,11 @@ class _PolicySectionCard extends StatelessWidget {
           Text(
             description,
             style: AppTextStyles.bodyMedium.copyWith(
-              color:  AppColors.lightTextSecondary,
+              color: Theme.of(context)
+    .textTheme
+    .bodyMedium
+    ?.color
+    ?.withOpacity(.75),
               height: 1.7,
             ),
           ),
@@ -266,14 +288,17 @@ class _PolicySectionCard extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.check_circle_outline,
-                        color: AppColors.primary, size: 18),
+                    const Icon(
+                      Icons.check_circle_outline,
+                      color: AppColors.primary,
+                      size: 18,
+                    ),
                     SizedBox(width: AppSizes.sm),
                     Expanded(
                       child: Text(
                         e,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.lightTextSecondary,
+                          color: AppColors.textSecondary(context),
                         ),
                       ),
                     ),

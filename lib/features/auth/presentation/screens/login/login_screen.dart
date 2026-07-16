@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: AppColors.lightBackground,
+          backgroundColor: AppColors.background(context),
           body: SafeArea(
             child: Form(
               key: _formKey,
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Experience the pinnacle of luxury accessories.',
                         textAlign: TextAlign.center,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.lightTextSecondary,
+                          color: AppColors.textSecondary(context),
                         ),
                       ),
 
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           'Email Address',
                           style: AppTextStyles.labelMedium.copyWith(
-                            color: AppColors.lightTextPrimary,
+                            color: AppColors.textPrimary(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintText: 'name@example.com',
                           prefixIcon: const Icon(Icons.mail_outline),
                           filled: true,
-                          fillColor: AppColors.lightSurface,
+                          fillColor: AppColors.surface(context),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(
                                 AppSizes.radiusLg),
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           filled: true,
-                          fillColor: AppColors.lightSurface,
+                          fillColor: AppColors.surface(context),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(
                                 AppSizes.radiusLg),
@@ -252,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text(
                         'OR CONTINUE WITH',
                         style: AppTextStyles.caption.copyWith(
-                          color: AppColors.lightTextSecondary,
+                          color: AppColors.textSecondary(context),
                           letterSpacing: 1,
                         ),
                       ),
@@ -270,10 +270,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(width: AppSizes.sm),
                           _SocialButton(
-                            child: const Icon(
+                            child: Icon(
                               Icons.apple,
                               size: 30,
-                              color: AppColors.black,
+                              color: AppColors.textPrimary(context),
                             ),
                           ),
                           SizedBox(width: AppSizes.sm),
@@ -298,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             style:
                                 AppTextStyles.bodySmall.copyWith(
                               color:
-                                  AppColors.lightTextSecondary,
+                                  AppColors.textSecondary(context),
                             ),
                           ),
                           TextButton(
@@ -349,7 +349,7 @@ class _SocialButton extends StatelessWidget {
       child: Container(
         height: AppSizes.buttonHeight,
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(
             AppSizes.radiusLg,
           ),

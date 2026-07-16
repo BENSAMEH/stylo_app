@@ -201,7 +201,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         content: Text(
           'All entered data will be lost.',
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: AppColors.textSecondary(context),
           ),
         ),
         actions: [

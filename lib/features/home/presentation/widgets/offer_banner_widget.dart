@@ -57,7 +57,7 @@ class _OfferBannerWidgetState extends State<OfferBannerWidget> {
               width: _currentPage == index ? 20 : 6,
               height: 6,
               decoration: BoxDecoration(
-                color: _currentPage == index ? AppColors.primary : AppColors.lightDivider,
+                color: _currentPage == index ? AppColors.primary : AppColors.divider(context),
                 borderRadius: BorderRadius.circular(AppSizes.radiusFull),
               ),
             ),

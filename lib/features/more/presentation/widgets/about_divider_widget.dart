@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 
 class AboutDividerWidget extends StatelessWidget {
@@ -10,7 +9,7 @@ class AboutDividerWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: AppSizes.lg),
       child: Divider(
-        color: AppColors.lightDivider,
+        color: Theme.of(context).dividerColor,
         thickness: 1,
       ),
     );

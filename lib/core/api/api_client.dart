@@ -10,21 +10,16 @@ class ApiClient {
     _dio.interceptors.clear();
   }
 
-  // دالة مساعدة لإنشاء الـ Headers بشكل مستقل وآمن لكل طلب
   Options _getOptions() {
     final token = SharedPrefService.getAccessToken();
+    final Map<String, dynamic> headers = {
+      'Accept':
+          'application/json', // يضمن أن السيرفر يفهم الـ Response بصيغة JSON
+    };
 
-    print("================================");
-    print("TOKEN = $token");
-
-    final headers = {"Accept": "application/json"};
-
-    if (token != null && token.isNotEmpty) {
+    if (token != null && token.isNotEmpty && token != "null") {
       headers["Authorization"] = "Bearer $token";
     }
-
-    print(headers);
-    print("================================");
 
     return Options(headers: headers);
   }
@@ -33,10 +28,10 @@ class ApiClient {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    return await _dio.request(
+    return await _dio.get(
       path,
       queryParameters: queryParameters,
-      options: Options(method: 'GET', headers: _getOptions().headers),
+      options: _getOptions(), // تمرير التوكن والـ headers بشكل نظيف ومستقل
     );
   }
 
@@ -57,8 +52,6 @@ class ApiClient {
     return await _dio.put(path, data: data, options: _getOptions());
   }
 
-  // 🔧 أضفنا باراميتر data اختياري عشان الـ DELETE يقدر يبعت Body
-  // (بعض الـ endpoints زي /api/cart/items/{Id} بتطلب Body حتى مع DELETE)
   Future<Response> delete(String path, {dynamic data}) async {
     return await _dio.delete(path, data: data, options: _getOptions());
   }

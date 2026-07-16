@@ -25,6 +25,8 @@ class LabeledTextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -32,11 +34,12 @@ class LabeledTextFieldWidget extends StatelessWidget {
         Text(
           label.toUpperCase(),
           style: AppTextStyles.caption.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: theme.textTheme.bodyMedium?.color,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.1,
           ),
         ),
+
         SizedBox(height: AppSizes.xs),
 
         // Field
@@ -45,37 +48,51 @@ class LabeledTextFieldWidget extends StatelessWidget {
           maxLines: maxLines,
           keyboardType: keyboardType,
           validator: validator,
-          style: AppTextStyles.bodyMedium,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: theme.textTheme.bodyLarge?.color,
+          ),
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.lightTextSecondary.withOpacity(0.6),
+              color: theme.textTheme.bodyMedium?.color?.withOpacity(0.6),
             ),
+
             prefixText: prefixText,
             prefixStyle: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.lightTextSecondary,
+              color: theme.textTheme.bodyMedium?.color,
             ),
+
             filled: true,
-            fillColor: AppColors.primary.withOpacity(0.05),
+            fillColor: theme.cardColor,
+
             contentPadding: EdgeInsets.symmetric(
               horizontal: AppSizes.md,
               vertical: AppSizes.md,
             ),
+
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
               borderSide: BorderSide.none,
             ),
+
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
               borderSide: BorderSide.none,
             ),
+
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-              borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
+              ),
             ),
+
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-              borderSide: const BorderSide(color: AppColors.error),
+              borderSide: const BorderSide(
+                color: AppColors.error,
+              ),
             ),
           ),
         ),

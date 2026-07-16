@@ -42,7 +42,7 @@ class CategoryItemWidget extends StatelessWidget {
           Text(
             name,
             style: AppTextStyles.caption.copyWith(
-              color: isSelected ? AppColors.primary : AppColors.lightTextSecondary,
+              color: isSelected ? AppColors.primary : AppColors.textSecondary(context),
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),

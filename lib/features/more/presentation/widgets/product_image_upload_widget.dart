@@ -8,19 +8,24 @@ import 'package:stylo_app/core/constants/app_text_styles.dart';
 class ProductImageUploadWidget extends StatefulWidget {
   final void Function(File? image) onImageSelected;
 
-  const ProductImageUploadWidget({super.key, required this.onImageSelected});
+  const ProductImageUploadWidget({
+    super.key,
+    required this.onImageSelected,
+  });
 
   @override
   State<ProductImageUploadWidget> createState() =>
       _ProductImageUploadWidgetState();
 }
 
-class _ProductImageUploadWidgetState extends State<ProductImageUploadWidget> {
+class _ProductImageUploadWidgetState
+    extends State<ProductImageUploadWidget> {
   File? _selectedImage;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
+
     if (picked != null) {
       setState(() => _selectedImage = File(picked.path));
       widget.onImageSelected(_selectedImage);
@@ -29,6 +34,8 @@ class _ProductImageUploadWidgetState extends State<ProductImageUploadWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: _pickImage,
       child: Container(
@@ -67,19 +74,23 @@ class _ProductImageUploadWidgetState extends State<ProductImageUploadWidget> {
                       size: 28,
                     ),
                   ),
+
                   SizedBox(height: AppSizes.sm),
+
                   Text(
                     'Upload Product Image',
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.lightTextPrimary,
+                      color: theme.textTheme.bodyLarge?.color,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+
                   SizedBox(height: 4),
+
                   Text(
                     'High resolution PNG, JPG up to 10MB',
                     style: AppTextStyles.caption.copyWith(
-                      color: AppColors.lightTextSecondary,
+                      color: theme.textTheme.bodyMedium?.color,
                     ),
                   ),
                 ],

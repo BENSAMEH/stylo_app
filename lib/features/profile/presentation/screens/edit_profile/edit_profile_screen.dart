@@ -15,6 +15,8 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+final isDark = theme.brightness == Brightness.dark;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -33,10 +35,10 @@ class EditProfileScreen extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        backgroundColor: AppColors.lightBackground,
+        backgroundColor:  theme.scaffoldBackgroundColor,
 
         appBar: AppBar(
-          backgroundColor: AppColors.lightBackground,
+          backgroundColor: theme.scaffoldBackgroundColor,
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
@@ -46,7 +48,12 @@ class EditProfileScreen extends StatelessWidget {
               color: AppColors.primary,
             ),
           ),
-          title: Text('Edit Profile', style: AppTextStyles.headingSmall),
+          title: Text(
+  'Edit Profile',
+  style: AppTextStyles.headingSmall.copyWith(
+    color: Theme.of(context).textTheme.titleLarge?.color,
+  ),
+),
         ),
 
         body: SafeArea(
@@ -60,7 +67,7 @@ class EditProfileScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: AppSizes.avatarLg / 2,
-                      backgroundColor: AppColors.primary.withOpacity(0.1),
+                      backgroundColor: theme.colorScheme.primary.withOpacity(.12),
                       child: Icon(
                         Icons.person,
                         size: AppSizes.iconXl,
@@ -93,7 +100,7 @@ class EditProfileScreen extends StatelessWidget {
                   child: Text(
                     'CHANGE PHOTO',
                     style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.primary,
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1,
                     ),
@@ -208,8 +215,8 @@ class EditProfileScreen extends StatelessWidget {
                       // TODO: wire to ProfileCubit.updateProfile()
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.white,
+                      backgroundColor: theme.colorScheme.primary,
+foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(AppSizes.radiusLg),
                       ),
@@ -238,7 +245,7 @@ class EditProfileScreen extends StatelessWidget {
                 Text(
                   'Last updated: Today, 10:45 AM',
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                 ),
 

@@ -124,16 +124,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         final isPlacingOrder = checkoutState is CheckoutLoading;
 
         return Scaffold(
-          backgroundColor: AppColors.lightBackground,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: AppColors.lightSurface,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
             centerTitle: true,
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(
+              icon:  Icon(
                 Icons.arrow_back,
-                color: AppColors.lightTextPrimary,
+                color: AppColors.textPrimary(context),
               ),
             ),
             title: Text('Checkout', style: AppTextStyles.headingSmall),
@@ -228,7 +228,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Text(
                   'Promo Code',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                 ),
                 SizedBox(height: AppSizes.sm),
@@ -236,7 +236,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   height: AppSizes.buttonHeight,
                   padding: EdgeInsets.symmetric(horizontal: AppSizes.md),
                   decoration: BoxDecoration(
-                    color: AppColors.lightSurface,
+                    color: AppColors.surface(context),
                     borderRadius: BorderRadius.circular(AppSizes.radiusFull),
                   ),
                   child: Row(
@@ -248,7 +248,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             border: InputBorder.none,
                             hintText: 'Promo Code',
                             hintStyle: AppTextStyles.bodyMedium.copyWith(
-                              color: AppColors.lightTextSecondary,
+                              color: AppColors.textSecondary(context),
                             ),
                           ),
                         ),
@@ -273,7 +273,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Container(
                   padding: EdgeInsets.all(AppSizes.lg),
                   decoration: BoxDecoration(
-                    color: AppColors.lightSurface,
+                    color: AppColors.surface(context),
                     borderRadius: BorderRadius.circular(AppSizes.radiusXl),
                   ),
                   child: Column(
@@ -282,7 +282,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Text(
                         'ORDER SUMMARY',
                         style: AppTextStyles.caption.copyWith(
-                          color: AppColors.lightTextSecondary,
+                          color: AppColors.textSecondary(context),
                           fontWeight: FontWeight.w700,
                           letterSpacing: 2,
                         ),
@@ -292,7 +292,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Text(
                           'Loading cart...',
                           style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.lightTextSecondary,
+                            color: AppColors.textSecondary(context),
                           ),
                         )
                       else ...[
@@ -392,7 +392,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return Container(
         padding: EdgeInsets.all(AppSizes.md),
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(AppSizes.radiusXl),
         ),
         child: const Center(child: CircularProgressIndicator()),
@@ -403,7 +403,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return Container(
         padding: EdgeInsets.all(AppSizes.md),
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(AppSizes.radiusXl),
         ),
         child: Column(
@@ -424,7 +424,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return Container(
         padding: EdgeInsets.all(AppSizes.md),
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(AppSizes.radiusXl),
         ),
         child: Column(
@@ -433,7 +433,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Text(
               'No saved addresses. Please add one first.',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary,
+                color: AppColors.textSecondary(context),
               ),
             ),
             SizedBox(height: AppSizes.sm),
@@ -458,7 +458,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Container(
       padding: EdgeInsets.all(AppSizes.md),
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
+        color: AppColors.surface(context),
         borderRadius: BorderRadius.circular(AppSizes.radiusXl),
       ),
       child: Row(
@@ -477,7 +477,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Text(
                   address.displayLine1,
                   style: AppTextStyles.labelMedium.copyWith(
-                    color: AppColors.lightTextPrimary,
+                    color: AppColors.textPrimary(context),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -485,14 +485,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Text(
                   address.displayLine2,
                   style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                 ),
                 if (address.notes.isNotEmpty)
                   Text(
                     address.notes,
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.lightTextSecondary,
+                      color: AppColors.textSecondary(context),
                     ),
                   ),
               ],
@@ -612,8 +612,8 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
       ),
       child: Container(
         padding: EdgeInsets.all(AppSizes.lg),
-        decoration: const BoxDecoration(
-          color: AppColors.lightSurface,
+        decoration:  BoxDecoration(
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: SingleChildScrollView(
@@ -628,7 +628,7 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
                     height: 4,
                     margin: EdgeInsets.only(bottom: AppSizes.md),
                     decoration: BoxDecoration(
-                      color: AppColors.lightDivider,
+                      color: AppColors.divider(context),
                       borderRadius: BorderRadius.circular(AppSizes.radiusFull),
                     ),
                   ),
@@ -705,7 +705,7 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
       decoration: InputDecoration(
         labelText: label,
         filled: true,
-        fillColor: AppColors.lightBackground,
+        fillColor: AppColors.background(context),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.radiusMd),
           borderSide: BorderSide.none,
@@ -742,7 +742,7 @@ class _DeliveryOption extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(AppSizes.md),
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(AppSizes.radiusXl),
           border: isSelected
               ? Border.all(color: AppColors.primary, width: 2)
@@ -759,13 +759,13 @@ class _DeliveryOption extends StatelessWidget {
                       icon,
                       color: isSelected
                           ? AppColors.primary
-                          : AppColors.lightTextSecondary,
+                          : AppColors.textSecondary(context),
                     ),
                     SizedBox(width: AppSizes.sm),
                     Text(
                       title,
                       style: AppTextStyles.labelMedium.copyWith(
-                        color: AppColors.lightTextPrimary,
+                        color: AppColors.textPrimary(context),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -774,7 +774,7 @@ class _DeliveryOption extends StatelessWidget {
                 Text(
                   price,
                   style: AppTextStyles.labelMedium.copyWith(
-                    color: AppColors.lightTextPrimary,
+                    color: AppColors.textPrimary(context),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -786,7 +786,7 @@ class _DeliveryOption extends StatelessWidget {
               child: Text(
                 subtitle,
                 style: AppTextStyles.caption.copyWith(
-                  color: AppColors.lightTextSecondary,
+                  color: AppColors.textSecondary(context),
                 ),
               ),
             ),
@@ -816,7 +816,7 @@ class _PaymentOption extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: AppSizes.md),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(AppSizes.radiusXl),
           border: isSelected
               ? Border.all(color: AppColors.primary, width: 2)
@@ -825,7 +825,7 @@ class _PaymentOption extends StatelessWidget {
         child: Text(
           label,
           style: AppTextStyles.labelMedium.copyWith(
-            color: isSelected ? AppColors.primary : AppColors.lightTextPrimary,
+            color: isSelected ? AppColors.primary : AppColors.textPrimary(context),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -853,10 +853,10 @@ class _CheckoutRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = largeFontSize
         ? AppTextStyles.headingSmall.copyWith(
-            color: color ?? AppColors.lightTextPrimary,
+            color: color ?? AppColors.textPrimary(context),
           )
         : AppTextStyles.bodyMedium.copyWith(
-            color: color ?? AppColors.lightTextSecondary,
+            color: color ?? AppColors.textSecondary(context),
             fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
           );
 

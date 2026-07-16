@@ -20,7 +20,7 @@ class CategoryHeaderWidget extends StatelessWidget {
         // Actions
         Row(
           children: [
-            const Icon(Icons.search, color: AppColors.lightTextPrimary),
+            Icon(Icons.search, color: AppColors.textPrimary(context)),
             SizedBox(width: AppSizes.sm),
             CircleAvatar(
               radius: 18,

@@ -29,7 +29,7 @@ class CircleIconButton extends StatelessWidget {
         child: Icon(
           icon,
           size: 20,
-          color: iconColor ?? AppColors.lightTextPrimary,
+          color: iconColor ?? AppColors.textPrimary(context),
         ),
       ),
     );

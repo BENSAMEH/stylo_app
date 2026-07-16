@@ -21,6 +21,8 @@ class LabeledDropdownWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,11 +30,12 @@ class LabeledDropdownWidget extends StatelessWidget {
         Text(
           label.toUpperCase(),
           style: AppTextStyles.caption.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: theme.textTheme.bodyMedium?.color,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.1,
           ),
         ),
+
         SizedBox(height: AppSizes.xs),
 
         // Dropdown
@@ -46,23 +49,40 @@ class LabeledDropdownWidget extends StatelessWidget {
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
+
               hint: Text(
                 hint,
                 style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.lightTextSecondary.withOpacity(0.6),
+                  color: theme.textTheme.bodyMedium?.color?.withOpacity(0.6),
                 ),
               ),
-              icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                  color: AppColors.lightTextSecondary),
-              style: AppTextStyles.bodyMedium,
-              dropdownColor: AppColors.lightSurface,
+
+              icon: Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: theme.iconTheme.color,
+              ),
+
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: theme.textTheme.bodyLarge?.color,
+              ),
+
+              dropdownColor: theme.cardColor,
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+
               items: items
-                  .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(item, style: AppTextStyles.bodyMedium),
-                      ))
+                  .map(
+                    (item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(
+                        item,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: theme.textTheme.bodyLarge?.color,
+                        ),
+                      ),
+                    ),
+                  )
                   .toList(),
+
               onChanged: onChanged,
             ),
           ),

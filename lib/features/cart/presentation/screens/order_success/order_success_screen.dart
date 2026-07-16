@@ -15,9 +15,9 @@ class OrderSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: AppColors.background(context),
       appBar: AppBar(
-        backgroundColor: AppColors.lightSurface,
+        backgroundColor: AppColors.surface(context),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -55,7 +55,7 @@ class OrderSuccessScreen extends StatelessWidget {
                   : 'Thank you for choosing Stylo. Your luxury\naccessories are being prepared.',
               textAlign: TextAlign.center,
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary,
+                color: AppColors.textSecondary(context),
               ),
             ),
 
@@ -86,7 +86,7 @@ class OrderSuccessScreen extends StatelessWidget {
                     Text(
                       response.unifiedCheckoutUrl!,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.lightTextSecondary,
+                        color: AppColors.textSecondary(context),
                       ),
                     ),
                   ],

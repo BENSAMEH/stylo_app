@@ -4,13 +4,13 @@ import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/home/presentation/screens/home/home_screen.dart';
 
-// 🆕 نفس محتوى EmptyCartScreen، لكن من غير Scaffold/AppBar/BottomNav
-// عشان تندمج جوه أي شاشة تانية (زي CartScreen) من غير تكرار
 class EmptyCartContent extends StatelessWidget {
   const EmptyCartContent({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(AppSizes.screenPadding),
       child: Column(
@@ -22,11 +22,11 @@ class EmptyCartContent extends StatelessWidget {
             height: 220,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColors.lightSurface,
+              color: theme.cardColor,
               borderRadius: BorderRadius.circular(AppSizes.radiusLg),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.black.withOpacity(0.06),
+                  color: Colors.black.withOpacity(0.06),
                   blurRadius: 8,
                 ),
               ],
@@ -43,14 +43,20 @@ class EmptyCartContent extends StatelessWidget {
           SizedBox(height: AppSizes.xl),
 
           // ── Empty label ────────────────────────────────────
-          Text('Your cart is empty', style: AppTextStyles.headingLarge),
+          Text(
+            'Your cart is empty',
+            style: AppTextStyles.headingLarge.copyWith(
+              color: theme.textTheme.bodyLarge?.color,
+            ),
+          ),
+
           SizedBox(height: AppSizes.md),
 
           Text(
             'Discover our curated collection of luxury\naccessories and find something\nexceptional today.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.lightTextSecondary,
+              color: theme.textTheme.bodyMedium?.color,
             ),
           ),
 
@@ -76,7 +82,10 @@ class EmptyCartContent extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('CONTINUE SHOPPING', style: AppTextStyles.buttonSmall),
+                  Text(
+                    'CONTINUE SHOPPING',
+                    style: AppTextStyles.buttonSmall,
+                  ),
                   SizedBox(width: AppSizes.sm),
                   const Icon(Icons.arrow_forward, size: 18),
                 ],
@@ -87,7 +96,6 @@ class EmptyCartContent extends StatelessWidget {
           SizedBox(height: AppSizes.md),
 
           // ── Wishlist link ──────────────────────────────────
-          // ⚠️ لسه مفيش Wishlist feature في المشروع خالص
           GestureDetector(
             onTap: () {},
             child: Text(
@@ -108,7 +116,7 @@ class EmptyCartContent extends StatelessWidget {
             child: Text(
               'INSPIRED BY YOUR STYLE',
               style: AppTextStyles.caption.copyWith(
-                color: AppColors.lightTextSecondary,
+                color: theme.textTheme.bodyMedium?.color,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1,
               ),
@@ -117,7 +125,6 @@ class EmptyCartContent extends StatelessWidget {
 
           SizedBox(height: AppSizes.md),
 
-          // ⚠️ Placeholder boxes وهمية — محتاجة مصدر بيانات حقيقي لاحقًا
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
@@ -126,12 +133,12 @@ class EmptyCartContent extends StatelessWidget {
                 height: 90,
                 width: 90,
                 decoration: BoxDecoration(
-                  color: AppColors.lightDivider,
+                  color: theme.cardColor,
                   borderRadius: BorderRadius.circular(AppSizes.radiusMd),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.image_outlined,
-                  color: AppColors.lightTextSecondary,
+                  color: theme.iconTheme.color?.withOpacity(0.6),
                 ),
               ),
             ),

@@ -61,12 +61,12 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     width: double.infinity,
                     fit: BoxFit.cover,
                     placeholder: (_, __) => Container(
-                      color: AppColors.lightBackground,
+                      color: AppColors.background(context),
                       child: const Center(child: CircularProgressIndicator(strokeWidth: 1.5)),
                     ),
                     errorWidget: (_, __, ___) => Container(
-                      color: AppColors.lightBackground,
-                      child: const Icon(Icons.image_not_supported_outlined, color: AppColors.lightTextSecondary),
+                      color: AppColors.background(context),
+                      child: Icon(Icons.image_not_supported_outlined, color: AppColors.textSecondary(context)),
                     ),
                   ),
                 ),
@@ -84,7 +84,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                       ),
                       child: Icon(
                         _isFavourite ? Icons.favorite : Icons.favorite_border,
-                        color: _isFavourite ? AppColors.secondary : AppColors.lightTextSecondary,
+                        color: _isFavourite ? AppColors.secondary : AppColors.textSecondary(context),
                         size: 16,
                       ),
                     ),

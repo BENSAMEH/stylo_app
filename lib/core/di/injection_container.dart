@@ -1,19 +1,19 @@
 import 'package:get_it/get_it.dart';
+import 'package:stylo_app/features/home/data/datasource/home_remote_datasource.dart';
 
-import '../../features/home/data/datasource/home_remote_datasource.dart';
 import '../../features/home/data/datasource/product_remote_datasource.dart';
 import '../../features/home/data/repositories/home_repository.dart';
 import '../../features/home/data/repositories/product_repository.dart';
 import '../../features/home/presentation/cubit/home_cubit.dart';
 import '../../features/home/presentation/cubit/product_detail_cubit.dart';
 import '../api/api_client.dart';
+import '../../features/profile/presentation/cubit/address/address_cubit.dart';
 
 import '../../features/profile/data/datasource/profile_remote_datasource.dart';
 import '../../features/profile/data/datasource/address_remote_datasource.dart';
 import '../../features/profile/data/repositories/profile_repository_impl.dart';
 import '../../features/profile/presentation/cubit/profile_cubit.dart';
 import '../../features/profile/data/repositories/address_repository_impl.dart';
-import '../../features/profile/presentation/cubit/address/address_cubit.dart';
 
 final sl = GetIt.instance;
 

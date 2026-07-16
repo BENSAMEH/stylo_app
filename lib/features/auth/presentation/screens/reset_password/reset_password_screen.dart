@@ -82,12 +82,12 @@ class _ResetPasswordScreenState
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: AppColors.lightBackground,
+          backgroundColor: AppColors.background(context),
           appBar: AppBar(
-            backgroundColor: AppColors.lightSurface,
+            backgroundColor: AppColors.surface(context),
             elevation: 0,
-            leading: const BackButton(
-              color: AppColors.lightTextPrimary,
+            leading:  BackButton(
+              color: AppColors.textPrimary(context),
             ),
           ),
           body: SafeArea(
@@ -127,7 +127,7 @@ class _ResetPasswordScreenState
                       "Create a new password for your account.",
                       textAlign: TextAlign.center,
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.lightTextSecondary,
+                        color: AppColors.textSecondary(context),
                       ),
                     ),
 

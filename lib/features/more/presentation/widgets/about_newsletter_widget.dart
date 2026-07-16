@@ -7,7 +7,8 @@ class AboutNewsletterWidget extends StatefulWidget {
   const AboutNewsletterWidget({super.key});
 
   @override
-  State<AboutNewsletterWidget> createState() => _AboutNewsletterWidgetState();
+  State<AboutNewsletterWidget> createState() =>
+      _AboutNewsletterWidgetState();
 }
 
 class _AboutNewsletterWidgetState extends State<AboutNewsletterWidget> {
@@ -31,85 +32,103 @@ class _AboutNewsletterWidgetState extends State<AboutNewsletterWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Title
+          /// Title
           Text(
             'Experience the\nBrilliance',
             textAlign: TextAlign.center,
-            style: AppTextStyles.headingLarge.copyWith(color: AppColors.primary),
+            style: AppTextStyles.headingLarge.copyWith(
+              color: AppColors.primary,
+            ),
           ),
           SizedBox(height: AppSizes.sm),
 
-          // Subtitle
+          /// Subtitle
           Text(
             'Subscribe to receive exclusive invitations to private viewings and seasonal collection previews.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.lightTextSecondary,
+              color: Theme.of(context).textTheme.bodyMedium!.color,
               height: 1.6,
             ),
           ),
           SizedBox(height: AppSizes.lg),
 
-          // Email field
+          /// Email field
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            style: AppTextStyles.bodyMedium,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+            ),
             decoration: InputDecoration(
               hintText: 'Your boutique email',
               hintStyle: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary.withOpacity(0.6),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .color!
+                    .withOpacity(.6),
               ),
               filled: true,
-              fillColor: AppColors.white,
+              fillColor: Theme.of(context).cardColor,
               contentPadding: EdgeInsets.symmetric(
                 horizontal: AppSizes.md,
                 vertical: AppSizes.md,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+                borderRadius:
+                    BorderRadius.circular(AppSizes.radiusMd),
                 borderSide: BorderSide.none,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+                borderRadius:
+                    BorderRadius.circular(AppSizes.radiusMd),
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-                borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                borderRadius:
+                    BorderRadius.circular(AppSizes.radiusMd),
+                borderSide: const BorderSide(
+                  color: AppColors.primary,
+                  width: 1.5,
+                ),
               ),
             ),
           ),
           SizedBox(height: AppSizes.md),
 
-          // Inquire button
+          /// Button
           SizedBox(
             width: double.infinity,
             height: AppSizes.buttonHeight,
             child: ElevatedButton(
               onPressed: () {
                 if (_emailController.text.isEmpty) return;
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: const Text('Subscribed successfully!'),
+                    content: const Text("Subscribed successfully!"),
                     backgroundColor: AppColors.success,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+                      borderRadius:
+                          BorderRadius.circular(AppSizes.radiusMd),
                     ),
                   ),
                 );
+
                 _emailController.clear();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.white,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.radiusFull),
+                  borderRadius:
+                      BorderRadius.circular(AppSizes.radiusFull),
                 ),
                 textStyle: AppTextStyles.buttonLarge,
               ),
-              child: const Text('Inquire'),
+              child: const Text("Inquire"),
             ),
           ),
         ],

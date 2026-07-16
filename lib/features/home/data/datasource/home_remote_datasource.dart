@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:stylo_app/core/api/api_client.dart';
 import 'package:stylo_app/core/api/api_constants.dart';
+import 'package:stylo_app/features/home/data/models/category_model.dart';
 import '../../../../core/services/shared_pref_service.dart';
-import '../models/category_model.dart';
 import '../models/offer_model.dart';
 import '../models/product_model.dart';
 import 'dart:convert';

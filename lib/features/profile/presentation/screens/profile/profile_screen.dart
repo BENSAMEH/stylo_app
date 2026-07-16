@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/core/theme/theme_cubit.dart';
 import 'package:stylo_app/features/auth/presentation/screens/login/login_screen.dart';
 import 'package:stylo_app/features/cart/presentation/screens/cart/cart_screen.dart';
 import 'package:stylo_app/features/categories/presentation/screens/categories/categories_screen.dart';
@@ -59,9 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
       ),
-      backgroundColor: Color(0xffFDF8FF),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xffFDF8FF),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
         title: Row(
           children: [
@@ -131,19 +133,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             const SizedBox(height: 12),
+            BlocBuilder<ThemeCubit, ThemeMode>(
+              builder: (context, themeMode) {
+                return ProfileItem(
+                  icon: Icons.dark_mode_outlined,
+                  title: "Dark Mode",
+                  subtitle: "Switch to dark theme",
 
-            ProfileItem(
-              icon: Icons.dark_mode_outlined,
-              title: "Dark Mode",
-              subtitle: "Switch to dark theme",
-              trailing: Switch(
-                value: darkMode,
-                onChanged: (value) {
-                  setState(() {
-                    darkMode = value;
-                  });
-                },
-              ),
+                  trailing: Switch(
+                    value: themeMode == ThemeMode.dark,
+
+                    onChanged: (value) {
+                      context.read<ThemeCubit>().toggleTheme();
+                    },
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 12),

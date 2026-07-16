@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class SharedPrefService {
   static late SharedPreferences _preferences;
@@ -46,5 +47,34 @@ class SharedPrefService {
   static bool isLoggedIn() {
     final token = getAccessToken();
     return token != null && token.isNotEmpty;
+  }
+
+
+  // ================= THEME =================
+
+  static Future<void> saveThemeMode(ThemeMode mode) async {
+    await _preferences.setString(
+      "themeMode",
+      mode.name,
+    );
+  }
+
+
+  static ThemeMode getThemeMode() {
+    final theme = _preferences.getString("themeMode");
+
+    switch (theme) {
+      case "dark":
+        return ThemeMode.dark;
+
+      case "light":
+        return ThemeMode.light;
+
+      case "system":
+        return ThemeMode.system;
+
+      default:
+        return ThemeMode.system;
+    }
   }
 }

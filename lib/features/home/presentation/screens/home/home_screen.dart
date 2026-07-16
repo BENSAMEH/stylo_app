@@ -71,17 +71,17 @@ class _HomeViewState extends State<_HomeView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                   Icon(
                     Icons.wifi_off_outlined,
                     size: 64,
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                   SizedBox(height: AppSizes.md),
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.lightTextSecondary,
+                      color: AppColors.textSecondary(context),
                     ),
                   ),
                   SizedBox(height: AppSizes.lg),
@@ -173,17 +173,8 @@ class _HomeViewState extends State<_HomeView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              BlocBuilder<ProfileCubit, ProfileState>(
-                                builder: (context, profileState) {
-                                  final name = profileState is ProfileSuccess
-                                      ? profileState.user.fullName
-                                      : '';
-                                  return Text(
-                                    name.isNotEmpty ? 'Hello, $name' : 'Hello',
-                                    style: AppTextStyles.caption,
-                                  );
-                                },
-                              ),
+
+
                               Text(
                                 'Stylo',
                                 style: AppTextStyles.headingMedium.copyWith(
@@ -196,7 +187,7 @@ class _HomeViewState extends State<_HomeView> {
                         IconButton(
                           onPressed: () {},
                           icon: const Icon(Icons.notifications_none_outlined),
-                          color: AppColors.lightTextPrimary,
+                          color: AppColors.textPrimary(context),
                         ),
                       ],
                     ),
@@ -314,7 +305,7 @@ class _HomeViewState extends State<_HomeView> {
                       child: Text(
                         'No products found',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.lightTextSecondary,
+                          color: AppColors.textSecondary(context),
                         ),
                       ),
                     ),

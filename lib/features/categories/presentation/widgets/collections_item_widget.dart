@@ -30,7 +30,7 @@ class CollectionsItemWidget extends StatelessWidget {
             'Discover our exclusive limited-edition collections curated by global designers.',
             textAlign: TextAlign.center,
             style: AppTextStyles.bodySmall.copyWith(
-              color:  AppColors.lightTextSecondary,
+              color:  AppColors.textSecondary(context),
               height: 1.5,
             ),
           ),

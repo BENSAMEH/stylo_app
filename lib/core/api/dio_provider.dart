@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'api_constants.dart';
+import 'package:stylo_app/core/api/api_constants.dart';
 
 class DioProvider {
   static final Dio dio = Dio(

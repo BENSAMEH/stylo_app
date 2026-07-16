@@ -125,17 +125,17 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.error_outline,
                     size: 64,
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                   SizedBox(height: AppSizes.md),
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.lightTextSecondary,
+                      color: AppColors.textSecondary(context),
                     ),
                   ),
                   SizedBox(height: AppSizes.lg),
@@ -180,7 +180,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                   icon: _isFavourite ? Icons.favorite : Icons.favorite_border,
                   iconColor: _isFavourite
                       ? AppColors.secondary
-                      : AppColors.lightTextPrimary,
+                      : AppColors.textPrimary(context),
                   onTap: () => setState(() => _isFavourite = !_isFavourite),
                 ),
                 SizedBox(width: AppSizes.md),
@@ -217,11 +217,11 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                       images[i],
                                       fit: BoxFit.cover,
                                       errorBuilder: (_, __, ___) => Container(
-                                        color: AppColors.lightBackground,
-                                        child: const Icon(
+                                        color: AppColors.background(context),
+                                        child:  Icon(
                                           Icons.image_not_supported_outlined,
                                           size: 48,
-                                          color: AppColors.lightTextSecondary,
+                                          color: AppColors.textSecondary(context),
                                         ),
                                       ),
                                     ),
@@ -352,7 +352,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                     ? product.description
                                     : 'A beautiful handcrafted piece made with premium materials.',
                                 style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.lightTextSecondary,
+                                  color: AppColors.textSecondary(context),
                                   height: 1.6,
                                 ),
                               ),
@@ -371,7 +371,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                   Text(
                                     '${reviews.length} reviews',
                                     style: AppTextStyles.bodySmall.copyWith(
-                                      color: AppColors.lightTextSecondary,
+                                      color: AppColors.textSecondary(context),
                                     ),
                                   ),
                                 ],
@@ -385,7 +385,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                         style: AppTextStyles.bodyMedium
                                             .copyWith(
                                               color:
-                                                  AppColors.lightTextSecondary,
+                                                  AppColors.textSecondary(context),
                                             ),
                                       ),
                                     )
@@ -395,7 +395,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                           const NeverScrollableScrollPhysics(),
                                       itemCount: reviews.length,
                                       separatorBuilder: (_, __) => Divider(
-                                        color: AppColors.lightDivider,
+                                        color: AppColors.divider(context),
                                         height: AppSizes.lg,
                                       ),
                                       itemBuilder: (_, i) =>
@@ -518,7 +518,7 @@ class _ReviewItem extends StatelessWidget {
                   Text(
                     review.userName,
                     style: AppTextStyles.labelMedium.copyWith(
-                      color: AppColors.lightTextPrimary,
+                      color: AppColors.textPrimary(context),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -541,7 +541,7 @@ class _ReviewItem extends StatelessWidget {
               Text(
                 review.comment,
                 style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.lightTextSecondary,
+                  color: AppColors.textSecondary(context),
                   height: 1.5,
                 ),
               ),

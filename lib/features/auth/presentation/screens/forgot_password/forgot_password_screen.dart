@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/utils/app_validators.dart';
 
 import 'package:stylo_app/features/auth/presentation/cubit/auth_cubit.dart';
@@ -69,11 +70,12 @@ class _ForgotPasswordScreenState
       },
       builder: (context, state) {
         final isLoading = state is AuthLoading;
+        final isDark = AppColors.isDark(context);
 
         return Scaffold(
-          backgroundColor: const Color(0xFFFCFAFF),
+          backgroundColor: AppColors.background(context),
           appBar: AppBar(
-            backgroundColor: const Color(0xFFFCFAFF),
+            backgroundColor: AppColors.background(context),
             elevation: 0,
             centerTitle: true,
             leading: IconButton(
@@ -84,10 +86,10 @@ class _ForgotPasswordScreenState
                 size: 20,
               ),
             ),
-            title: const Text(
+            title: Text(
               'Forgot Password',
               style: TextStyle(
-                color: Colors.black,
+                color: AppColors.textPrimary(context),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -107,7 +109,10 @@ class _ForgotPasswordScreenState
                       width: 95,
                       height: 95,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEDEAF1),
+                        color: isDark
+                            ? ForgotPasswordScreen.purple
+                                .withOpacity(0.18)
+                            : const Color(0xFFEDEAF1),
                         borderRadius:
                             BorderRadius.circular(28),
                       ),
@@ -120,24 +125,25 @@ class _ForgotPasswordScreenState
 
                     const SizedBox(height: 30),
 
-                    const Text(
+                    Text(
                       'Reset Access',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary(context),
                       ),
                     ),
 
                     const SizedBox(height: 10),
 
-                    const Text(
+                    Text(
                       'Enter your registered email below\n'
                       'to receive a secure password reset\n'
                       'link.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.black54,
+                        color: AppColors.textSecondary(context),
                         height: 1.4,
                       ),
                     ),
@@ -147,13 +153,13 @@ class _ForgotPasswordScreenState
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFFBFF),
+                        color: AppColors.surface(context),
                         borderRadius:
                             BorderRadius.circular(26),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.purple
-                                .withOpacity(0.08),
+                                .withOpacity(isDark ? 0.15 : 0.08),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
@@ -163,12 +169,12 @@ class _ForgotPasswordScreenState
                         crossAxisAlignment:
                             CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Email Address',
                             style: TextStyle(
                               fontSize: 13,
-                              fontWeight:
-                                  FontWeight.w600,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary(context),
                             ),
                           ),
 
@@ -185,18 +191,24 @@ class _ForgotPasswordScreenState
                             autovalidateMode:
                                 AutovalidateMode
                                     .onUserInteraction,
+                            style: TextStyle(
+                              color: AppColors.textPrimary(context),
+                            ),
                             decoration:
                                 InputDecoration(
                               hintText:
                                   'name@example.com',
-                              prefixIcon: const Icon(
+                              hintStyle: TextStyle(
+                                color: AppColors.textSecondary(context),
+                              ),
+                              prefixIcon: Icon(
                                 Icons.mail_outline,
-                                color: Colors.grey,
+                                color: AppColors.textSecondary(context),
                               ),
                               filled: true,
-                              fillColor:
-                                  const Color(
-                                      0xFFF8F0FF),
+                              fillColor: isDark
+                                  ? AppColors.background(context)
+                                  : const Color(0xFFF8F0FF),
                               border:
                                   OutlineInputBorder(
                                 borderRadius:
@@ -270,16 +282,16 @@ class _ForgotPasswordScreenState
 
                     const SizedBox(height: 30),
 
-                    const Divider(),
+                    Divider(color: AppColors.divider(context)),
 
                     const SizedBox(height: 14),
 
-                    const Text(
+                    Text(
                       'PREMIUM SECURITY GUARANTEED',
                       style: TextStyle(
                         fontSize: 10,
                         letterSpacing: 1.5,
-                        color: Colors.black54,
+                        color: AppColors.textSecondary(context),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

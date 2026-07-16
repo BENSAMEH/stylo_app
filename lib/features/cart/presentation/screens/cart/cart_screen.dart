@@ -33,9 +33,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.lightSurface,
+        backgroundColor:Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.all(AppSizes.sm),
@@ -51,9 +51,9 @@ class _CartScreenState extends State<CartScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: AppSizes.md),
-            child: const Icon(
+            child:  Icon(
               Icons.notifications_none,
-              color: AppColors.lightTextPrimary,
+               color: Theme.of(context).iconTheme.color,
             ),
           ),
         ],
@@ -143,12 +143,12 @@ class _CartScreenState extends State<CartScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // ── Title ──────────────────────────────────────
-                Text('Your Cart', style: AppTextStyles.displayMedium),
+                Text('Your Cart', style: AppTextStyles.displayMedium.copyWith(color: Theme.of(context).textTheme.bodyMedium?.color,)),
                 SizedBox(height: AppSizes.xs),
                 Text(
                   'Review your curated selection',
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
                 SizedBox(height: AppSizes.lg),
@@ -179,7 +179,7 @@ class _CartScreenState extends State<CartScreen> {
                 Text(
                   'HAVE A COUPON?',
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1,
                   ),
@@ -256,10 +256,12 @@ class _CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(AppSizes.radiusLg),
       ),
       child: Row(
@@ -274,10 +276,10 @@ class _CartItemCard extends StatelessWidget {
               errorBuilder: (_, __, ___) => Container(
                 height: 75,
                 width: 75,
-                color: AppColors.lightBackground,
-                child: const Icon(
+                color: theme.colorScheme.surfaceContainerHighest,
+                child: Icon(
                   Icons.image_not_supported_outlined,
-                  color: AppColors.lightTextSecondary,
+                  color: theme.iconTheme.color?.withOpacity(.6),
                 ),
               ),
             ),
@@ -291,7 +293,7 @@ class _CartItemCard extends StatelessWidget {
                 Text(
                   item.productName,
                   style: AppTextStyles.labelMedium.copyWith(
-                    color: AppColors.lightTextPrimary,
+                    color: theme.textTheme.bodyLarge?.color,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -299,7 +301,7 @@ class _CartItemCard extends StatelessWidget {
                 Text(
                   'Qty: ${item.quantity}',
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(.7),
                   ),
                 ),
                 SizedBox(height: AppSizes.xs),
@@ -315,7 +317,10 @@ class _CartItemCard extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: onDelete,
-                child: const Icon(Icons.delete_outline, color: AppColors.error),
+                child: const Icon(
+                  Icons.delete_outline,
+                  color: AppColors.error,
+                ),
               ),
               SizedBox(height: AppSizes.md),
               Container(
@@ -324,22 +329,30 @@ class _CartItemCard extends StatelessWidget {
                   vertical: AppSizes.xs,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.08),
+                  color: AppColors.primary.withOpacity(.08),
                   borderRadius: BorderRadius.circular(AppSizes.radiusFull),
                 ),
                 child: Row(
                   children: [
-                    _QtyButton(icon: Icons.remove, onTap: onDecrement),
+                    _QtyButton(
+                      icon: Icons.remove,
+                      onTap: onDecrement,
+                    ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSizes.sm,
+                      ),
                       child: Text(
                         '${item.quantity}',
                         style: AppTextStyles.labelMedium.copyWith(
-                          color: AppColors.lightTextPrimary,
+                          color: theme.textTheme.bodyLarge?.color,
                         ),
                       ),
                     ),
-                    _QtyButton(icon: Icons.add, onTap: onIncrement),
+                    _QtyButton(
+                      icon: Icons.add,
+                      onTap: onIncrement,
+                    ),
                   ],
                 ),
               ),
@@ -354,20 +367,26 @@ class _CartItemCard extends StatelessWidget {
 class _QtyButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback? onTap;
-  const _QtyButton({required this.icon, required this.onTap});
+
+  const _QtyButton({
+    required this.icon,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       child: CircleAvatar(
         radius: 10,
-        backgroundColor: AppColors.lightSurface,
+        backgroundColor: theme.cardColor,
         child: Icon(
           icon,
           size: 14,
           color: onTap == null
-              ? AppColors.lightTextSecondary
+              ? theme.disabledColor
               : AppColors.primary,
         ),
       ),
@@ -375,27 +394,32 @@ class _QtyButton extends StatelessWidget {
   }
 }
 
-// ── Coupon field ────────────────────────────────────────────────────────
 class _CouponField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: AppSizes.buttonHeight,
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
-        borderRadius: BorderRadius.circular(AppSizes.radiusFull),
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(
+          AppSizes.radiusFull,
+        ),
       ),
       child: Row(
         children: [
           SizedBox(width: AppSizes.md),
           Expanded(
             child: TextField(
-              style: AppTextStyles.bodyMedium,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: theme.textTheme.bodyMedium?.color,
+              ),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Enter code',
                 hintStyle: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.lightTextSecondary,
+                  color: theme.textTheme.bodySmall?.color?.withOpacity(.6),
                 ),
               ),
             ),
@@ -406,13 +430,15 @@ class _CouponField extends StatelessWidget {
             margin: EdgeInsets.only(right: AppSizes.sm),
             decoration: BoxDecoration(
               color: AppColors.accent,
-              borderRadius: BorderRadius.circular(AppSizes.radiusFull),
+              borderRadius: BorderRadius.circular(
+                AppSizes.radiusFull,
+              ),
             ),
             child: Center(
               child: Text(
                 'Apply',
                 style: AppTextStyles.buttonSmall.copyWith(
-                  color: AppColors.lightTextPrimary,
+                  color: theme.colorScheme.onSecondary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -424,7 +450,6 @@ class _CouponField extends StatelessWidget {
   }
 }
 
-// ── Order summary card ──────────────────────────────────────────────────
 class _OrderSummaryCard extends StatelessWidget {
   final String subtotal;
   final String shipping;
@@ -438,23 +463,46 @@ class _OrderSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: EdgeInsets.all(AppSizes.lg),
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
-        borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(
+          AppSizes.radiusLg,
+        ),
       ),
       child: Column(
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: Text('Order Summary', style: AppTextStyles.headingSmall),
+            child: Text(
+              'Order Summary',
+              style: AppTextStyles.headingSmall.copyWith(
+                color: theme.textTheme.bodyLarge?.color,
+              ),
+            ),
           ),
           SizedBox(height: AppSizes.md),
-          _SummaryRow(label: 'Subtotal', value: subtotal),
+
+          _SummaryRow(
+            label: 'Subtotal',
+            value: subtotal,
+          ),
+
           SizedBox(height: AppSizes.sm),
-          _SummaryRow(label: 'Shipping', value: shipping),
-          const Divider(height: 24),
+
+          _SummaryRow(
+            label: 'Shipping',
+            value: shipping,
+          ),
+
+          Divider(
+            height: 24,
+            color: theme.dividerColor,
+          ),
+
           _SummaryRow(
             label: 'Total',
             value: total,
@@ -482,24 +530,34 @@ class _SummaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment:
+          MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
           style: bold
-              ? AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w700)
+              ? AppTextStyles.bodyMedium.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: theme.textTheme.bodyLarge?.color,
+                )
               : AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.lightTextSecondary,
+                  color: theme.textTheme.bodySmall?.color
+                      ?.withOpacity(.7),
                 ),
         ),
         Text(
           value,
           style: bold
               ? AppTextStyles.headingSmall.copyWith(
-                  color: valueColor ?? AppColors.lightTextPrimary,
+                  color: valueColor ??
+                      theme.textTheme.bodyLarge?.color,
                 )
-              : AppTextStyles.bodyMedium,
+              : AppTextStyles.bodyMedium.copyWith(
+                  color: theme.textTheme.bodyLarge?.color,
+                ),
         ),
       ],
     );

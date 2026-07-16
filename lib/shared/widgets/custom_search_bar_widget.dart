@@ -26,23 +26,23 @@ class CustomSearchBarWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.dark
               ? AppColors.darkCardBg
-              : AppColors.lightBackground,
+              : AppColors.background(context),
           borderRadius: BorderRadius.circular(AppSizes.radiusFull),
-          border: Border.all(color: AppColors.lightDivider),
+          border: Border.all(color: AppColors.divider(context)),
         ),
         child: Row(
           children: [
-            Icon(Icons.search, color: AppColors.lightTextSecondary, size: AppSizes.iconMd),
+            Icon(Icons.search, color: AppColors.textSecondary(context), size: AppSizes.iconMd),
             SizedBox(width: AppSizes.sm),
             Expanded(
               child: readOnly
-                  ? Text('Search accessories...', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.lightTextSecondary))
+                  ? Text('Search accessories...', style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary(context)))
                   : TextField(
                       controller: controller,
                       style: AppTextStyles.bodyMedium,
                       decoration: InputDecoration(
                         hintText: 'Search accessories...',
-                        hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.lightTextSecondary),
+                        hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary(context)),
                         border: InputBorder.none,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,

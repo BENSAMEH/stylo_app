@@ -95,12 +95,12 @@ void _validateOtp() {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: AppColors.lightBackground,
+          backgroundColor: AppColors.background(context),
           appBar: AppBar(
-            backgroundColor: AppColors.lightSurface,
+            backgroundColor: AppColors.surface(context),
             elevation: 0,
-            leading: const BackButton(
-              color: AppColors.lightTextPrimary,
+            leading:  BackButton(
+              color: AppColors.textPrimary(context),
             ),
           ),
           body: SingleChildScrollView(
@@ -131,7 +131,7 @@ void _validateOtp() {
                 Text(
                   "Enter the 6-digit code sent to\n${widget.email}",
                   style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.lightTextSecondary,
+                    color: AppColors.textSecondary(context),
                   ),
                 ),
 
@@ -154,12 +154,12 @@ void _validateOtp() {
                     ),
                     fieldHeight: 55,
                     fieldWidth: 45,
-                    activeFillColor: AppColors.lightSurface,
-                    selectedFillColor: AppColors.lightSurface,
-                    inactiveFillColor: AppColors.lightSurface,
+                    activeFillColor: AppColors.surface(context),
+                    selectedFillColor: AppColors.surface(context),
+                    inactiveFillColor: AppColors.surface(context),
                     activeColor: AppColors.primary,
                     selectedColor: AppColors.primary,
-                    inactiveColor: AppColors.lightDivider,
+                    inactiveColor: AppColors.divider(context),
                   ),
                   onChanged: (_) {},
                 ),

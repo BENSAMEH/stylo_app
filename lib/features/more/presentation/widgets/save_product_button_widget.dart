@@ -17,6 +17,8 @@ class SaveProductButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       children: [
         // Save button
@@ -45,6 +47,7 @@ class SaveProductButtonWidget extends StatelessWidget {
                 : const Text('Save Product'),
           ),
         ),
+
         SizedBox(height: AppSizes.sm),
 
         // Discard draft
@@ -55,7 +58,7 @@ class SaveProductButtonWidget extends StatelessWidget {
             child: Text(
               'Discard Draft',
               style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.lightTextSecondary,
+                color: theme.textTheme.bodyMedium?.color,
               ),
             ),
           ),

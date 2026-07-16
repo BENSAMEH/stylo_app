@@ -3,9 +3,9 @@ import 'package:stylo_app/core/constants/app_text_styles.dart';
 import 'package:stylo_app/features/auth/presentation/screens/onboarding/premium%20_qualit_screen.dart';
 import 'package:stylo_app/features/auth/presentation/widgets/button_gesture_detector.dart';
 import 'package:stylo_app/features/auth/presentation/widgets/custom_image_widget.dart';
-import 'package:stylo_app/features/auth/presentation/widgets/description_text_widget.dart';
 import 'package:stylo_app/features/auth/presentation/widgets/dot_ondicator.dart';
 import 'package:stylo_app/features/auth/presentation/widgets/header_text_widget.dart';
+import 'package:stylo_app/features/auth/presentation/widgets/description_text_widget.dart';
 
 
 class OnBoardingScreenNext extends StatefulWidget {

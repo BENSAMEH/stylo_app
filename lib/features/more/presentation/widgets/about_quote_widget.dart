@@ -15,6 +15,8 @@ class AboutQuoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(AppSizes.lg),
@@ -28,7 +30,7 @@ class AboutQuoteWidget extends StatelessWidget {
           Text(
             '"$quote"',
             style: AppTextStyles.bodyLarge.copyWith(
-              color: AppColors.white,
+              color: onPrimary,
               fontStyle: FontStyle.italic,
               height: 1.6,
             ),
@@ -39,13 +41,13 @@ class AboutQuoteWidget extends StatelessWidget {
               Container(
                 width: 24,
                 height: 2,
-                color: AppColors.white.withOpacity(0.6),
+                color: onPrimary.withOpacity(0.6),
               ),
               SizedBox(width: AppSizes.sm),
               Text(
                 author,
                 style: AppTextStyles.caption.copyWith(
-                  color: AppColors.white.withOpacity(0.85),
+                  color: onPrimary.withOpacity(0.85),
                   letterSpacing: 1,
                 ),
               ),

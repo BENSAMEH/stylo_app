@@ -38,7 +38,7 @@ class AboutStatBadgeWidget extends StatelessWidget {
           Text(
             label.toUpperCase(),
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.lightTextSecondary,
+              color: Theme.of(context).textTheme.bodyMedium!.color,
               letterSpacing: 2,
               fontWeight: FontWeight.w600,
             ),

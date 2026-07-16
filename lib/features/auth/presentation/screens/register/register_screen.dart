@@ -96,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final isLoading = state is AuthLoading;
 
         return Scaffold(
-          backgroundColor: AppColors.lightBackground,
+          backgroundColor: AppColors.background(context),
           body: SafeArea(
             child: Form(
               key: _formKey,
@@ -132,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style:
                           AppTextStyles.bodyMedium.copyWith(
                         color:
-                            AppColors.lightTextSecondary,
+                            AppColors.textSecondary(context),
                       ),
                     ),
 
@@ -176,7 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               : Icons
                                   .visibility_off_outlined,
                           color:
-                              AppColors.lightTextSecondary,
+                              AppColors.textSecondary(context),
                         ),
                       ),
                     ),
@@ -205,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               : Icons
                                   .visibility_off_outlined,
                           color:
-                              AppColors.lightTextSecondary,
+                              AppColors.textSecondary(context),
                         ),
                       ),
                     ),
@@ -311,7 +311,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style:
                                 AppTextStyles.caption.copyWith(
                               color:
-                                  AppColors.lightTextSecondary,
+                                  AppColors.textSecondary(context),
                               letterSpacing: 1,
                             ),
                           ),
@@ -333,10 +333,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(width: AppSizes.sm),
                         _SocialButton(
-                          child: const Icon(
+                          child: Icon(
                             Icons.apple,
                             size: 30,
-                            color: AppColors.black,
+                            color: AppColors.textPrimary(context),
                           ),
                         ),
                         SizedBox(width: AppSizes.sm),
@@ -361,7 +361,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style:
                               AppTextStyles.bodySmall.copyWith(
                             color:
-                                AppColors.lightTextSecondary,
+                                AppColors.textSecondary(context),
                           ),
                         ),
                         GestureDetector(
@@ -422,15 +422,15 @@ class _AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: AppTextStyles.bodyMedium.copyWith(
-          color: AppColors.lightTextSecondary,
+          color: AppColors.textSecondary(context),
         ),
         prefixIcon: Icon(
           icon,
-          color: AppColors.lightTextSecondary,
+          color: AppColors.textSecondary(context),
         ),
         suffixIcon: suffix,
         filled: true,
-        fillColor: AppColors.lightSurface,
+        fillColor: AppColors.surface(context),
         contentPadding:
             EdgeInsets.symmetric(vertical: AppSizes.md),
         border: OutlineInputBorder(
@@ -483,7 +483,7 @@ class _SocialButton extends StatelessWidget {
       child: Container(
         height: AppSizes.buttonHeight,
         decoration: BoxDecoration(
-          color: AppColors.lightSurface,
+          color: AppColors.surface(context),
           borderRadius:
               BorderRadius.circular(AppSizes.radiusLg),
           boxShadow: [

@@ -23,9 +23,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.lightSurface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
@@ -34,12 +34,17 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         ),
         title: Text(
           'Stylo',
-          style: AppTextStyles.headingMedium.copyWith(color: AppColors.primary),
+          style: AppTextStyles.headingMedium.copyWith(
+            color: Theme.of(context).textTheme.titleLarge!.color,
+          ),
         ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: AppSizes.md),
-            child: const Icon(Icons.shopping_bag_outlined, color: AppColors.primary),
+            child: Icon(
+              Icons.shopping_bag_outlined,
+              color: Theme.of(context).textTheme.bodySmall!.color,
+            ),
           ),
         ],
       ),
@@ -48,14 +53,18 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // ── Title ──────────────────────────────────────────
-            Text('Concierge & Support', style: AppTextStyles.headingLarge),
+            Text(
+              'Concierge & Support',
+              style: AppTextStyles.headingLarge.copyWith(
+                color: Theme.of(context).textTheme.bodySmall!.color,
+              ),
+            ),
             SizedBox(height: AppSizes.sm),
             Text(
               'Our dedicated team is here to assist you with bespoke requests, order tracking, and high-end jewelry consultations.',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.lightTextSecondary,
+                color: Theme.of(context).textTheme.bodySmall!.color,
                 height: 1.5,
               ),
             ),
@@ -67,16 +76,16 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               children: [
                 Expanded(
                   child: _ContactCard(
-                    icon:     Icons.email_outlined,
-                    title:    'Email Us',
+                    icon: Icons.email_outlined,
+                    title: 'Email Us',
                     subtitle: 'concierge@stylo.luxury',
                   ),
                 ),
                 SizedBox(width: AppSizes.md),
                 Expanded(
                   child: _ContactCard(
-                    icon:     Icons.call_outlined,
-                    title:    'Call Us',
+                    icon: Icons.call_outlined,
+                    title: 'Call Us',
                     subtitle: '+1 (800) STYLO-LUX',
                   ),
                 ),
@@ -90,21 +99,25 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             SizedBox(height: AppSizes.md),
 
             // ── Email ──────────────────────────────────────────
-            _ContactTextField(label: 'EMAIL ADDRESS', hint: 'julian@example.com'),
+            _ContactTextField(
+              label: 'EMAIL ADDRESS',
+              hint: 'julian@example.com',
+            ),
             SizedBox(height: AppSizes.md),
 
             // ── Subject dropdown ───────────────────────────────
             _ContactDropdown(
-              value:     _selectedSubject,
-              items:     _subjects,
-              onChanged: (v) => setState(() => _selectedSubject = v ?? _selectedSubject),
+              value: _selectedSubject,
+              items: _subjects,
+              onChanged: (v) =>
+                  setState(() => _selectedSubject = v ?? _selectedSubject),
             ),
             SizedBox(height: AppSizes.md),
 
             // ── Message ────────────────────────────────────────
             _ContactTextField(
-              label:    'MESSAGE',
-              hint:     'Describe your request in detail...',
+              label: 'MESSAGE',
+              hint: 'Describe your request in detail...',
               maxLines: 5,
             ),
 
@@ -114,15 +127,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             Row(
               children: [
                 Checkbox(
-                  value:       _agreePolicy,
+                  value: _agreePolicy,
                   activeColor: AppColors.primary,
-                  onChanged:   (v) => setState(() => _agreePolicy = v ?? false),
+                  onChanged: (v) => setState(() => _agreePolicy = v ?? false),
                 ),
                 Expanded(
                   child: Text(
                     'I agree to the privacy policy and terms of service.',
                     style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.lightTextSecondary,
+                      color: AppColors.textSecondary(context),
                     ),
                   ),
                 ),
@@ -133,7 +146,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
 
             // ── Send button ────────────────────────────────────
             SizedBox(
-              width:  double.infinity,
+              width: double.infinity,
               height: AppSizes.buttonHeight,
               child: ElevatedButton(
                 onPressed: () {},
@@ -173,34 +186,37 @@ class _ContactCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSizes.md),
       decoration: BoxDecoration(
-        color: AppColors.lightSurface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(AppSizes.radiusLg),
         boxShadow: [
           BoxShadow(
-            color:      AppColors.black.withOpacity(0.07),
+            color: Theme.of(context).shadowColor.withOpacity(0.15),
             blurRadius: 10,
-            offset:     const Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Column(
         children: [
           CircleAvatar(
-            radius:          24,
+            radius: 24,
             backgroundColor: AppColors.primary.withOpacity(0.1),
             child: Icon(icon, color: AppColors.primary),
           ),
           SizedBox(height: AppSizes.sm),
-          Text(title, style: AppTextStyles.labelMedium.copyWith(
-            color: AppColors.lightTextPrimary,
-            fontWeight: FontWeight.w700,
-          )),
+          Text(
+            title,
+            style: AppTextStyles.labelMedium.copyWith(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           SizedBox(height: 4),
           Text(
             subtitle,
             textAlign: TextAlign.center,
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.lightTextSecondary,
+              color: Theme.of(context).textTheme.bodySmall!.color,
             ),
           ),
         ],
@@ -229,33 +245,40 @@ class _ContactTextField extends StatelessWidget {
         Text(
           label,
           style: AppTextStyles.caption.copyWith(
-            color:         AppColors.lightTextSecondary,
-            fontWeight:    FontWeight.w700,
+            color: Theme.of(context).textTheme.bodySmall!.color,
+            fontWeight: FontWeight.w700,
             letterSpacing: 1,
           ),
         ),
         SizedBox(height: AppSizes.xs),
         TextField(
           maxLines: maxLines,
-          style:    AppTextStyles.bodyMedium,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+          ),
           decoration: InputDecoration(
-            hintText:  hint,
+            hintText: hint,
             hintStyle: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.lightTextSecondary.withOpacity(0.6),
+              color: Theme.of(
+                context,
+              ).textTheme.bodySmall!.color!.withOpacity(.6),
             ),
-            filled:    true,
-            fillColor: AppColors.primary.withOpacity(0.05),
+            filled: true,
+            fillColor: Theme.of(context).cardColor,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-              borderSide:   BorderSide.none,
+              borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-              borderSide:   BorderSide.none,
+              borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-              borderSide:   const BorderSide(color: AppColors.primary, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
+              ),
             ),
           ),
         ),
@@ -284,8 +307,8 @@ class _ContactDropdown extends StatelessWidget {
         Text(
           'SUBJECT',
           style: AppTextStyles.caption.copyWith(
-            color:         AppColors.lightTextSecondary,
-            fontWeight:    FontWeight.w700,
+           color: Theme.of(context).textTheme.bodySmall!.color,
+            fontWeight: FontWeight.w700,
             letterSpacing: 1,
           ),
         ),
@@ -293,23 +316,34 @@ class _ContactDropdown extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: AppSizes.md),
           decoration: BoxDecoration(
-            color:        AppColors.primary.withOpacity(0.05),
+           color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(AppSizes.radiusMd),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              value:         value,
-              isExpanded:    true,
-              style:         AppTextStyles.bodyMedium,
-              dropdownColor: AppColors.lightSurface,
-              borderRadius:  BorderRadius.circular(AppSizes.radiusMd),
-              icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                  color: AppColors.lightTextSecondary),
+              value: value,
+              isExpanded: true,
+              style: AppTextStyles.bodyMedium.copyWith(
+  color: Theme.of(context).textTheme.bodyLarge!.color,
+),
+             dropdownColor: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+              icon:  Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: AppColors.textSecondary(context),
+              ),
               items: items
-                  .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(item, style: AppTextStyles.bodyMedium),
-                      ))
+                  .map(
+                    (item) => DropdownMenuItem(
+                      value: item,
+                     child: Text(
+  item,
+  style: AppTextStyles.bodyMedium.copyWith(
+    color: Theme.of(context).textTheme.bodyLarge!.color,
+  ),
+),
+                    ),
+                  )
                   .toList(),
               onChanged: onChanged,
             ),

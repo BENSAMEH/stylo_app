@@ -27,16 +27,24 @@ class AboutFeatureItemWidget extends StatelessWidget {
             color: AppColors.primary.withOpacity(0.08),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: AppColors.primary, size: AppSizes.iconMd),
+          child: Icon(
+            icon,
+            color: AppColors.primary,
+            size: AppSizes.iconMd,
+          ),
         ),
+
         SizedBox(height: AppSizes.md),
 
         // Title
         Text(
           title,
           textAlign: TextAlign.center,
-          style: AppTextStyles.headingSmall,
+          style: AppTextStyles.headingSmall.copyWith(
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+          ),
         ),
+
         SizedBox(height: AppSizes.sm),
 
         // Description
@@ -44,7 +52,7 @@ class AboutFeatureItemWidget extends StatelessWidget {
           description,
           textAlign: TextAlign.center,
           style: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.lightTextSecondary,
+            color: Theme.of(context).textTheme.bodyMedium!.color,
             height: 1.6,
           ),
         ),

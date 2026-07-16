@@ -30,7 +30,7 @@ class _CategoriesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar: AppBottomNavWidget(
         currentIndex: 1,
         onTap: (index) {
@@ -70,11 +70,11 @@ class _CategoriesView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.wifi_off_outlined, size: 64, color: AppColors.lightTextSecondary),
+                    Icon(Icons.wifi_off_outlined, size: 64, color: AppColors.textSecondary(context)),
                     SizedBox(height: AppSizes.md),
                     Text(
                       state.message,
-                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.lightTextSecondary),
+                      style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary(context)),
                     ),
                     SizedBox(height: AppSizes.lg),
                     ElevatedButton(
@@ -145,7 +145,7 @@ class _CategoriesView extends StatelessWidget {
                       child: Text(
                         'No categories found',
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.lightTextSecondary,
+                          color: AppColors.textSecondary(context),
                         ),
                       ),
                     ),

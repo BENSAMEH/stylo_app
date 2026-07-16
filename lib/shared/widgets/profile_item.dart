@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stylo_app/core/constants/app_colors.dart';
 
 class ProfileItem extends StatelessWidget {
   final IconData icon;
@@ -18,17 +19,23 @@ class ProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark
+              ? AppColors.darkCardBg
+              : AppColors.card(context),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.black.withOpacity(0.04),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -41,9 +48,15 @@ class ProfileItem extends StatelessWidget {
               width: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xff7C4DFF)),
+                border: Border.all(
+                  color: AppColors.primary,
+                ),
               ),
-              child: Icon(icon, color: const Color(0xff7C4DFF), size: 22),
+              child: Icon(
+                icon,
+                color: AppColors.primary,
+                size: 22,
+              ),
             ),
 
             const SizedBox(width: 16),
@@ -54,25 +67,35 @@ class ProfileItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
+                      color: isDark
+                          ? AppColors.darkTextPrimary
+                          : AppColors.textPrimary(context),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.textSecondary(context),
+                    ),
                   ),
                 ],
               ),
             ),
 
             trailing ??
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
                   size: 18,
-                  color: Colors.grey,
+                  color: isDark
+                      ? AppColors.darkTextSecondary
+                      : AppColors.textSecondary(context),
                 ),
           ],
         ),
