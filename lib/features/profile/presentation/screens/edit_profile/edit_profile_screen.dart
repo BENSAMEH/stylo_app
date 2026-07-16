@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stylo_app/core/constants/app_colors.dart';
 import 'package:stylo_app/core/constants/app_sizes.dart';
 import 'package:stylo_app/core/constants/app_text_styles.dart';
+import 'package:stylo_app/core/services/shared_pref_service.dart';
 import 'package:stylo_app/shared/widgets/custom_profile_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stylo_app/core/di/injection_container.dart';
@@ -10,13 +14,19 @@ import 'package:stylo_app/features/profile/presentation/cubit/address/address_cu
 import 'package:stylo_app/features/profile/presentation/cubit/address/address_state.dart';
 import 'package:stylo_app/features/profile/presentation/screens/add_address/add_address_screen.dart';
 
-class EditProfileScreen extends StatelessWidget {
+class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 final isDark = theme.brightness == Brightness.dark;
+final imagePath = SharedPrefService.getProfileImage();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -66,14 +76,19 @@ final isDark = theme.brightness == Brightness.dark;
                   alignment: Alignment.bottomRight,
                   children: [
                     CircleAvatar(
-                      radius: AppSizes.avatarLg / 2,
-                      backgroundColor: theme.colorScheme.primary.withOpacity(.12),
-                      child: Icon(
-                        Icons.person,
-                        size: AppSizes.iconXl,
-                        color: AppColors.primary,
-                      ),
-                    ),
+  radius: AppSizes.avatarLg / 2,
+  backgroundColor: theme.colorScheme.primary.withOpacity(.12),
+  backgroundImage: imagePath != null && File(imagePath).existsSync()
+      ? FileImage(File(imagePath))
+      : null,
+  child: imagePath == null || !File(imagePath).existsSync()
+      ? Icon(
+          Icons.person,
+          size: AppSizes.iconXl,
+          color: AppColors.primary,
+        )
+      : null,
+),
                     Container(
                       height: 28,
                       width: 28,
@@ -94,18 +109,33 @@ final isDark = theme.brightness == Brightness.dark;
 
                 // ── Change photo button ────────────────────────────
                 TextButton(
-                  onPressed: () {
-                    // TODO: wire to ProfileCubit.uploadPhoto()
-                  },
-                  child: Text(
-                    'CHANGE PHOTO',
-                    style: AppTextStyles.labelMedium.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
+  onPressed: () async {
+    final picker = ImagePicker();
+
+    final XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
+
+    if (image == null) return;
+
+    await SharedPrefService.saveProfileImage(image.path);
+    setState(() {
+      
+    });
+    
+    
+    
+  },
+  child: Text(
+    'CHANGE PHOTO',
+    style: AppTextStyles.labelMedium.copyWith(
+      color: theme.colorScheme.primary,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 1,
+    ),
+  ),
+),
 
                 SizedBox(height: AppSizes.md),
 

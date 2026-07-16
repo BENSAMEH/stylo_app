@@ -58,6 +58,15 @@ class SharedPrefService {
       mode.name,
     );
   }
+  static const String _profileImageKey = "profile_image";
+
+static Future<void> saveProfileImage(String path) async {
+  await _preferences.setString(_profileImageKey, path);
+}
+
+static String? getProfileImage() {
+  return _preferences.getString(_profileImageKey);
+}
 
 
   static ThemeMode getThemeMode() {
