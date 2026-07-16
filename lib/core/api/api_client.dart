@@ -6,7 +6,6 @@ class ApiClient {
   final Dio _dio = DioProvider.dio;
 
   ApiClient() {
-    // تنظيف الـ Interceptors القديمة لمنع أي تكرار
     _dio.interceptors.clear();
   }
 
@@ -27,9 +26,11 @@ class ApiClient {
   Future<Response> get(
     String path, {
     Map<String, dynamic>? queryParameters,
+    dynamic data,
   }) async {
     return await _dio.get(
       path,
+      data: data,
       queryParameters: queryParameters,
       options: _getOptions(), // تمرير التوكن والـ headers بشكل نظيف ومستقل
     );

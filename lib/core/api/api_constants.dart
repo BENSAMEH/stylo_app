@@ -2,7 +2,8 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl = "https://accessories-eshop.runasp.net/api";
-// Auth
+
+  // Auth
   static const String login = "/auth/login";
   static const String register = "/auth/register";
   static const String verifyEmail = "/auth/verify-email";
@@ -14,8 +15,10 @@ class ApiConstants {
   static const String me = "/auth/me";
   static const String validateOtp = "/auth/validate-otp";
   static const String resetPassword = "/auth/reset-password";
-// Addresses
+
+  // Addresses
   static const String addresses = "/addresses";
+
   // Products
   static const String products = "/products";
   static String productById(String id) => "/products/$id";
@@ -29,8 +32,15 @@ class ApiConstants {
   static const String cart = "/cart";
   static const String cartItems = "/cart/items";
   static String cartItemById(String itemId) => "/cart/items/$itemId";
-// Checkout
-  static const String checkout = "/orders/checkout";  // Reviews
+
+  static String removeFromCart(int id) => "/cart/$id";
+
+  // Checkout
+  static const String checkout = "/orders/checkout";
+
+  // Reviews
   static String reviewsByProduct(String productId) =>
       "/reviews/$productId?page=1&pageSize=10";
+
+  static String addReview(String productId) => "/reviews/$productId";
 }

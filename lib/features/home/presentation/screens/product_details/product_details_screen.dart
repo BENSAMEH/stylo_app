@@ -41,10 +41,79 @@ class _ProductDetailView extends StatefulWidget {
 class _ProductDetailViewState extends State<_ProductDetailView> {
   bool _isFavourite = false;
   int _currentImage = 0;
+<<<<<<< HEAD
+  final TextEditingController _commentController = TextEditingController();
+  double _rating = 5.0;
+  void _showAddReviewDialog(BuildContext context, String productId) {
+    _commentController.clear();
+    _rating = 5;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text("Add Review"),
+          content: StatefulBuilder(
+            builder: (context, setStateDialog) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: _commentController,
+                    decoration: const InputDecoration(
+                      labelText: "Comment",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  DropdownButton<double>(
+                    isExpanded: true,
+                    value: _rating,
+                    items: const [
+                      DropdownMenuItem(value: 1, child: Text("⭐ 1")),
+                      DropdownMenuItem(value: 2, child: Text("⭐⭐ 2")),
+                      DropdownMenuItem(value: 3, child: Text("⭐⭐⭐ 3")),
+                      DropdownMenuItem(value: 4, child: Text("⭐⭐⭐⭐ 4")),
+                      DropdownMenuItem(value: 5, child: Text("⭐⭐⭐⭐⭐ 5")),
+                    ],
+                    onChanged: (value) {
+                      setStateDialog(() {
+                        _rating = value!;
+                      });
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await context.read<ProductDetailCubit>().addReview(
+                  productId: productId,
+                  comment: _commentController.text,
+                  rating: _rating,
+                );
+
+                Navigator.pop(dialogContext);
+              },
+              child: const Text("Submit"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+=======
 
   // عشان الزرار يقدر يعرف هو دلوقتي بيبعت الطلب (loading) ولا لأ،
   // ومنمنعش المستخدم يدوس تاني على الزرار وهو لسه مستني رد من السيرفر
   bool _isAddingToCart = false;
+>>>>>>> 0030297664b5e4dca9bfefa79a922329f547fe0b
 
   int _discountPercent(double price, double oldPrice) {
     if (oldPrice <= price) return 0;
@@ -364,6 +433,31 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
+<<<<<<< HEAD
+                                  Text(
+                                    'Reviews',
+                                    style: AppTextStyles.headingSmall,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        '${reviews.length} reviews',
+                                        style: AppTextStyles.bodySmall.copyWith(
+                                          color: AppColors.lightTextSecondary,
+                                        ),
+                                      ),
+                                      SizedBox(width: AppSizes.sm),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          _showAddReviewDialog(
+                                            context,
+                                            widget.productId,
+                                          );
+                                        },
+                                        child: const Text('Add Review'),
+                                      ),
+                                    ],
+=======
                                   Text(
                                     'Reviews',
                                     style: AppTextStyles.headingSmall,
@@ -373,11 +467,36 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                     style: AppTextStyles.bodySmall.copyWith(
                                       color: AppColors.textSecondary(context),
                                     ),
+>>>>>>> 0030297664b5e4dca9bfefa79a922329f547fe0b
                                   ),
                                 ],
                               ),
+
                               SizedBox(height: AppSizes.md),
 
+<<<<<<< HEAD
+                              if (reviews.isEmpty)
+                                Center(
+                                  child: Text(
+                                    'No reviews yet',
+                                    style: AppTextStyles.bodyMedium.copyWith(
+                                      color: AppColors.lightTextSecondary,
+                                    ),
+                                  ),
+                                )
+                              else
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: reviews.length,
+                                  separatorBuilder: (_, __) => Divider(
+                                    color: AppColors.lightDivider,
+                                    height: AppSizes.lg,
+                                  ),
+                                  itemBuilder: (_, i) =>
+                                      _ReviewItem(review: reviews[i]),
+                                ),
+=======
                               reviews.isEmpty
                                   ? Center(
                                       child: Text(
@@ -402,6 +521,7 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                                           _ReviewItem(review: reviews[i]),
                                     ),
 
+>>>>>>> 0030297664b5e4dca9bfefa79a922329f547fe0b
                               SizedBox(height: AppSizes.xl),
                             ],
                           ),
@@ -411,7 +531,6 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                   ),
                 ),
 
-                // ── Add to Cart button ───────────────────────
                 Container(
                   padding: EdgeInsets.fromLTRB(
                     AppSizes.screenPadding,
@@ -430,6 +549,18 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                     ],
                   ),
                   child: ElevatedButton.icon(
+<<<<<<< HEAD
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${product.name} added to cart!'),
+                          backgroundColor: AppColors.primary,
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.shopping_bag_outlined),
+                    label: const Text('Add to Cart'),
+=======
                     onPressed: _isAddingToCart
                         ? null // منع الضغط المتكرر أثناء انتظار الرد
                         : () {
@@ -462,16 +593,20 @@ class _ProductDetailViewState extends State<_ProductDetailView> {
                           )
                         : const Icon(Icons.shopping_bag_outlined),
                     label: Text(_isAddingToCart ? 'Adding...' : 'Add to Cart'),
+>>>>>>> 0030297664b5e4dca9bfefa79a922329f547fe0b
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.white,
                       minimumSize: const Size(double.infinity, 52),
+<<<<<<< HEAD
+=======
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                           AppSizes.radiusFull,
                         ),
                       ),
                       textStyle: AppTextStyles.buttonLarge,
+>>>>>>> 0030297664b5e4dca9bfefa79a922329f547fe0b
                     ),
                   ),
                 ),
